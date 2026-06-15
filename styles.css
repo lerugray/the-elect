@@ -14,7 +14,7 @@
   --gold-dim:   #7a6218;
   --gold-pale:  #e8cc7a;
   --red:        #8b1a1a;
-  --red-bright: #b02020;
+  --red-bright: #e0564e;
   --red-dim:    #4a0e0e;
   --green:      #3d6b3d;
   --border:     #2a2520;
@@ -389,14 +389,14 @@ body {
   white-space: pre;
   overflow: hidden;
   max-height: 260px;
-  text-shadow: 0 0 6px rgba(176, 32, 32, 0.4);
+  text-shadow: 0 0 6px rgba(224, 86, 78, 0.4);
   transition: color 0.3s, text-shadow 0.3s;
   display: block;
 }
 
 .persona-card:hover .ascii-art {
   color: var(--red-bright);
-  text-shadow: 0 0 12px rgba(176, 32, 32, 0.6);
+  text-shadow: 0 0 12px rgba(224, 86, 78, 0.6);
 }
 
 .cornerstone .ascii-art {
@@ -417,7 +417,7 @@ body {
 .placeholder-art {
   font-size: 0.5rem;
   line-height: 1.3;
-  color: var(--red-dim);
+  color: var(--red-bright);
   text-align: left;
 }
 
@@ -461,7 +461,7 @@ body {
 .persona-register {
   font-size: 0.78rem;      /* was 0.68rem */
   letter-spacing: 0.06em;  /* was 0.1em */
-  color: #d44040;          /* was --red-bright (#b02020); brighter for legibility */
+  color: var(--red-bright);          /* was --red-bright (#b02020); brighter for legibility */
   text-transform: uppercase;
   font-style: italic;
 }
@@ -494,7 +494,7 @@ body {
   letter-spacing: 0.08em;  /* was 0.1em */
   text-decoration: none;
   border: 1px solid var(--red);
-  color: #d44040;          /* was --red-bright (#b02020); matches persona-register lift */
+  color: var(--red-bright);          /* was --red-bright (#b02020); matches persona-register lift */
   background: transparent;
   transition: all 0.2s ease;
   text-transform: uppercase;
