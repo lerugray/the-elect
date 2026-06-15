@@ -1,0 +1,1 @@
+The Elect is a one-person lab making small local voice models — fine-tuned 7B experiments built around distinct registers, personas, and sensibilities. This is the umbrella page for the fleet: Müntzergeist, Nyarlathotep, Eschaton, Hammerstein, and the others. Each model is a standalone artifact; all ship as Ollama-compatible GGUF files.
