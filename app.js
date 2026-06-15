@@ -9,7 +9,6 @@
   // Map of element ID -> asset path
   const PORTRAITS = [
     { id: 'eschaton-ascii', path: './assets/eschaton-face.txt' },
-    { id: 'muntzer-ascii',  path: './assets/muntzer-ascii.txt' },
     { id: 'marx-ascii',     path: './assets/marx-ascii.txt'   },
   ];
 
