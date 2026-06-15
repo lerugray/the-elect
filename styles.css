@@ -414,6 +414,36 @@ body {
   line-height: 1.05;
 }
 
+/* ── DENSE BLOCK-SHADE PORTRAITS ──
+   Nyarlathotep + Marx use solid ▒▓█ fills (not sparse line-art like the
+   other cards). At the brightened red the dense masses read as a glowing,
+   vibrating slab rather than a portrait. Calm them: drop opacity, soften
+   the hue, and kill the glow that makes the solid fill bloom. The dark face
+   is the negative-space portrait — let it read.                            */
+.marx-art {
+  color: #cf5048;              /* slightly softer / less-saturated than --red-bright */
+  opacity: 0.82;               /* effective contrast on #08080b ≈ 3.4:1 (large display art) */
+  text-shadow: none;           /* glow amplified the slab; remove it */
+}
+
+.nyarlathotep-art {
+  color: #52c98a;              /* muted spectral green — Nyarlathotep's own brand hue,
+                                  legible (≈6.6:1) and breaks the all-red slab */
+  opacity: 0.82;
+  text-shadow: none;
+}
+
+/* Hover: a faint, hue-matched glow instead of the default red bloom. */
+.persona-card:hover .marx-art {
+  color: #d9574f;
+  text-shadow: 0 0 8px rgba(207, 80, 72, 0.35);
+}
+
+.persona-card:hover .nyarlathotep-art {
+  color: #5ed29a;
+  text-shadow: 0 0 8px rgba(82, 201, 138, 0.35);
+}
+
 .placeholder-art {
   font-size: 0.5rem;
   line-height: 1.3;
