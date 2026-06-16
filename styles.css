@@ -456,6 +456,17 @@ body {
   text-shadow: 0 0 8px rgba(143, 166, 196, 0.35);
 }
 
+.osawatomie-art {
+  color: #c9b27a;              /* muted brass/amber — abolitionist sobriety, distinct from the red/green/blue slabs */
+  opacity: 0.82;
+  text-shadow: none;
+}
+
+.persona-card:hover .osawatomie-art {
+  color: #d8c08a;
+  text-shadow: 0 0 8px rgba(201, 178, 122, 0.35);
+}
+
 .placeholder-art {
   font-size: 0.5rem;
   line-height: 1.3;
@@ -926,3 +937,13 @@ a.stack-item:hover { text-decoration: underline; color: var(--gold); border-colo
 /* links inside method step cards (Bookfinder General in step 00) */
 .method-step a { color: var(--gold-dim); text-decoration: underline; }
 .method-step a:hover { color: var(--gold); }
+
+/* ── WITHHELD CARDS (private fleet) ── */
+.card-status.withheld { color: var(--text-dim); border-color: var(--border); background: rgba(255,255,255,0.03); }
+.link-btn.disabled { opacity: 0.45; cursor: default; pointer-events: none; border-style: dashed; }
+.hip-priest-art { color: #c9c2a0; text-shadow: none; opacity: 0.9; }
+.beefgpt-art    { color: #d08a4a; text-shadow: none; opacity: 0.9; }
+.weiss-art      { color: #8fb09a; text-shadow: none; opacity: 0.9; }
+.persona-card:hover .hip-priest-art { color: #ddd6b2; text-shadow: 0 0 8px rgba(201,194,160,0.35); }
+.persona-card:hover .beefgpt-art    { color: #e69a58; text-shadow: 0 0 8px rgba(208,138,74,0.35); }
+.persona-card:hover .weiss-art      { color: #a3c4ae; text-shadow: 0 0 8px rgba(143,176,154,0.35); }
