@@ -433,6 +433,13 @@ body {
   text-shadow: none;
 }
 
+.the-burrow-art {
+  color: #8fa6c4;              /* muted ink-blue — the anxious clerk / bureaucratic register;
+                                  cool and distinct from the red & green slabs */
+  opacity: 0.8;                /* effective contrast on #08080b ≈ 5.4:1 (large display art) */
+  text-shadow: none;           /* the dense $X&-fill blooms under the red glow; remove it */
+}
+
 /* Hover: a faint, hue-matched glow instead of the default red bloom. */
 .persona-card:hover .marx-art {
   color: #d9574f;
@@ -442,6 +449,11 @@ body {
 .persona-card:hover .nyarlathotep-art {
   color: #5ed29a;
   text-shadow: 0 0 8px rgba(82, 201, 138, 0.35);
+}
+
+.persona-card:hover .the-burrow-art {
+  color: #a3b6d0;
+  text-shadow: 0 0 8px rgba(143, 166, 196, 0.35);
 }
 
 .placeholder-art {
