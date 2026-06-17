@@ -947,3 +947,13 @@ a.stack-item:hover { text-decoration: underline; color: var(--gold); border-colo
 .persona-card:hover .hip-priest-art { color: #ddd6b2; text-shadow: 0 0 8px rgba(201,194,160,0.35); }
 .persona-card:hover .beefgpt-art    { color: #e69a58; text-shadow: 0 0 8px rgba(208,138,74,0.35); }
 .persona-card:hover .weiss-art      { color: #a3c4ae; text-shadow: 0 0 8px rgba(143,176,154,0.35); }
+
+/* ── ELECT WOMEN VOICES (2026-06-17) — high-contrast portrait tints, no-glow like osawatomie ── */
+.mother-earth-art { color: #d98c5a; opacity: 0.86; text-shadow: none; }   /* warm ochre/earth */
+.persona-card:hover .mother-earth-art { color: #e6a070; text-shadow: 0 0 8px rgba(217,140,90,0.35); }
+.junius-art { color: #d65f8a; opacity: 0.86; text-shadow: none; }         /* rose-red, distinct from base red */
+.persona-card:hover .junius-art { color: #e277a0; text-shadow: 0 0 8px rgba(214,95,138,0.35); }
+.red-virgin-art { color: #e0564e; opacity: 0.88; text-shadow: none; }     /* scarlet — she is "the red" */
+.persona-card:hover .red-virgin-art { color: #ea6a60; text-shadow: 0 0 8px rgba(224,86,78,0.35); }
+.the-voices-art { color: #c3cdd9; opacity: 0.92; text-shadow: none; }     /* pale celestial steel — divine */
+.persona-card:hover .the-voices-art { color: #dde4ec; text-shadow: 0 0 8px rgba(195,205,217,0.35); }
