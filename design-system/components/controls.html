@@ -1,0 +1,42 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>The Elect — Status badges & link buttons</title>
+<style>
+ :root{ --bg:#f4ecd6;--bg-card:#efe5cc;--text:#2b2620;--text-dim:#6b6256;--text-muted:#8a8175;
+   --gold:#876811;--gold-dim:#6d5410;--red:#8b1a1a;--red-bright:#9e2418;--red-dim:#d8b3a2;
+   --green:#3a6b3a;--border:#d8c8a4;--border-dim:#e4d8ba;--ink-wash:rgba(43,38,32,.05);
+   --font-mono:'Courier New','Lucida Console','DejaVu Sans Mono',monospace; }
+ *{box-sizing:border-box;margin:0;padding:0}
+ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);padding:2rem;line-height:1.6}
+ h1{font-size:1rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem}
+ .sub{font-size:.8rem;color:var(--text-dim);margin-bottom:1.75rem}
+ .group{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin:1.5rem 0 .8rem;border-bottom:1px solid var(--border);padding-bottom:.35rem}
+ .strip{display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}
+ .card-status{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:.2rem .6rem;border:1px solid}
+ .card-status.public{color:var(--green);border-color:var(--green);background:rgba(58,107,58,.13)}
+ .card-status.withheld{color:var(--text-dim);border-color:var(--border);background:var(--ink-wash)}
+ .card-status.training{color:var(--gold-dim);border-color:var(--gold-dim);background:rgba(135,104,17,.12)}
+ .link-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .85rem;font-size:.78rem;letter-spacing:.08em;text-decoration:none;border:1px solid var(--red);color:var(--red-bright);background:transparent;text-transform:uppercase}
+ .link-btn.secondary{border-color:var(--border);color:var(--text-dim)}
+ .link-btn.disabled{opacity:.5;cursor:default;border-style:dashed;border-color:var(--border);color:var(--text-dim)}
+ .cap{font-size:.62rem;color:var(--text-muted);margin-top:.5rem}
+</style></head><body>
+ <h1>Controls</h1>
+ <div class="sub">Status badges &amp; link buttons &mdash; bordered ink on cream, rubric accents</div>
+
+ <div class="group">Status badges</div>
+ <div class="strip">
+   <span class="card-status public">Public</span>
+   <span class="card-status withheld">Withheld</span>
+   <span class="card-status training">Training</span>
+ </div>
+ <div class="cap">public = moss green · withheld = neutral ink · training = gold-leaf (blinks on the live site)</div>
+
+ <div class="group">Link buttons</div>
+ <div class="strip">
+   <a href="#" class="link-btn">&#9672; Open the page &rarr;</a>
+   <a href="#" class="link-btn secondary">&#9111; Weights (HF)</a>
+   <span class="link-btn disabled">&#9999; Withheld &mdash; no weights</span>
+ </div>
+ <div class="cap">primary = rubric red border · secondary = sepia border · disabled = dashed, muted (withheld models)</div>
+</body></html>

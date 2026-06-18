@@ -1,0 +1,47 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>The Elect — Page shell</title>
+<style>
+ :root{ --bg:#f4ecd6;--bg-card:#efe5cc;--bg-header:#ece0c2;--text:#2b2620;--text-dim:#6b6256;
+   --text-muted:#8a8175;--gold:#876811;--gold-pale:#b8902a;--red:#8b1a1a;--border:#d8c8a4;
+   --font-mono:'Courier New','Lucida Console','DejaVu Sans Mono',monospace; }
+ *{box-sizing:border-box;margin:0;padding:0}
+ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);line-height:1.7}
+ .site-header{background:var(--bg-header);border-bottom:2px solid var(--red);padding:3rem 2rem 2rem;text-align:center;position:relative;overflow:hidden}
+ .site-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold-pale),transparent);opacity:.7}
+ .header-inner{display:flex;align-items:center;justify-content:center;gap:2rem;max-width:800px;margin:0 auto 1.5rem}
+ .sigil{color:var(--gold);font-size:1.5rem;opacity:.7}
+ .lab-label{display:block;font-size:.75rem;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;margin-bottom:.3rem}
+ .site-title{font-size:clamp(2.5rem,7vw,4.5rem);font-weight:700;letter-spacing:.2em;color:var(--text);line-height:1;margin-bottom:.5rem;text-shadow:0 1px 0 rgba(255,250,240,.55),0 2px 3px rgba(43,38,32,.12)}
+ .site-tagline{font-size:.9rem;color:var(--text);letter-spacing:.06em}
+ .header-rule{display:flex;align-items:center;gap:1rem;max-width:700px;margin:0 auto}
+ .rule-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border))}
+ .header-rule .rule-line:last-child{background:linear-gradient(90deg,var(--border),transparent)}
+ .rule-text{font-size:.72rem;letter-spacing:.1em;color:var(--text-dim);white-space:nowrap}
+ .spacer{padding:3rem 2rem;text-align:center;color:var(--text-muted);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}
+ .site-footer{border-top:1px solid var(--border);padding:3rem 0 2rem;background:var(--bg-header);text-align:center}
+ .footer-sigil{font-size:.72rem;letter-spacing:.2em;color:var(--gold);margin-bottom:1rem}
+ .footer-note{font-size:.82rem;color:var(--text-dim);max-width:500px;margin:0 auto 1.25rem;line-height:1.7}
+ .footer-links{display:flex;justify-content:center;align-items:center;gap:.75rem}
+ .footer-link{font-size:.78rem;color:var(--text-dim);text-decoration:none;letter-spacing:.05em}
+ .footer-sep{color:var(--text-muted)}
+</style></head><body>
+ <header class="site-header">
+   <div class="header-inner">
+     <div class="sigil">&#10022;</div>
+     <div>
+       <span class="lab-label">Voice Lab</span>
+       <h1 class="site-title">THE ELECT</h1>
+       <p class="site-tagline">Runnable voices. Dead radicals. Local iron only.</p>
+     </div>
+     <div class="sigil">&#10022;</div>
+   </div>
+   <div class="header-rule"><span class="rule-line"></span><span class="rule-text">EST. M&Uuml;NTZER, 1524 &mdash; RUNNING ON YOUR MACHINE</span><span class="rule-line"></span></div>
+ </header>
+ <div class="spacer">&mdash; page body &mdash;</div>
+ <footer class="site-footer">
+   <div class="footer-sigil">&#10022; THE ELECT &#10022;</div>
+   <p class="footer-note">A one-person voice lab. Small local models, each tuned to a single dead radical. No cloud, no API.</p>
+   <div class="footer-links"><a href="#" class="footer-link">GitHub</a><span class="footer-sep">&middot;</span><a href="#" class="footer-link">Hugging Face</a></div>
+ </footer>
+</body></html>

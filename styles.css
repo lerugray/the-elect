@@ -1,24 +1,27 @@
 /* ============================================================
-   THE ELECT — Terminal Grimoire
-   Dark archival + radical red + aged gold + CRT texture
+   THE ELECT — Aged Paper
+   Warm vellum + sepia ink + rubric red + gold-leaf
+   (light reissue of the Terminal Grimoire — same bones)
    ============================================================ */
 
 :root {
-  --bg:         #08080b;
-  --bg-card:    #0d0d11;
-  --bg-header:  #060608;
-  --text:       #c8c4b8;
-  --text-dim:   #8a8480;   /* was #6b6660 — lifted for AA body contrast */
-  --text-muted: #6a6560;   /* was #3d3a36 — lifted from near-invisible to readable */
-  --gold:       #c9a227;
-  --gold-dim:   #7a6218;
-  --gold-pale:  #e8cc7a;
-  --red:        #8b1a1a;
-  --red-bright: #e0564e;
-  --red-dim:    #4a0e0e;
-  --green:      #3d6b3d;
-  --border:     #2a2520;
-  --border-dim: #1a1815;
+  --bg:         #f4ecd6;   /* warm cream / vellum page */
+  --bg-card:    #efe5cc;   /* aged paper card */
+  --bg-header:  #ece0c2;   /* deeper cream — header / footer band */
+  --bg-sunk:    #e7dabb;   /* recessed panel cream */
+  --text:       #2b2620;   /* sepia-black ink (~12:1 on cream) */
+  --text-dim:   #6b6256;   /* faded ink — secondary (~5:1) */
+  --text-muted: #8a8175;   /* faint ink — separators / decoration only (~3.3:1) */
+  --gold:       #876811;   /* gold-leaf ink — legible on cream */
+  --gold-dim:   #6d5410;   /* deeper gold-leaf */
+  --gold-pale:  #b8902a;   /* antique gold — decorative gradient glints only */
+  --red:        #8b1a1a;   /* rubric red (kept; ~6:1 on cream) */
+  --red-bright: #9e2418;   /* deep vermilion — ink links / register accents */
+  --red-dim:    #d8b3a2;   /* faded red wash — tints / borders on cream */
+  --green:      #3a6b3a;   /* moss green — status */
+  --border:     #d8c8a4;   /* warm sepia border */
+  --border-dim: #e4d8ba;   /* faint sepia hairline */
+  --ink-wash:   rgba(43, 38, 32, 0.05);  /* sepia overlay for recessed bands */
   --font-mono:  'Courier New', 'Lucida Console', 'DejaVu Sans Mono', monospace;
   --font-serif: Georgia, 'Times New Roman', serif;
 }
@@ -42,18 +45,19 @@ body {
   min-height: 100vh;
 }
 
-/* ── TEXTURE LAYERS ── */
+/* ── TEXTURE LAYERS (paper) ── */
 .scanlines {
   position: fixed;
   inset: 0;
   z-index: 1000;
   pointer-events: none;
+  /* faint horizontal "laid paper" lines — barely there on cream */
   background: repeating-linear-gradient(
     0deg,
     transparent,
     transparent 2px,
-    rgba(0,0,0,0.08) 2px,
-    rgba(0,0,0,0.08) 4px
+    rgba(60, 50, 38, 0.022) 2px,
+    rgba(60, 50, 38, 0.022) 3px
   );
 }
 
@@ -64,23 +68,8 @@ body {
   pointer-events: none;
   width: 400%;
   height: 400%;
-  opacity: 0.03;
+  opacity: 0.05;   /* static paper foxing — no film-grain animation */
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  animation: grain 0.5s steps(1) infinite;
-}
-
-@keyframes grain {
-  0%  { transform: translate(0, 0); }
-  10% { transform: translate(-3%, -4%); }
-  20% { transform: translate(-6%, 2%); }
-  30% { transform: translate(3%, -1%); }
-  40% { transform: translate(-1%, 6%); }
-  50% { transform: translate(-5%, 1%); }
-  60% { transform: translate(2%, 4%); }
-  70% { transform: translate(-4%, -2%); }
-  80% { transform: translate(4%, -3%); }
-  90% { transform: translate(1%, 5%); }
-  100%{ transform: translate(-2%, -5%); }
 }
 
 /* ── LAYOUT ── */
@@ -105,8 +94,8 @@ body {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0.6;
+  background: linear-gradient(90deg, transparent, var(--gold-pale), transparent);
+  opacity: 0.7;
 }
 
 .header-inner {
@@ -147,7 +136,8 @@ body {
   color: var(--text);
   line-height: 1;
   margin-bottom: 0.5rem;
-  text-shadow: 0 0 40px rgba(201, 162, 39, 0.15);
+  /* letterpress on paper: light top edge + soft ink drop */
+  text-shadow: 0 1px 0 rgba(255, 250, 240, 0.55), 0 2px 3px rgba(43, 38, 32, 0.12);
 }
 
 .site-tagline {
@@ -244,6 +234,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  box-shadow: 0 1px 2px rgba(43, 38, 32, 0.05);
 }
 
 .stat-item {
@@ -284,8 +275,9 @@ body {
   background: var(--bg-card);
   margin-bottom: 2rem;
   position: relative;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
+  box-shadow: 0 1px 2px rgba(43, 38, 32, 0.07);   /* sheet-of-paper lift */
 }
 
 .persona-card::before {
@@ -300,6 +292,7 @@ body {
 
 .persona-card:hover {
   border-color: var(--border);
+  box-shadow: 0 3px 10px rgba(43, 38, 32, 0.12);
 }
 
 .persona-card:hover::before {
@@ -325,7 +318,7 @@ body {
   align-items: center;
   padding: 0.6rem 1.25rem;
   border-bottom: 1px solid var(--border-dim);
-  background: rgba(0,0,0,0.3);
+  background: var(--ink-wash);
 }
 
 .card-badge {
@@ -350,13 +343,13 @@ body {
 .card-status.public {
   color: var(--green);
   border-color: var(--green);
-  background: rgba(61, 107, 61, 0.1);
+  background: rgba(58, 107, 58, 0.13);
 }
 
 .card-status.training {
   color: var(--gold-dim);
   border-color: var(--gold-dim);
-  background: rgba(122, 98, 24, 0.1);
+  background: rgba(135, 104, 17, 0.12);
   animation: blink-status 2s step-end infinite;
 }
 
@@ -375,7 +368,7 @@ body {
   border-right: 1px solid var(--border-dim);
   padding: 1rem;
   overflow: hidden;
-  background: rgba(0,0,0,0.4);
+  background: rgba(43, 38, 32, 0.04);   /* faint deeper cream framing the ink art */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -385,28 +378,22 @@ body {
   font-family: var(--font-mono);
   font-size: 0.38rem;
   line-height: 1.1;
-  color: var(--red-bright);
+  color: var(--red);            /* rubric-red ink — strong on cream */
   white-space: pre;
   overflow: hidden;
   max-height: 260px;
-  text-shadow: 0 0 6px rgba(224, 86, 78, 0.4);
-  transition: color 0.3s, text-shadow 0.3s;
+  text-shadow: none;            /* paper: no CRT bloom */
+  transition: opacity 0.3s ease, color 0.3s ease;
   display: block;
+  opacity: 0.95;
 }
 
-.persona-card:hover .ascii-art {
-  color: var(--red-bright);
-  text-shadow: 0 0 12px rgba(224, 86, 78, 0.6);
-}
+/* Hover: deepen the ink to full strength (no glow). */
+.persona-card:hover .ascii-art { opacity: 1; }
 
 .cornerstone .ascii-art {
   color: var(--gold-dim);
-  text-shadow: 0 0 8px rgba(201, 162, 39, 0.3);
-}
-
-.cornerstone:hover .ascii-art {
-  color: var(--gold);
-  text-shadow: 0 0 16px rgba(201, 162, 39, 0.5);
+  text-shadow: none;
 }
 
 .hammerstein-art {
@@ -414,63 +401,20 @@ body {
   line-height: 1.05;
 }
 
-/* ── DENSE BLOCK-SHADE PORTRAITS ──
-   Nyarlathotep + Marx use solid ▒▓█ fills (not sparse line-art like the
-   other cards). At the brightened red the dense masses read as a glowing,
-   vibrating slab rather than a portrait. Calm them: drop opacity, soften
-   the hue, and kill the glow that makes the solid fill bloom. The dark face
-   is the negative-space portrait — let it read.                            */
-.marx-art {
-  color: #cf5048;              /* slightly softer / less-saturated than --red-bright */
-  opacity: 0.82;               /* effective contrast on #08080b ≈ 3.4:1 (large display art) */
-  text-shadow: none;           /* glow amplified the slab; remove it */
-}
-
-.nyarlathotep-art {
-  color: #52c98a;              /* muted spectral green — Nyarlathotep's own brand hue,
-                                  legible (≈6.6:1) and breaks the all-red slab */
-  opacity: 0.82;
-  text-shadow: none;
-}
-
-.the-burrow-art {
-  color: #8fa6c4;              /* muted ink-blue — the anxious clerk / bureaucratic register;
-                                  cool and distinct from the red & green slabs */
-  opacity: 0.8;                /* effective contrast on #08080b ≈ 5.4:1 (large display art) */
-  text-shadow: none;           /* the dense $X&-fill blooms under the red glow; remove it */
-}
-
-/* Hover: a faint, hue-matched glow instead of the default red bloom. */
-.persona-card:hover .marx-art {
-  color: #d9574f;
-  text-shadow: 0 0 8px rgba(207, 80, 72, 0.35);
-}
-
-.persona-card:hover .nyarlathotep-art {
-  color: #5ed29a;
-  text-shadow: 0 0 8px rgba(82, 201, 138, 0.35);
-}
-
-.persona-card:hover .the-burrow-art {
-  color: #a3b6d0;
-  text-shadow: 0 0 8px rgba(143, 166, 196, 0.35);
-}
-
-.osawatomie-art {
-  color: #c9b27a;              /* muted brass/amber — abolitionist sobriety, distinct from the red/green/blue slabs */
-  opacity: 0.82;
-  text-shadow: none;
-}
-
-.persona-card:hover .osawatomie-art {
-  color: #d8c08a;
-  text-shadow: 0 0 8px rgba(201, 178, 122, 0.35);
-}
+/* ── PER-PERSONA PORTRAIT INK ──
+   Re-tinted for legibility on cream: each keeps the hue identity it carried
+   on the dark build, darkened to a deep ink that holds contrast on paper.
+   Dense block-fill portraits (Marx, Nyarlathotep, The Burrow) sit a hair
+   lighter so the negative-space face still reads. Hover lift is global.    */
+.marx-art         { color: #922018; opacity: 0.90; text-shadow: none; }  /* deep red */
+.nyarlathotep-art { color: #1f5f3f; opacity: 0.90; text-shadow: none; }  /* deep spectral green */
+.the-burrow-art   { color: #33506e; opacity: 0.90; text-shadow: none; }  /* deep ink-blue */
+.osawatomie-art   { color: #6f5410; opacity: 0.94; text-shadow: none; }  /* deep bronze */
 
 .placeholder-art {
   font-size: 0.5rem;
   line-height: 1.3;
-  color: var(--red-bright);
+  color: var(--red);
   text-align: left;
 }
 
@@ -567,7 +511,7 @@ body {
 .link-btn.secondary:hover {
   border-color: var(--text-dim);
   color: var(--text);
-  background: rgba(255,255,255,0.03);
+  background: var(--ink-wash);
 }
 
 .cornerstone .link-btn {
@@ -576,7 +520,7 @@ body {
 }
 
 .cornerstone .link-btn:hover {
-  background: rgba(201, 162, 39, 0.1);
+  background: rgba(135, 104, 17, 0.12);
   border-color: var(--gold);
 }
 
@@ -606,7 +550,7 @@ body {
 .withheld-section {
   border: 1px solid var(--red-dim);
   padding: 2rem;
-  background: rgba(139, 26, 26, 0.04);
+  background: rgba(139, 26, 26, 0.06);
   margin-top: 3rem;
 }
 
@@ -626,7 +570,7 @@ body {
 .withheld-label {
   font-size: 0.72rem;      /* was 0.65rem */
   letter-spacing: 0.2em;   /* was 0.3em */
-  color: #c03030;          /* was --red (#8b1a1a); brighter */
+  color: #a02620;          /* rubric red — legible on cream */
   text-transform: uppercase;
 }
 
@@ -646,7 +590,7 @@ body {
 .withheld-item {
   border: 1px solid var(--border-dim);
   padding: 0.75rem 1rem;
-  background: rgba(0,0,0,0.3);
+  background: var(--ink-wash);
 }
 
 .withheld-item.withheld-private {
@@ -701,7 +645,7 @@ body {
 }
 
 .method-step:hover {
-  background: rgba(255,255,255,0.01);
+  background: var(--ink-wash);
 }
 
 .step-num {
@@ -730,7 +674,7 @@ body {
 .method-stack {
   grid-column: 1 / -1;
   padding: 1.5rem 2rem;
-  background: rgba(0,0,0,0.3);
+  background: var(--ink-wash);
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -755,7 +699,7 @@ body {
 .stack-item {
   font-size: 0.75rem;
   color: var(--gold-dim);
-  background: rgba(201, 162, 39, 0.06);
+  background: rgba(135, 104, 17, 0.08);
   border: 1px solid var(--gold-dim);
   padding: 0.2rem 0.6rem;
 }
@@ -861,12 +805,10 @@ body {
   .roster-section { animation: fade-up 0.6s 0.2s ease forwards; }
   .method-section { animation: fade-up 0.6s 0.3s ease forwards; }
 
-  .persona-card { animation: fade-up 0.4s ease forwards; }
-  .persona-card:nth-child(1) { animation-delay: 0.1s; }
-  .persona-card:nth-child(2) { animation-delay: 0.2s; }
-  .persona-card:nth-child(3) { animation-delay: 0.3s; }
-  .persona-card:nth-child(4) { animation-delay: 0.4s; }
-  .persona-card:nth-child(5) { animation-delay: 0.5s; }
+  /* Per-card fade-in removed: the animation's frame-0 (opacity:0) could
+     strand cards invisible in headless / preview / slow-load contexts
+     (12 of 19 cards vanished in automated capture). The roster section
+     still fades in as a unit; individual cards stay visible always. */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -939,25 +881,20 @@ a.stack-item:hover { text-decoration: underline; color: var(--gold); border-colo
 .method-step a:hover { color: var(--gold); }
 
 /* ── WITHHELD CARDS (private fleet) ── */
-.card-status.withheld { color: var(--text-dim); border-color: var(--border); background: rgba(255,255,255,0.03); }
-.link-btn.disabled { opacity: 0.45; cursor: default; pointer-events: none; border-style: dashed; }
-.hip-priest-art { color: #c9c2a0; text-shadow: none; opacity: 0.9; }
-.beefgpt-art    { color: #d08a4a; text-shadow: none; opacity: 0.9; }
-.weiss-art      { color: #8fb09a; text-shadow: none; opacity: 0.9; }
-.persona-card:hover .hip-priest-art { color: #ddd6b2; text-shadow: 0 0 8px rgba(201,194,160,0.35); }
-.persona-card:hover .beefgpt-art    { color: #e69a58; text-shadow: 0 0 8px rgba(208,138,74,0.35); }
-.persona-card:hover .weiss-art      { color: #a3c4ae; text-shadow: 0 0 8px rgba(143,176,154,0.35); }
+.card-status.withheld { color: var(--text-dim); border-color: var(--border); background: var(--ink-wash); }
+.link-btn.disabled { opacity: 0.5; cursor: default; pointer-events: none; border-style: dashed; }
 
-/* clausewitz — steel/Prussian blue-grey, no-glow (analytical, not theatrical) */
-.clausewitz-art { color: #6f8aa8; opacity: 0.85; text-shadow: none; }
-.persona-card:hover .clausewitz-art { color: #8aa4bf; text-shadow: 0 0 8px rgba(111, 138, 168, 0.35); }
+/* Withheld + later portraits — deep inks for cream, no glow.
+   (Hover lift handled globally by .persona-card:hover .ascii-art.) */
+.hip-priest-art { color: #54502f; opacity: 0.92; text-shadow: none; }   /* deep olive-grey */
+.beefgpt-art    { color: #83471a; opacity: 0.92; text-shadow: none; }   /* burnt sienna */
+.weiss-art      { color: #3a5e48; opacity: 0.92; text-shadow: none; }   /* deep sage */
 
-/* ── ELECT WOMEN VOICES (2026-06-17) — high-contrast portrait tints, no-glow like osawatomie ── */
-.mother-earth-art { color: #d98c5a; opacity: 0.86; text-shadow: none; }   /* warm ochre/earth */
-.persona-card:hover .mother-earth-art { color: #e6a070; text-shadow: 0 0 8px rgba(217,140,90,0.35); }
-.junius-art { color: #d65f8a; opacity: 0.86; text-shadow: none; }         /* rose-red, distinct from base red */
-.persona-card:hover .junius-art { color: #e277a0; text-shadow: 0 0 8px rgba(214,95,138,0.35); }
-.red-virgin-art { color: #e0564e; opacity: 0.88; text-shadow: none; }     /* scarlet — she is "the red" */
-.persona-card:hover .red-virgin-art { color: #ea6a60; text-shadow: 0 0 8px rgba(224,86,78,0.35); }
-.the-voices-art { color: #c3cdd9; opacity: 0.92; text-shadow: none; }     /* pale celestial steel — divine */
-.persona-card:hover .the-voices-art { color: #dde4ec; text-shadow: 0 0 8px rgba(195,205,217,0.35); }
+/* clausewitz — deep Prussian steel-blue (analytical, not theatrical) */
+.clausewitz-art { color: #3a526d; opacity: 0.92; text-shadow: none; }
+
+/* ── ELECT WOMEN VOICES — deep portrait inks, no glow ── */
+.mother-earth-art { color: #6f3d1c; opacity: 0.92; text-shadow: none; }   /* deep ochre / earth */
+.junius-art       { color: #8c2e50; opacity: 0.92; text-shadow: none; }   /* deep rose */
+.red-virgin-art   { color: #9e2418; opacity: 0.94; text-shadow: none; }   /* scarlet — she is "the red" */
+.the-voices-art   { color: #3c4a58; opacity: 0.92; text-shadow: none; }   /* deep pewter — celestial */

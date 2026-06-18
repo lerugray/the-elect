@@ -1,0 +1,65 @@
+<!-- @dsCard group="Foundations" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<title>The Elect — Color Tokens</title>
+<style>
+  :root{
+    --bg:#f4ecd6; --bg-card:#efe5cc; --bg-header:#ece0c2; --bg-sunk:#e7dabb;
+    --text:#2b2620; --text-dim:#6b6256; --text-muted:#8a8175;
+    --gold:#876811; --gold-dim:#6d5410; --gold-pale:#b8902a;
+    --red:#8b1a1a; --red-bright:#9e2418; --red-dim:#d8b3a2;
+    --green:#3a6b3a; --border:#d8c8a4; --border-dim:#e4d8ba;
+    --font-mono:'Courier New','Lucida Console','DejaVu Sans Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-mono);padding:2rem;line-height:1.6}
+  h1{font-size:1rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem}
+  .sub{font-size:.8rem;color:var(--text-dim);margin-bottom:1.5rem}
+  .group{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin:1.5rem 0 .65rem;border-bottom:1px solid var(--border);padding-bottom:.35rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem}
+  .chip{border:1px solid var(--border);background:var(--bg-card)}
+  .sw{height:52px;border-bottom:1px solid var(--border)}
+  .meta{padding:.5rem .6rem}
+  .nm{font-size:.72rem;letter-spacing:.04em;color:var(--text)}
+  .hx{font-size:.68rem;color:var(--text-dim);text-transform:uppercase}
+  .role{font-size:.62rem;color:var(--text-muted);margin-top:.2rem}
+</style></head><body>
+  <h1>Aged Paper — Color</h1>
+  <div class="sub">The Elect · warm vellum, sepia ink, rubric red, gold-leaf</div>
+
+  <div class="group">Surfaces</div>
+  <div class="grid">
+    <div class="chip"><div class="sw" style="background:#f4ecd6"></div><div class="meta"><div class="nm">--bg</div><div class="hx">#f4ecd6</div><div class="role">page / vellum</div></div></div>
+    <div class="chip"><div class="sw" style="background:#efe5cc"></div><div class="meta"><div class="nm">--bg-card</div><div class="hx">#efe5cc</div><div class="role">card paper</div></div></div>
+    <div class="chip"><div class="sw" style="background:#ece0c2"></div><div class="meta"><div class="nm">--bg-header</div><div class="hx">#ece0c2</div><div class="role">header / footer</div></div></div>
+    <div class="chip"><div class="sw" style="background:#e7dabb"></div><div class="meta"><div class="nm">--bg-sunk</div><div class="hx">#e7dabb</div><div class="role">recessed panel</div></div></div>
+  </div>
+
+  <div class="group">Ink</div>
+  <div class="grid">
+    <div class="chip"><div class="sw" style="background:#2b2620"></div><div class="meta"><div class="nm">--text</div><div class="hx">#2b2620</div><div class="role">body ink</div></div></div>
+    <div class="chip"><div class="sw" style="background:#6b6256"></div><div class="meta"><div class="nm">--text-dim</div><div class="hx">#6b6256</div><div class="role">secondary</div></div></div>
+    <div class="chip"><div class="sw" style="background:#8a8175"></div><div class="meta"><div class="nm">--text-muted</div><div class="hx">#8a8175</div><div class="role">separators</div></div></div>
+  </div>
+
+  <div class="group">Gold-leaf</div>
+  <div class="grid">
+    <div class="chip"><div class="sw" style="background:#876811"></div><div class="meta"><div class="nm">--gold</div><div class="hx">#876811</div><div class="role">headings / labels</div></div></div>
+    <div class="chip"><div class="sw" style="background:#6d5410"></div><div class="meta"><div class="nm">--gold-dim</div><div class="hx">#6d5410</div><div class="role">deeper leaf</div></div></div>
+    <div class="chip"><div class="sw" style="background:#b8902a"></div><div class="meta"><div class="nm">--gold-pale</div><div class="hx">#b8902a</div><div class="role">decorative glint</div></div></div>
+  </div>
+
+  <div class="group">Rubric red</div>
+  <div class="grid">
+    <div class="chip"><div class="sw" style="background:#8b1a1a"></div><div class="meta"><div class="nm">--red</div><div class="hx">#8b1a1a</div><div class="role">rubric / portraits</div></div></div>
+    <div class="chip"><div class="sw" style="background:#9e2418"></div><div class="meta"><div class="nm">--red-bright</div><div class="hx">#9e2418</div><div class="role">links / register</div></div></div>
+    <div class="chip"><div class="sw" style="background:#d8b3a2"></div><div class="meta"><div class="nm">--red-dim</div><div class="hx">#d8b3a2</div><div class="role">red wash / border</div></div></div>
+  </div>
+
+  <div class="group">Status + structure</div>
+  <div class="grid">
+    <div class="chip"><div class="sw" style="background:#3a6b3a"></div><div class="meta"><div class="nm">--green</div><div class="hx">#3a6b3a</div><div class="role">public status</div></div></div>
+    <div class="chip"><div class="sw" style="background:#d8c8a4"></div><div class="meta"><div class="nm">--border</div><div class="hx">#d8c8a4</div><div class="role">sepia border</div></div></div>
+    <div class="chip"><div class="sw" style="background:#e4d8ba"></div><div class="meta"><div class="nm">--border-dim</div><div class="hx">#e4d8ba</div><div class="role">hairline</div></div></div>
+  </div>
+</body></html>
