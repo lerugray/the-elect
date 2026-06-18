@@ -948,6 +948,10 @@ a.stack-item:hover { text-decoration: underline; color: var(--gold); border-colo
 .persona-card:hover .beefgpt-art    { color: #e69a58; text-shadow: 0 0 8px rgba(208,138,74,0.35); }
 .persona-card:hover .weiss-art      { color: #a3c4ae; text-shadow: 0 0 8px rgba(143,176,154,0.35); }
 
+/* clausewitz — steel/Prussian blue-grey, no-glow (analytical, not theatrical) */
+.clausewitz-art { color: #6f8aa8; opacity: 0.85; text-shadow: none; }
+.persona-card:hover .clausewitz-art { color: #8aa4bf; text-shadow: 0 0 8px rgba(111, 138, 168, 0.35); }
+
 /* ── ELECT WOMEN VOICES (2026-06-17) — high-contrast portrait tints, no-glow like osawatomie ── */
 .mother-earth-art { color: #d98c5a; opacity: 0.86; text-shadow: none; }   /* warm ochre/earth */
 .persona-card:hover .mother-earth-art { color: #e6a070; text-shadow: 0 0 8px rgba(217,140,90,0.35); }
