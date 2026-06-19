@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    background: #08080b;
+    font-family: 'Courier New', 'Lucida Console', monospace;
+    color: #c8c4b8;
+  }
+
+  /* Scanlines */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.12) 3px,
+      rgba(0,0,0,0.12) 6px
+    );
+  }
+
+  /* Faint vignette / grain */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 70% 30%, rgba(139,26,26,0.10), transparent 55%),
+      radial-gradient(ellipse at 20% 80%, rgba(201,162,39,0.05), transparent 50%);
+  }
+
+  .card {
+    width: 1200px;
+    height: 630px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 70px 90px;
+    border: 3px solid #8b1a1a;
+    overflow: hidden;
+  }
+
+  /* Top gold line */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #c9a227 30%, #c9a227 70%, transparent);
+  }
+
+  /* Corner decorations */
+  .corner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-color: #c9a227;
+    border-style: solid;
+    opacity: 0.6;
+  }
+  .corner.tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
+  .corner.tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
+  .corner.bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
+  .corner.br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+
+  /* Main content */
+  .content {
+    position: relative;
+    z-index: 10;
+    max-width: 1020px;
+  }
+
+  .lab-label {
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: #7a6218;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lab-label::after {
+    content: '';
+    display: inline-block;
+    width: 60px;
+    height: 1px;
+    background: #7a6218;
+  }
+
+  .title {
+    font-size: 78px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #c8c4b8;
+    line-height: 1.02;
+    margin-bottom: 26px;
+    text-shadow: 0 0 60px rgba(201,162,39,0.12);
+  }
+
+  .title .accent { color: #e0564e; }
+
+  .tagline {
+    font-size: 22px;
+    color: #8a8480;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    margin-bottom: 40px;
+    max-width: 880px;
+  }
+
+  .roster-line {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .persona-chip {
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: #c9a227;
+    border: 1px solid #7a6218;
+    padding: 6px 14px;
+    text-transform: uppercase;
+    background: rgba(201,162,39,0.06);
+  }
+
+  .persona-chip.red {
+    color: #e0564e;
+    border-color: #4a0e0e;
+    background: rgba(139,26,26,0.10);
+  }
+
+  .persona-chip.dim {
+    color: #6a6560;
+    border-color: #2a2520;
+    background: transparent;
+    letter-spacing: 0.1em;
+  }
+
+  /* Bottom URL */
+  .url-line {
+    position: absolute;
+    bottom: 34px;
+    left: 90px;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: #3d3a36;
+    text-transform: uppercase;
+  }
+
+  .url-line span {
+    color: #7a6218;
+  }
+
+  /* the elect mark, bottom-right */
+  .mark {
+    position: absolute;
+    bottom: 30px;
+    right: 90px;
+    font-size: 14px;
+    letter-spacing: 0.34em;
+    color: #6a6560;
+    text-transform: uppercase;
+    z-index: 10;
+  }
+  .mark b { color: #c9a227; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="content">
+    <div class="lab-label">✦ A Curated Debate</div>
+    <div class="title">THE ELECT<br>ON <span class="accent">RUSSIA</span></div>
+    <div class="tagline">Luxemburg &amp; Marx as fire reaches Moscow — betrayal of the revolution, or its hidden destination? And Marx reads Dugin's creed of blood and soil.</div>
+    <div class="roster-line">
+      <span class="persona-chip red">Rosa Luxemburg</span>
+      <span class="persona-chip">Karl Marx</span>
+      <span class="persona-chip dim">local voice-models · register study</span>
+    </div>
+  </div>
+
+  <div class="url-line"><span>lerugray.github.io</span>/the-elect/debates</div>
+  <div class="mark">the <b>elect</b></div>
+</div>
+</body>
+</html>
