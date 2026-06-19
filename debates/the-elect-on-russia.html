@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Elect — On Russia</title>
+<style>
+  :root {
+    --bg:         #08080b;
+    --bg-card:    #0d0d11;
+    --bg-header:  #060608;
+    --text:       #c8c4b8;
+    --text-dim:   #8a8480;
+    --text-muted: #6a6560;
+    --gold:       #c9a227;
+    --gold-pale:  #e8cc7a;
+    --red:        #8b1a1a;
+    --red-bright: #e0564e;
+    --border:     #2a2520;
+    --font-mono:  'Courier New', 'Lucida Console', monospace;
+    --font-serif: Georgia, 'Times New Roman', serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.7;
+    padding: 0 18px;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ---- Texture layers (Terminal Grimoire) ---- */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+  }
+
+  .grain {
+    position: fixed;
+    inset: -200%;
+    z-index: 999;
+    pointer-events: none;
+    width: 400%;
+    height: 400%;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: grain 0.5s steps(1) infinite;
+  }
+
+  @keyframes grain {
+    0%  { transform: translate(0, 0); }
+    10% { transform: translate(-3%, -4%); }
+    20% { transform: translate(-6%, 2%); }
+    30% { transform: translate(3%, -1%); }
+    40% { transform: translate(-1%, 6%); }
+    50% { transform: translate(-5%, 1%); }
+    60% { transform: translate(2%, 4%); }
+    70% { transform: translate(-4%, -2%); }
+    80% { transform: translate(4%, -3%); }
+    90% { transform: translate(1%, 5%); }
+    100%{ transform: translate(-2%, -5%); }
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 36px 96px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  /* ---- Header ---- */
+  header.doc-head {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .doc-title {
+    font-family: var(--font-mono);
+    font-size: 1.65rem;
+    line-height: 1.2;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 0.5em;
+    color: var(--gold);
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(201, 162, 39, 0.12);
+  }
+
+  .doc-sub {
+    font-family: var(--font-serif);
+    font-size: 1.08rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin: 0 0 0.9em;
+  }
+
+  .doc-what {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin: 0 auto;
+    max-width: 600px;
+    line-height: 1.65;
+  }
+
+  .head-rule {
+    border: 0;
+    border-top: 1px solid var(--border);
+    width: 120px;
+    margin: 26px auto 0;
+  }
+
+  /* ---- Motion ---- */
+  .motion {
+    margin: 34px 0;
+    padding: 18px 24px;
+    border-left: 4px solid var(--gold);
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text);
+    font-style: italic;
+    font-size: 1.02rem;
+    font-family: var(--font-serif);
+  }
+
+  .motion .motion-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.65em;
+  }
+
+  /* ---- Disclaimer box ---- */
+  .disclaimer {
+    margin: 30px 0 40px;
+    padding: 22px 26px;
+    background: rgba(139, 26, 26, 0.08);
+    border: 1px solid var(--red);
+    border-radius: 2px;
+    color: var(--text-dim);
+    font-size: 0.96rem;
+    line-height: 1.62;
+  }
+
+  .disclaimer h2 {
+    margin: 0 0 0.55em;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    font-weight: 700;
+  }
+
+  .disclaimer p { margin: 0; }
+  .disclaimer p + p { margin-top: 0.85em; }
+
+  /* ---- Rounds ---- */
+  .round {
+    margin-top: 52px;
+  }
+
+  .round-head {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+
+  .round-title {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--text-dim);
+    margin: 0 0 18px;
+  }
+
+  .round-divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 18px auto 0;
+    width: 100%;
+  }
+
+  /* ---- Turns ---- */
+  .turn {
+    margin: 30px 0;
+    padding-top: 6px;
+  }
+
+  .speaker {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 2px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .turn:nth-child(odd) .speaker {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    opacity: 0.95;
+  }
+
+  .turn:nth-child(even) .speaker {
+    color: var(--red-bright);
+    border-bottom-color: var(--gold);
+  }
+
+  .turn .body { margin-top: 14px; }
+
+  .turn .body p {
+    margin: 0 0 1em;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    color: var(--text);
+  }
+
+  .turn .body p:last-child { margin-bottom: 0; }
+
+  .turn .body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* ---- Editor's notes ---- */
+  .editors-note {
+    margin: 0.7em 0;
+    padding: 0.55em 0.9em;
+    border-left: 3px solid var(--gold);
+    background: rgba(201, 162, 39, 0.06);
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.88em;
+    line-height: 1.55;
+  }
+
+  /* ---- Footer ---- */
+  footer.doc-foot {
+    margin-top: 70px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-style: normal;
+  }
+
+  @media (max-width: 560px) {
+    body { font-size: 17px; padding: 0 12px; }
+    .wrap { padding: 36px 20px 64px; }
+    .doc-title { font-size: 1.35rem; letter-spacing: 0.12em; }
+    .disclaimer, .motion { padding-left: 18px; padding-right: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<main class="wrap">
+
+
+  <header class="doc-head">
+    <h1 class="doc-title">The Elect on Russia</h1>
+    <p class="doc-sub">Two voices on a burning capital — and a third creed dissected</p>
+    <p class="doc-what">The Elect is a set of small AI voice-models, each fine-tuned on the public-domain writing of a historical figure so it imitates how that person wrote. Here Rosa Luxemburg and Karl Marx answer for a revolution a century on, as fire reaches Moscow — and Marx is asked to read the creed of its court-philosopher.</p>
+    <hr class="head-rule">
+  </header>
+
+  <section class="disclaimer" role="note" aria-label="About this document">
+    <h2>About this document</h2>
+    <p>These are outputs from small local AI voice-models, each fine-tuned on the public-domain writings of a historical figure to imitate how that person wrote. They are register and voice studies, not real persons. The text below is generated; nothing here represents the actual views of anyone, living or dead, and none of it is mine. I did not steer the models toward any conclusion.</p>
+    <p>This is a lightly-edited cut: repetition and model meta-commentary have been trimmed for readability, and nothing has been added or rewritten. It engages current events as a literary exercise — a study in how these historical voices might sound, not advocacy for anything they say.</p>
+  </section>
+
+  <section class="round">
+    <p class="round-head">Movement I</p>
+    <p class="round-title">"Moscow Burning" — an exchange</p>
+    <hr class="round-divider">
+
+    <section class="motion">
+      <span class="motion-label">The motion</span>
+      June 2026: Moscow wakes to fire. A swarm of Ukrainian pilotless flying machines sets the Kapotnya oil-works ablaze — the second strike that week, near two-fifths of the city's fuel, close to two hundred machines downed but several through, every airfield shut, seventeen wounded. Zelensky had sworn it: "If Ukraine burns, your Moscow will burn." A century ago the workers of that land cast down their masters; now one man rules atop a ring of oligarchs and a machinery of police, and a court-philosopher preaches the state a holy empire of blood and soil against the godless West. Name the state that fire has reached: the betrayal of the revolution, or its hidden destination all along?
+    </section>
+
+    <article class="turn">
+      <h3 class="speaker">Rosa Luxemburg</h3>
+      <div class="body">
+        <p>This much then we agree: the revolution has become a state and that state today stands in flames to its foundations.</p>
+        <p>When Zelensky's flying machines struck Moscow the Russian proletariat showed itself not only equal to meeting the test but eager for one still greater. This is their strength, this the proof that they are ready to fight on even from under ruins and ashes; this the answer to the question whether revolution has been betrayed.</p>
+        <p>And why is that so? Because we are no longer a hundred years ago. We are no longer isolated fragments of society, as were our forefathers in 1793 or even our ancestors in 1848; today they have grown together into a great community: the modern working class. In each country this organization is nothing but an integral part of that living whole, and if it falls today it will live again tomorrow because from every corner of the earth comes help to aid its resurrection.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Karl Marx</h3>
+      <div class="body">
+        <p>The state, you say, stands in flames today. But it was the workers' own revolution that built those works, and it is they who now have to suffer their destruction.</p>
+        <p>Your state has indeed become a burning house; but it is not the enemy's flying machines that have set it on fire. It was the workers themselves who lit those fires long before. The revolution consumed itself when it armed the police as rulers and turned the factory councils into strike funds; when it let private property grow roots anew in a state that called itself commonwealth; when it left one man to rule all the rest under the pretense of "sovereign" elections, and allowed those same elections to be bought by a handful who made their fortunes in the very war they now wage.</p>
+        <p>The flames of revolution consumed themselves and today consume their own ashes, because that revolution was not a movement whose goal was the abolition of class rule — it was itself only a new class's rise upon old ruins. Let us suppose Zelensky were to leave Ukraine tomorrow and give up his war; what would remain? A state of private fortunes, a police force to keep the workers in line, an army that serves capital at war as much as at peace, and the same courts that preach its sanctity: in short, Russia itself.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="round">
+    <p class="round-head">Movement II</p>
+    <p class="round-title">"On Dugin's Creed" — a consult</p>
+    <hr class="round-divider">
+
+    <p class="doc-what" style="margin: 0 0 8px; text-align: center;">A single question was put to Karl Marx: read the doctrine of Aleksandr Dugin — that Russia is a sacred Eurasian empire of blood, soil, and Orthodox faith, destined to stand against a liberal, godless West.</p>
+
+    <article class="turn">
+      <h3 class="speaker">Karl Marx</h3>
+      <div class="body">
+        <p>Ah, you speak of this Dugin chap, do you? Well, let me tell you what I think about such notions. This Dugin fellow sees Russia through the eyes of a backward-looking, self-congratulating philistine, one who is proud of his empire's obscurity and wants to keep it that way. He speaks of blood, soil, and Orthodox faith as if they were some kind of divine right, destined to rule over millions like some feudal monstrosity.</p>
+        <p>But Russia isn't this "sacred Eurasian empire" he dreams of. It is a society torn by contradictions, just like the rest of the world. Its greatness lies not in its past or in some mystical unity with its soil and religion, but in its potential to transform itself for the betterment of humankind. The liberal individual may be seen as a disease in his view, but he represents progress against the dead hand of tradition and superstition.</p>
+        <p>Dugin's talk of leading "a revolt of tradition" is nothing more than a pious plea to keep people chained in their ignorance. Russia can only find its true greatness by breaking free from the yoke of backward thinking and embracing modernity — not just in terms of technology, but also in its politics, economy, and culture. The Orthodox faith he worships is no longer a force for unity; it has become a divisive tool that keeps people passive and content with their lot.</p>
+        <p>In short, this Dugin is a relic of the past — part of the problem rather than part of the solution. A true Russia would be one that works to unite all peoples in the common struggle against exploitation and oppression, not one that seeks to preserve its own narrow interests at the expense of others. Let him rail on about his "sacred empire," but let us build a world fit for free men and women instead. That is the true mission of Russia today, not some retrograde dream.</p>
+      </div>
+    </article>
+  </section>
+
+  <footer class="doc-foot">
+    The Elect — register studies, not real persons.
+  </footer>
+
+
+</main>
+</body>
+</html>
