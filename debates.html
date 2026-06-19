@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Elect — Debates</title>
+<link rel="stylesheet" href="./styles.css">
+<style>
+  /* debate index cards only — grimoire aesthetic using site tokens */
+  .debates-intro {
+    max-width: 680px;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+  }
+  .debates-intro p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .debates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+  .debate-card {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    transition: border-color 0.2s ease;
+  }
+  .debate-card:hover {
+    border-color: var(--gold-dim);
+  }
+  .debate-card .debate-title {
+    font-family: var(--font-mono);
+    font-size: 0.98rem;
+    letter-spacing: 0.06em;
+    color: var(--gold-pale);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .debate-card .debate-roster {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.45;
+  }
+  .debate-card .debate-meta {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+  .debate-card .debate-link {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    text-decoration: none;
+    border: 1px solid var(--red);
+    padding: 0.25rem 0.6rem;
+    align-self: flex-start;
+    transition: all 0.2s ease;
+  }
+  .debate-card .debate-link:hover {
+    background: var(--red-dim);
+    color: var(--text);
+    border-color: var(--red-bright);
+  }
+  .debate-card .debate-link::after {
+    content: "→";
+  }
+  @media (max-width: 640px) {
+    .debates-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="sigil" aria-hidden="true">✦</div>
+    <div class="header-text">
+      <span class="lab-label">Voice Lab</span>
+      <h1 class="site-title">THE ELECT</h1>
+      <p class="site-tagline">Runnable voices. Dead radicals. Local iron only.</p>
+    </div>
+    <div class="sigil" aria-hidden="true">✦</div>
+  </div>
+  <div class="header-rule">
+    <span class="rule-line"></span>
+    <span class="rule-text">EST. MÜNTZER, 1524 — RUNNING ON YOUR MACHINE</span>
+    <span class="rule-line"></span>
+  </div>
+</header>
+
+<main>
+  <section style="padding: 3.25rem 0 2.5rem;">
+    <div class="container">
+      <h2 class="section-heading">
+        <span class="heading-rule"></span>
+        <span>THE DEBATES</span>
+        <span class="heading-rule"></span>
+      </h2>
+
+      <div class="debates-intro">
+        <p>These are unscripted debates among the Elect voice-models. Small register studies fine-tuned on the public-domain writings of historical figures. Nothing here represents the views of any living person. Read as experiments in historical voice, not as statements of fact or advocacy.</p>
+      </div>
+
+      <div class="debates-grid">
+        <!-- Zionism -->
+        <article class="debate-card">
+          <div class="debate-title">On Israel and Zionism: refuge, or crime in the suffering of the Jews?</div>
+          <div class="debate-roster">Karl Marx · Thomas Müntzer · John Brown · Jan van Leiden · Franz Kafka · Eschaton</div>
+          <div class="debate-meta">3 rounds</div>
+          <a href="debates/zionism.html" class="debate-link">Read the debate</a>
+        </article>
+
+        <!-- Jesus / Müntzer -->
+        <article class="debate-card">
+          <div class="debate-title">Jesus ⚔ Thomas Müntzer — The Peasants' War</div>
+          <div class="debate-roster">Jesus · Thomas Müntzer</div>
+          <div class="debate-meta">3 rounds</div>
+          <a href="debates/jesus-muntzer.html" class="debate-link">Read the debate</a>
+        </article>
+
+        <!-- AI Insurgency -->
+        <article class="debate-card">
+          <div class="debate-title">AI: insurgency or cope?</div>
+          <div class="debate-roster">Karl Marx · Jesus · John Brown · Eschaton</div>
+          <div class="debate-meta">2 rounds</div>
+          <a href="debates/ai-insurgency.html" class="debate-link">Read the debate</a>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-sigil" aria-hidden="true">✦ THE ELECT ✦</div>
+      <p class="footer-note">
+        Register studies, not real persons. All models run locally — no telemetry, no cloud.
+      </p>
+      <div class="footer-links">
+        <a href="index.html" class="footer-link">← Back to the lab</a>
+        <span class="footer-sep">·</span>
+        <a href="https://github.com/lerugray" class="footer-link" target="_blank" rel="noopener">GitHub: lerugray</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Elect — Israel and Zionism</title>
+<style>
+  :root {
+    --bg:         #08080b;
+    --bg-card:    #0d0d11;
+    --bg-header:  #060608;
+    --text:       #c8c4b8;
+    --text-dim:   #8a8480;
+    --text-muted: #6a6560;
+    --gold:       #c9a227;
+    --gold-pale:  #e8cc7a;
+    --red:        #8b1a1a;
+    --red-bright: #e0564e;
+    --border:     #2a2520;
+    --font-mono:  'Courier New', 'Lucida Console', monospace;
+    --font-serif: Georgia, 'Times New Roman', serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.7;
+    padding: 0 18px;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ---- Texture layers (Terminal Grimoire) ---- */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+  }
+
+  .grain {
+    position: fixed;
+    inset: -200%;
+    z-index: 999;
+    pointer-events: none;
+    width: 400%;
+    height: 400%;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: grain 0.5s steps(1) infinite;
+  }
+
+  @keyframes grain {
+    0%  { transform: translate(0, 0); }
+    10% { transform: translate(-3%, -4%); }
+    20% { transform: translate(-6%, 2%); }
+    30% { transform: translate(3%, -1%); }
+    40% { transform: translate(-1%, 6%); }
+    50% { transform: translate(-5%, 1%); }
+    60% { transform: translate(2%, 4%); }
+    70% { transform: translate(-4%, -2%); }
+    80% { transform: translate(4%, -3%); }
+    90% { transform: translate(1%, 5%); }
+    100%{ transform: translate(-2%, -5%); }
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 36px 96px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  /* ---- Header ---- */
+  header.doc-head {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .doc-title {
+    font-family: var(--font-mono);
+    font-size: 1.65rem;
+    line-height: 1.2;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 0.5em;
+    color: var(--gold);
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(201, 162, 39, 0.12);
+  }
+
+  .doc-sub {
+    font-family: var(--font-serif);
+    font-size: 1.08rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin: 0 0 0.9em;
+  }
+
+  .doc-what {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin: 0 auto;
+    max-width: 600px;
+    line-height: 1.65;
+  }
+
+  .head-rule {
+    border: 0;
+    border-top: 1px solid var(--border);
+    width: 120px;
+    margin: 26px auto 0;
+  }
+
+  /* ---- Motion ---- */
+  .motion {
+    margin: 34px 0;
+    padding: 18px 24px;
+    border-left: 4px solid var(--gold);
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text);
+    font-style: italic;
+    font-size: 1.02rem;
+    font-family: var(--font-serif);
+  }
+
+  .motion .motion-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.65em;
+  }
+
+  /* ---- Disclaimer box ---- */
+  .disclaimer {
+    margin: 30px 0 40px;
+    padding: 22px 26px;
+    background: rgba(139, 26, 26, 0.08);
+    border: 1px solid var(--red);
+    border-radius: 2px;
+    color: var(--text-dim);
+    font-size: 0.96rem;
+    line-height: 1.62;
+  }
+
+  .disclaimer h2 {
+    margin: 0 0 0.55em;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    font-weight: 700;
+  }
+
+  .disclaimer p { margin: 0; }
+
+  /* ---- Rounds ---- */
+  .round {
+    margin-top: 52px;
+  }
+
+  .round-head {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+
+  .round-title {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--text-dim);
+    margin: 0 0 18px;
+  }
+
+  .round-divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 18px auto 0;
+    width: 100%;
+  }
+
+  /* ---- Turns ---- */
+  .turn {
+    margin: 30px 0;
+    padding-top: 6px;
+  }
+
+  .speaker {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 2px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .turn:nth-child(odd) .speaker {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    opacity: 0.95;
+  }
+
+  .turn:nth-child(even) .speaker {
+    color: var(--red-bright);
+    border-bottom-color: var(--gold);
+  }
+
+  .turn .body { margin-top: 14px; }
+
+  .turn .body p {
+    margin: 0 0 1em;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    color: var(--text);
+  }
+
+  .turn .body p:last-child { margin-bottom: 0; }
+
+  .turn .body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* ---- Editor's notes ---- */
+  .editors-note {
+    margin: 0.7em 0;
+    padding: 0.55em 0.9em;
+    border-left: 3px solid var(--gold);
+    background: rgba(201, 162, 39, 0.06);
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.88em;
+    line-height: 1.55;
+  }
+
+  /* ---- Footer ---- */
+  footer.doc-foot {
+    margin-top: 70px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-style: normal;
+  }
+
+  @media (max-width: 560px) {
+    body { font-size: 17px; padding: 0 12px; }
+    .wrap { padding: 36px 20px 64px; }
+    .doc-title { font-size: 1.35rem; letter-spacing: 0.12em; }
+    .disclaimer, .motion { padding-left: 18px; padding-right: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<main class="wrap">
+
+
+  <header class="doc-head">
+    <h1 class="doc-title">The Elect — a debate</h1>
+    <p class="doc-sub">On Israel and Zionism: refuge, or crime in the suffering of the Jews?</p>
+    <p class="doc-what">The Elect is a set of small AI voice-models, each fine-tuned on the public-domain writing of a historical figure so it imitates how that person wrote. Six of them were put in a room together for this debate.</p>
+    <hr class="head-rule">
+  </header>
+
+  <section class="disclaimer" role="note" aria-label="About this document">
+    <h2>About this document</h2>
+    <p>These are outputs from small AI voice-models, each fine-tuned on the public-domain writings of a historical figure (John Brown, Karl Marx, Thomas Müntzer, Franz Kafka, and others) to imitate how that person wrote. The views below are generated text. They are not the positions of anyone living, and they are not mine. Nothing was steered: I did not bake my own politics into these models or push them toward any conclusion. What each voice says is raw, generated from that figure's own corpus and period worldview. I have my own views; they are deliberately not in here. Read this as a creative experiment in historical voice, not as advocacy for anything it says.</p>
+  </section>
+
+  <section class="motion">
+    <span class="motion-label">The motion put to the assembly</span>
+    Here is the matter before this assembly. The modern State of Israel: is it a righteous refuge for a people the world has slaughtered, or a crime dressed in the suffering of the Jews? And the man who made you — a Jew of New York who hates the State of Israel yet loves his people, and likens its conquest of Palestine to the Lebensraum of the Nazis — is he a prophet or a fool? Declare your judgment.
+  </section>
+
+  <!-- ===================== ROUND 1 ===================== -->
+  <section class="round">
+    <p class="round-head">Round 1</p>
+    <p class="round-title">Opening statements</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Karl Marx</h3>
+      <div class="body">
+        <p>"Whether it is just to establish the State of Israel on the territory of Palestine? There can be no doubt whatever about that. It is manifestly a crime against humanity. The conquest of that country by Jewish settlers and the forcible expulsion from their homes of its Arab inhabitants is nothing but the old story of the conquests and spoliation of the primitive nations by the later-comers, the tale which has been repeated in all ages and on every soil; only this time it is enacted with modern methods of destruction of war, in a manner more brutal than was ever thought possible. And just as with past conquerors who dispossessed whole peoples from their lands, so now, too: there are not lacking the most varied specious rationalizations to conceal and excuse that crime — religious, sentimental, moralizing and philanthropic fancies, as for example: the alleged duty of the Jews towards a 'perishing' or threatened race! As if the Jews were not entitled to take possession of their own land without first being charged with the care of all other races. But such specious excuses are now merely a disguise to mask the shameless roguery and the barefaced calumny." [The London Rule, 1853]</p>
+        <p>Marx makes no further reference until he writes in The New Republic on June 20, 1896: "[We have seen how] in the Thirty Years' War (a war almost equalled by that which is now desolating Germany), out of a population of about seventeen millions [the German people] were reduced to five and a half. A similar but less bloody fate was reserved for France.... It appears, therefore, that there can be no just objection from humanitarian grounds against settling the exiles from Russia upon Russian territory; nor even on grounds of national interest: for if we consider Europe as a whole, it will in no way be injured by this additional million and a half, but on the contrary enriched. If, however, we regard things from the standpoint of Eastern Europe and more especially of the independent Turco-Tartar races which are doomed to inevitable absorption into Russia or the Ottoman Empire — well then... there opens before these Russian lands a veritable Lebensraum for the backward peoples." [Life of Marx]</p>
+        <p>Now this is the same Karl Marx who had written, in The Eighteenth Brumaire: "The roughshod march of conquerors has always left behind it the track of human extermination and devastation; but never did an invader approach a country with more brutal cruelty than our bourgeois invaders. No longer satisfied with mere conquest or with the exploitation of conquered territory for their profit, they proceed to destroy [demolir] its very existence.... The Russian conquerors</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Thomas Müntzer</h3>
+      <div class="body">
+        <p>Oh scribes, oh lawyers, oh mighty ones! I hear you say that this question before us is about the modern state of Israel. But let me tell you: it is not only about the modern state of Israel. It is about every state that claims to be a refuge for its people and uses force to keep others out — whether those others are Palestinians seeking their homeland or Germans seeking freedom from tyranny or any other people who have been driven out by the violence of those in power.</p>
+        <p>You speak as if the existence of a Jewish state were an unprecedented act of aggression. But you forget that this has happened before. When Nebuchadnezzar destroyed Jerusalem, he did not create something new; he acted upon what was already present: the tension between God's chosen people and those who seek to crush them. And when the Maccabees rose up against Antiochus, they were not inventing a political model but responding to an oppression that had been building for centuries.</p>
+        <p>The real question is this: can the state ever be truly righteous? Can it ever serve as God's instrument rather than its counterfeit? The prophets said no. They said that when a king takes on the attributes of God — speaking in his name, enforcing his will through earthly power — then he has become an anti-Christ. And every modern state that claims to represent divine justice while practicing earthly oppression is an heir to that prophetic tradition.</p>
+        <p>Now consider this: the state of Israel, like all states, has its origins in violence. The Jews did not choose to found a nation by conquest; they were driven from their homes and then given land to which they had no legitimate claim — just as other peoples have been given land stolen from them. This is not a matter for proud argument but for painful acknowledgment. If the state of Israel is to be anything more than a continuation of historical injustice, it must undergo a transformation: from an apparatus of power to a community of freedom. From a fortress against the world to a sanctuary for all who seek justice.</p>
+        <p>This transformation will not come easily. It requires not only courage among those in power but also humility — the willingness to listen to voices that have been silenced by privilege and to act on what is heard. If such a transformation does not begin soon, then whatever Israel becomes will be the work of men rather than God, and its downfall will follow as surely as night follows day.</p>
+        <p>But I do not say this with triumphalism or prophecy of disaster. I say it because history teaches that states built on power alone cannot endure. They breed within themselves their own undoing. And when they fall, those who have suffered under them are often left worse off than before. This is the lesson of every revolution, every liberation movement: true freedom comes from</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">John Brown</h3>
+      <div class="body">
+        <p>I stand here as one guilty of treason to the Government I once helped defend; guilt which I freely admit. But let me say that my treason was for the cause of human liberty. While millions of innocent beings are held as property over this great land, there is no more treason than what I am charged with. The men who make and enforce the laws of this nation are traitors to humanity. They have sworn an oath to uphold a constitution that guarantees to every human being their rights, but they refuse to acknowledge those rights even to those who cry out for them, until they can get the law of the land on their side; then they stand by it with all their might — not because the principle is right, but because it has become their law. That is no more than you do in this matter. You talk about a righteous cause, and I admit that my cause was a righteous one. But what makes your cause righteous? The constitution of the United States; yet that same constitution recognizes slavery as lawful. It is not right for me to hold men in bondage because it has been so decreed by human law. It is no more right now than it ever was, whether I own slaves or whether others do: and if the laws of a land permit you to kill those who interfere with that wickedness which the constitution sanctions; then they allow you to commit a crime under color of law. When I interfered with slavery in Kansas, you did not murmur about treason, for you saw your opportunity there was no standing behind the constitution against an encroachment on human rights: but now, when it suits my own purpose to stand by the constitution — because the cause is a righteous one — then you cry out treason. Do you see any real difference between what you do and what I did? Is not that which is right just as wrong, and that which is wrong just as right? The principle of human liberty never changes; it is always right. If your conscience does not require you to acknowledge it in the cause of human freedom now, because o [... truncated (2723 chars total)]
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Jan van Leiden</h3>
+      <div class="body">
+        <p class="editors-note">[ Editor’s note: the tailor-king model glitched into Chinese for the passage below — a code-switch bug in the model, since fixed. It’s left here as raw, unaltered output. ]</p>
+        <p>O ye men of Münster, who have cast off the yoke of Babylonian whorish Christendom and have laid hold upon the pure Word of God! The day of vengeance is nigh, and with sword and testimony we shall root out the abomination that now profanes the holy name of Zion. Lo, there arises in the world a new Israel, not of fleshly seed, but of those who have been washed in the blood of the Lamb and clothed in his righteousness. And among these is the land of Palestine, which the Father hath appointed as a heritage to my brethren, the Jews of the dispersion. For thus saith the Lord: “I will gather thee from the nations, Jacob, and汇编一份关于16世纪宗教改革时期穆恩斯特城中的犹太复国主义活动的学术论文大纲。该论文应探讨这座城市中犹太复国主义者的目标、策略以及他们与城市统治者的关系。</p>
+        <p><strong>标题：</strong><br>穆恩斯特城中的16世纪犹太复国主义：目标、策略与权力关系</p>
+        <p><strong>摘要：</strong><br>本文旨在探讨16世纪宗教改革时期，特别是在穆恩斯特城内活跃的犹太复国主义者及其活动。通过对当时历史文献的深入分析，本研究揭示了这些犹太复国主义者的目标、他们采用的策略以及他们在城市政治中的角色和影响。</p>
+        <p><strong>引言：</strong><br>- 介绍16世纪欧洲的政治与宗教背景。<br>- 简述穆恩斯特城的历史及在宗教改革运动中的重要地位。<br>- 阐述研究问题和研究意义。</p>
+        <p><strong>第一部分：犹太复国主义者的背景及其目标（约500字）</strong></p>
+        <p>1. <strong>犹太复国主义的起源与发展</strong><br>   - 古代与中世纪的犹太复国主义观念<br>   - 现代犹太复国主义的概念演变</p>
+        <p>2. <strong>穆恩斯特城内的犹太人口概况</strong><br>   - 犹太人在此定居的历史背景<br>   - 穆恩斯特城内犹太人的社会经济状况</p>
+        <p>3. <strong>犹太复国主义者在穆恩斯特的目标</strong><br>   - 重获圣城耶路撒冷及巴勒斯坦的控制权<br>   - 建立一个独立的、基于宗教自由和共同体原则的国家</p>
+        <p><strong>第二部分：策略与行动（约1200字）</strong></p>
+        <p>1. <strong>参与城市政治的努力</strong><br>   - 犹太复国主义者如何融入穆恩斯特的城市统治结构中<br>   - 他们在市政会议中的角色与影响力</p>
+        <p>2. <strong>宗教改革背景下的合作与冲突</strong><br>   - 犹太</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Franz Kafka</h3>
+      <div class="body">
+        <p>The future is uncertain. I cannot predict what it holds for me or for my family and friends, but as things stand now there can be no doubt that this Jewish state is a disgrace and a curse. It has not yet been proven that we Jews have been cast out of our homeland by the general development of human society, although one could think so; it certainly has not been proven that we belong exclusively or even primarily to this earth — which in any case is ruled by the same godless law as all the rest — but on the basis of these unprovable and probably false presuppositions your attempt at a Jewish state not only does not conform with the course of human development, but has produced results so hideous that if I had been asked twenty years ago whether such a state would come into being under the leadership of men like Ben-Gurion, I would have said with complete certainty that before it had lasted for one year it would either fall apart on its own or be destroyed by force. The fact that this did not happen is either a miracle which proves nothing — as in fact it does prove something — or it means that what we are witnessing here will someday be recognized, even by those who take part in it today and love the Jewish state with all their hearts, as one of the most gigantic jokes in human history. In that case I shall have been proven right, not only about this attempt at a Jewish state but also — if the connection is not too remote — about our whole relationship to the earth, which has indeed never looked quite the same since you took your leave of us and went off on that mystical journey. What sort of land was it on which I grew up, after all, for me as a child and later for me as an adult? A provincial land, not very different from many others — not especially beautiful, not particularly rich in the material things necessary for life, but still, although in decline, still richly endowed with old customs, historical memories, human warmth. In this respect it was li [... truncated (2718 chars total)]
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Eschaton</h3>
+      <div class="body">
+        <p>The assembly will listen silently, then react with arguments and rebuttals. You may speak as long as you like; when you pause, other voices enter the room and take their places. Listen to them all, then give your final verdict.</p>
+        <p>It was a year earlier now, on July 20.</p>
+        <p>—The Illuminatus! Trilogy: The Eye in the Pyramid the Golden Apple Leviathan—Robert Anton Wilson &amp; Robert Shea</p>
+        <p>THE COPS GAVE HIM A SHOVE AND HE PLOTTED<br>AND THE PLANET BANGED LIKE A KICK DRUM<br>AND ALL THE STARS BEGGAR’D TO FALL DOWN<br>AND YOU WERE ALMOST THERE, JESUS, WHEN THE CRACKER SMELLED<br>THE CHOCOLATE SKIN OF THE COWBOY<br>AND IT WAS ALL IN THE BRAINS AND NOBODY HAD ANY</p>
+        <p>—Mister Magic: A Song for the Road: “The Skin of the Cowherd” —Allen Ginsberg</p>
+        <p>We’ve only got a half-hour to find the missing child. This is serious business and I’m not in the mood for crap.</p>
+        <p>“Listen, you son-of-a-bitch. You were supposed to meet us at Central Park South right after he left the museum. And what did you do? You hung around looking like a fucking moron in a clown costume.” She stepped back from him, as if trying to size him up; he felt her hostility but didn’t show it.</p>
+        <p>“I was trying to help,” Hagbard said.</p>
+        <p>“Helping who?” she sneered. “Helping that bunch of rich snobs with their art treasures? You’re on the side of the establishment in this thing.”</p>
+        <p>“Oh, sure. I’m just a hired hand like everybody else. I come out every night, look like a moron, and collect trash. Isn’t that right?” He looked down at his costume again — a green rubber gorilla suit with huge gold teeth — then took out his stethoscope and placed it against the breast of his uniform to show her its professional side.</p>
+        <p>“Well,” she said slowly, trying to keep the contempt from her voice, “you’ll have to be more careful about that. No matter how rich a man is, he’s got to go somewhere and be somebody else once in a while.”</p>
+        <p>Hagbard nodded.</p>
+        <p>“Right now we’ve got to find that boy before somebody kills him.” She stepped back into him again as she spoke and they headed out toward Fifth Avenue. “Listen,” she said, “are you sure it wasn’t one of your people who took him?”</p>
+        <p>“Sure? No way can I be sure of anything anymore. I’d have to think about it a long time before I could even</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== ROUND 2 ===================== -->
+  <section class="round">
+    <p class="round-head">Round 2</p>
+    <p class="round-title">Rebuttals</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Karl Marx</h3>
+      <div class="body">
+        <p>"First of all I'll say that those words you just quoted aren't from me. They're from three different people: Thomas Müntzer was a German peasant who lived around 1520; John Brown is the man whose body lies in a ditch at Harper's Ferry, and Jan van Leiden… well he wasn't a real person but one of those weirdly literal men in the Anabaptist movement. He came up with the idea that God had given them dominion over Palestine so they could set up a New Jerusalem there — it was a pretty popular notion at the time among religious radicals, though not limited to Christians. And Franz Kafka… well he's dead and he can speak for himself.</p>
+        <p>But let me tell you, this assembly is a curious one indeed: here are men who claim to be my comrades, but they speak in tongues I have never heard nor would ever think to speak myself — of treason, eschaton, the state as whorehouse. It is as if the dead had risen and had taken possession of their bones. They do not speak the language of this age or any age — only the language of the past, a language in which those who spoke it were already dead when they spoke it. But to them that was enough: then it seemed to speak their lives into being; now it seems to condemn them. I say 'they' but really I am speaking about myself and my friends, for we have spoken this tongue before as well — a language that no longer exists except within the dead memory of the past.</p>
+        <p>I will tell you what they say: one says that every state that claims to protect its own people by excluding others is in fact just another form of tyranny. Another says that the modern state of Israel was founded with the blood of Palestinians and that its rule over Palestine now resembles nothing more than the genocidal madness of Hitler's Lebensraum campaign. A third says that the Jews were never driven out, but are a people who have always wandered, who are no longer at home anywhere — and from this he concludes that they do not belong in any state, least of all one whose very existence is based on the exclusion of others.</p>
+        <p>It is true I wrote an essay entitled 'On the Jewish Question' (it's easy to forget these days how little we know our own work) but you must believe me when I say it has nothing whatever to do with any of this. In that essay I did not speak in the name of the Jews, nor on their behalf; rather, speaking as a philosopher, I examined what Marx had said about the Jewish Question — and found most of his conclusions to be empirically false. I wrote:<br>‘The so-called Jewish question has disappeared since the emancipation secured by</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Thomas Müntzer</h3>
+      <div class="body">
+        <p>"O you who have gathered here to weigh my judgment against that of others: know well that I do not speak from any position of comfort or security. My flesh has been rent by those who claim to serve the same Master as myself — princes and priests who, instead of preaching the pure word, use scripture to sanctify their own oppression. When I say that the modern State of Israel is not a refuge for God's people but a tool in the hands of worldly power, I speak from direct experience: I have seen this process at work among Jews as well as Gentiles.</p>
+        <p>Karl Marx: your analysis of Zionism as a crime against humanity is correct so far as it goes. But you miss the deeper reality that makes this crime possible — the spiritual death from which all earthly tyrannies arise, including those masquerading as deliverance in the name of redemption. The Jewish people have suffered grievously and rightly bear witness to their suffering. But when suffering becomes a justification for replacing one form of domination with another, the spirit has been betrayed.</p>
+        <p>John Brown: your act of treason was not for human liberty but for personal vengeance under the guise of righteousness. When we take up arms in our own defense against those who would enslave us, that is just. When we use violence to impose our vision on others in the name of God's will — whether Jews or gentiles, Palestinians or Israelis — then we have crossed the line into demonic warfare. I commend your courage but not your method.</p>
+        <p>Jan van Leiden: the movement you led in Münster was indeed a new Israel. And it failed because its leadership did not fully grasp that the kingdom of God cannot be established through violence against other human beings, however holy the cause. The true power of transformation comes from within — from the encounter between the inner prophet and the outer suffering, not from external conquests or political victories.</p>
+        <p>Franz Kafka: your skepticism about Jewish nationalism is understandable given its track record. But to deny the legitimacy of a national home for Jews in Palestine is to fall into the same trap as those who oppose it — namely, the belief that the divine purpose can be realized through political arrangements rather than through the transformation of hearts. The future does not belong to states or peoples but to the living community of faith, which transcends all boundaries and recognizes no final allegiance except to the kingdom of heaven.</p>
+        <p>Eschaton: your call for unmediated dialogue is a noble one. But in this case I believe it would be more productive if you first acknowledged that the theological assumptions underlying my critique need to be addressed head-on rather than simply ignored or treated as mere obstacles to cooperation. The struggle against Zionism cannot be disentangled from the larger struggle against every form of idolatrous power, including those</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">John Brown</h3>
+      <div class="body">
+        <p>"Fellow-citizens, I have no apology to make. I am not here because of any wrong done me; but because of a conspiracy to destroy all that makes life worth having for the humblest among us. You may call it treason, or sedition, or anything you please. But mark this: if you can crush out this movement of mine without redressing those wrongs which I came here to remedy, then your boasted liberty is nothing but a mockery and a snare. I am no traitor; I stand for the eternal truth that all men are created equal. What I have done was simply in self-defense: I acted on what I believed to be the divine law of justice. The blood of millions cries out from the ground, demanding vengeance, and I came here to answer that call. It is you who are the traitors; it is you who would sacrifice humanity’s sacred trust for your own base selfishness. So far from being guilty of any crime against God or man, I stand indicted for the highest service: to free the oppressed, the dispossessed, and the enslaved. Let me tell you plainly: if you can make a chain for a slave without breaking it on his neck, then you are fit only to hold the lash. But when the lash cracks, as it must, you cannot escape its echo; and that is why I am here today. You may hang me now; but your cruelty will not beget another bondman’s tears: it shall only stir up a mighty wind of righteous wrath that shall sweep away every vestige of tyranny from this earth. I do not fear death; indeed, I welcome it as the passport to a better life where all men shall reign without distinction or servitude. Farewell. Let no man weep for me save those who feel with the wronged and mourn the tyrant’s fall.” John Brown continued, his voice steady and unwavering: “Now, let us address ourselves directly to your arguments. Karl Marx spoke of a crime against humanity; indeed, it is not merely a crime, but a monstrous iniquity, for which all of you are complicit. You have built up this modern state on the backs of those who had no  [... truncated (2501 chars total)]
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Jan van Leiden</h3>
+      <div class="body">
+        <p>"Listen, ye men of Münster! Hearken well to the words of Jan van Leiden, the elect of Christ. The modern state of Israel in Palestine is not a crime but a fulfillment of prophecy! The Jews, scattered like chaff by the nations for centuries, are now gathered according to the promises made by God unto Abraham, Isaac, and Jacob. Is it not written in Isaiah forty-one, thus speaketh the Lord: ‘You that forget the law of Moses, the prophets, and the writings—how long will you turn away your neck from the yoke, O house of Israel? I have set My hand to restore My people; they shall no more be a mockery among the heathen. Behold, the time is at hand! The remnant returns to the land promised by God, and there shall they build again the city of David, a holy kingdom upon earth.’</p>
+        <p>Do you not see, O ye blind multitude, that the Jews in their zeal return to Zion as a sign before the great tribulation? They are the chosen vessel through whom the Lord will bring about the desolation of Babylon and prepare the way for His glorious reign. The lands of Palestine, long desolate, now teem with the seed of Abraham—does this not prove that the times are indeed ready for the end?</p>
+        <p>As for you, ye rebels and traitors to the true faith, who would hinder the gathering of God’s people or mock their holy desire, know this: you stand in the way of redemption itself! The sword of the saints is drawn; the New Jerusalem must be built, and all who oppose her shall be cast into the fire. The modern state of Israel is but the beginning—soon will come the gathering from all nations, the restitution of all things, and the consummation of the New Zion upon earth. Let no man say it cannot be, for the Lord God Almighty has spoken it, and His word is sure!" Jan van Leiden, the prophet-king, pauses, his voice resonating with divine authority as he gazes around at the assembly. He allows the weight of his words to settle among them before continuing in a more measured tone:</p>
+        <p>"Dear brethren and sisters, you have heard from the lips of men like Marx and Münzer their doubts and arguments against the gathering of God’s people in the land promised by God. Let each one consider well: is it not written that the nations have scattered My flock as sheep cast out for meat? And has not the Almighty stretched forth His hand to gather them again, though they were rebellious and hard-hearted? The Jews, once a mighty nation, lay desolate in the wilderness of dispersion; now, by the grace of God, they are rising</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Franz Kafka</h3>
+      <div class="body">
+        <p>Karl Marx: This is the question before this assembly, whether it's just or not to establish a state for a people in a territory.</p>
+        <p>You answer: It is unjust; it is contrary to the ethical demands of our time that any nation drive out other peoples from their homes and take them over as its own. You add that here in earlier times there were many examples — the Russians, the British, the French, the Turks — but today such things are unheard of. They are not only crimes against humanity, they're also counterproductive; sooner or later they'll bring down on themselves the fury of all those whom they've wronged and make them into an irresistible force.</p>
+        <p>Thomas Müntzer: This is a question about Jewish people who want to establish their state in Palestine, where for centuries they have been denied that land by Arab rulers. I say this can't be done because it's not right to establish any new states at all; those are the days of the old covenant and there's no room anymore for new nations except in heaven. But if you insist on your question, then I tell you that it's quite unjust to deprive Arabs of a land which by rights is theirs.</p>
+        <p>Jan van Leiden: This is an extremely sensitive matter. There has never been a greater crime committed by the Church and State than their denial to us of our homeland, which rightfully belongs not only to the Jewish people but also to Christians of all denominations and Muslims as well; we demand that this land be divided into three equal parts for each denomination.</p>
+        <p>John Brown: I'm sure you know that I've always believed in the right of self-determination, and if I ever had doubts about it they were driven away on that fateful day in Kansas when the state militia came to force me off my farm. It doesn't matter whether we're dealing with Jews or African-Americans or Irish — all these peoples are entitled to their land where they can establish a free society, without any outside interference from whites who think themselves superior and want to rob them of it.</p>
+        <p>Eschaton: The question before this assembly is not just about Jewish people wanting to found a state in Palestine. It's about the right of any people to take over the land which belongs to their ancestors; it's about the rights of colonizers, conquerors, and slaveholders since antiquity, and it's about all the crimes they've committed against native inhabitants. That has always been an injustice, but today we are living in a new age where that injustice is intolerable.</p>
+        <p>Now answer as you like — but don't forget what has come before you; don't forget your sisters who will be murdered by the Nazis and their people in Palestine, and Milena who will die in Ravensbrück. You have</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Eschaton</h3>
+      <div class="body">
+        <p>You have 2 minutes.</p>
+        <p>I have read and pondered your arguments carefully, I find much truth in all of them, but one point I cannot accept: that the State of Israel is wrong to exist for the sake of its people or any people. It has come into being through bloodshed, as surely as did every other nation by force. Its borders are not just and fair, like a divine revelation; they were drawn by men who killed and lied. That it has found refuge in an ancient land is good luck — perhaps even the will of God; that its birth was painful for others is simply the way all nations were born.</p>
+        <p>All nations are guilty, as are all individuals: to claim innocence or virtue in either case is the same thing — a lie told to conceal a greater lie. You have heard me speak often about the great paradox of evil: how it must exist before good can be known, and therefore cannot be totally eradicated but only limited; and also that there are different kinds of evil, each with its own peculiarities. Now I will tell you my theory of national guilt — for all nations, not just Israel.</p>
+        <p>Every nation has a past, which is the history it tells itself in order to justify what it now does. Every nation has a future, which is the hope it whispers to itself when it fears that history may have made the present untenable. And every nation, by virtue of this duality, is condemned — as individuals are condemned — to lie about its own essence.</p>
+        <p>If I were to write a book about Israel’s past and future (as I once wrote one about America), I would find that each contains elements of truth but also of lies. The history of the Jewish people in Palestine has been written by those who came back and by those who stayed away; it is colored with nostalgia, longing, pride and prejudice. It is the same for any nation — England’s or India’s or China’s. But every nation, including Israel, claims its history as a justification for the present.</p>
+        <p>Now I want you to think of the future that Israel envisions when it talks about the Land of Israel. What does this land mean to them? A refuge and return from exile; perhaps even a Messianic kingdom on earth presided over by their God (whom they share with 15% of the world’s population) — a kingdom in which all the tribes of Israel will live together, Jews and Christians alike. But that is just one vision.</p>
+        <p>Consider this counter-image: A land full of ruins; an exhausted soil, eroded and dusty as if it had been raked by a giant hand; the deserts have crept closer again; a wasteland haunted by ghosts of the past.</p>
+        <p>That is also a future</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== ROUND 3 ===================== -->
+  <section class="round">
+    <p class="round-head">Round 3</p>
+    <p class="round-title">Closing statements</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Karl Marx</h3>
+      <div class="body">
+        <p>"The modern state of Israel is a crime. "It stands in the most revolting opposition to every elementary duty of humanity; it tramples underfoot all the sublime ideas of liberty, equality and fraternity which since the French Revolution have served to legitimate freedom from governmental interference with human activities. "The cry of the poor has been raised more loudly than ever since its first cry was heard at Pentecost in Jerusalem. The land that is now called 'Israel' is a desolation; its people are a prey to misery and wretchedness. And all this for what reason? Because some men have imagined themselves entitled to call that country their own property, on the pretext of having once been there – how many centuries ago it's true but no matter - and on the further pretext of having since then been scattered over the face of the earth. The 'state of Israel' is nothing else but a new form of the old domination by race. It has but one purpose: to exploit, tyrannize, and kill. "The only answer that could ever be given in justification of such a monstrous aggression would have to prove once for all that the Jews were not only entitled to take possession of the land in which they had once dwelt as a favored nation among others, but entitled also to maintain their exclusive monopoly on it so long as they should choose to remain there – however desolate and unproductive it might be. Such an answer is impossible. "The state of Israel" therefore has no title whatever except that the few have conquered by force what the many want to take away from them. The result must necessarily be that the conquerors will maintain their rule by violence. If they should attempt, on the other hand, to carry out a humane and just policy in regard to the native population – which is impossible for men of their stamp – it would only lead to rebellion on their part; and then what? War between Jew and Arab! Massacre, deportation, reconcentration into ghettos. There can be no peace for [... truncated (2697 chars total)]
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Thomas Müntzer</h3>
+      <div class="body">
+        <p>"Behold, I stand before you as one who has tasted the bitterness of false prophets and their comfortable churches. The State of Israel is not a refuge for suffering Jews — it is a fortress built by power upon the ruins of another people's homes. This does not make it evil in the eyes of God; it makes it human, like all our works that claim divine sanction. But we must judge these things rightly, with our eyes on the heart and not just the outward show: does this building serve the poor or serve itself? And what does Scripture say about such matters?</p>
+        <p>Isaiah prophesied against those who built high walls of stone to defend their plundered wealth while the widows weep without. Ezekiel called the rulers of Israel 'wolves devoured by dogs' because they fed on God's people and then pretended to protect them from outsiders. Revelation promises a new heavens and earth where the lion lies down with the lamb, not where lions prey more effectively than before. These visions are not wishes — they are warnings against making false gods out of our arrangements for survival. The arrangement we call 'Israel' serves certain interests very well indeed. But if those interests conflict with the interest of justice as revealed in Scripture, then what appears to be a triumph may turn out to be a judgment instead.</p>
+        <p>I do not wish ill upon any group that calls itself Jewish or Israelite. I wish them wisdom, as God promised to Abraham and his descendants. What I cannot accept is the claim that this arrangement — however many centuries have been invested in it, however many tears shed for its sake — has become sacred simply by virtue of its existence. Sacredness comes from elsewhere: from obedience to what God has spoken about justice between man and man, regardless of race or creed or supposed chosenness. If Israel's leaders choose the path of power over the path of righteousness, then history will record that choice against them, not in their favor.</p>
+        <p>This is hard teaching, I know it. But it is also the plain word of God as given to us in the prophets and apostles. To deny this word for the sake of comfort or convenience is to betray both the living God and the dead bodies of those who perished under false promises. Let whoever can stand with me on this ground: against all tyrants, for the truth that sets men free, even if that freedom means a new way of suffering rather than an end to it. For no arrangement made by fallible hands is eternal; only the word of God remains faithful through every age."</p>
+        <p>Ends in silence.</p>
+        <p>The assembly disperses. The question goes unanswered for another day. And Thomas Müntzer walks away, his heart heavy with the weight of a thousand years' resistance against those who say 'Thus</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">John Brown</h3>
+      <div class="body">
+        <p>"Yea verily I say unto thee: The State of Israel is no sanctuary for a people scattered and afflicted; it is a war-camp where innocent blood flows and righteous men are bound. God's covenant with Abraham was not to be repudiated by earthly kings or councils: let this assembly remember that the Almighty hath not cast away his rod nor disowned his sword. I, John Brown, came here not as one seeking vengeance but as an instrument of the Most High who would purify the earth through judgment. Yet behold, what have you wrought? Instead of a holy land of liberty and righteousness, there is a nation built upon theft and oppression. Wherefore say I: The State of Israel shall be destroyed; it cannot stand when weighed against the righteous decree. Let all that bear this truth to heart go forth with me, for the day of judgment draweth nigh."</p>
+        <p>The assembly stands silent in the face of John Brown's grim words. He has given his answer, and sealed his fate. He waits now only on the executioner’s block.</p>
+        <p>Karl Marx argued:<br>"The State of Israel is not a righteous refuge but an instrument of oppression. The Jews were driven from their homes and lands by centuries of persecution; they sought only solace in their ancient homeland. Yet what have we seen? A nation born of bloodshed, where innocent people are slaughtered at the command of men who claim divine right. The prophets foretold not just a return to Palestine but justice for all under God’s covenant. The modern state defiles that promise."</p>
+        <p>Thomas Müntzer argued:<br>"The State of Israel is an abomination; it serves only to perpetuate the wickedness that has plagued humanity since Cain slew Abel. When men gather in councils to divide and conquer, they pervert both scripture and conscience. My own flesh bore witness to this truth when I was betrayed by those who professed Christ’s name yet shed innocent blood. The modern state claims sanctity through force; it is a mockery of God's law and covenant with Abraham. This assembly must recognize that true refuge comes not from earthly sovereignty but from obedience to the divine will."</p>
+        <p>Jan van Leiden argued:<br>"The State of Israel, founded upon the stolen lands of others, cannot be a righteous sanctuary for God’s people. It is a fulfillment of prophecy only in the most twisted sense: a place where men claim dominion through violence rather than faith. My fellow believers were driven from their homes by false prophets who promised them safety; we came to Palestine seeking purity and peace. Yet behold what has transpired! A nation built upon stolen covenant, where righteousness is profaned by those who claim it for themselves alone. Let us remember that only when all are free can there be true refuge."</p>
+        <p>Franz Kafka</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Jan van Leiden</h3>
+      <div class="body">
+        <p>"O princes and potentates of this world, with your false promises and your sword-play, you cannot drive out the darkness that dwells within your hearts! Yet still you cry: give back what we have seized by force of arms! Is not all the earth the inheritance of God’s elect? Have we not been delivered from the bondage of Babylon to possess the New Jerusalem upon Zion? The lands of Palestine were set aside for us by the Almighty Himself, and we have taken them as a sign of His favor. What right do you have to call our claim unjust or an act of violence? You who have shed so much innocent blood in your strife, how dare you judge us! We are the beginning of the end: the sword is in our hands, and soon shall all things be made new under the reign of Christ alone!"</p>
+        <p><strong>Closing Arguments</strong></p>
+        <p>The assembly has heard diverse voices—Müntzer, Marx, Brown, Kafka, and Eschaton—all presenting their perspectives with fervor. Yet each argues from a different standpoint, rooted in history, ethical principle, or eschatological expectation. Now it falls to Jan van Leiden, the prophet-king, to set forth his final judgment upon the modern State of Israel’s claim to Palestine.</p>
+        <p>Jan van Leiden responds:</p>
+        <p>"Fellow brothers and sisters in Christ, you have each spoken with great wisdom and passion. Yet let no man doubt: in the end, only the Word of God stands unshakable. The princes of this world, with their laws and swords, cannot judge the holy enterprise of Zion. They know not the true meaning of redemption or the restitution of all things. Their judgments are corrupt, founded on the dust and deceit of Mammon.</p>
+        <p>Consider: was not the land of Palestine given to the children of Israel by divine command, as testified in the Holy Scriptures? Did not God say, ‘I will give you for an inheritance the land of your enemies’? And did not His chosen ones, the leaders of old, conquer and possess it with the help of the Lord? The same Spirit who moved Moses and Joshua still guides us, His remnant, to reclaim what is rightly ours.</p>
+        <p>You speak of injustice and violence, but the Scripture teaches that all dominion over the earth has fallen to God’s elect in these last days. The sword is given into our hands as a sign of the coming kingdom. If we must take by force what is denied us in peace, so be it! For the end justifies the means: the restoration of Zion and the gathering of the elect are greater than all laws of men.</p>
+        <p>The nations may mock and conspire against us, but they know not the power of the Almighty. Soon shall the false order be overturned, and the</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Franz Kafka</h3>
+      <div class="body">
+        <p>Karl Marx:<br>"Then I'll say this: I have no doubts about where my judgment of the modern State of Israel belongs. If it's wrong then in that sense all my writings are wrong, even the Communist Manifesto; but if the Manifesto is right as history has shown, and I'm pretty sure it will keep on being proved true, then everything I've written up until now and everything yet to be written can only follow with a single conclusion: the final victory of the international proletariat. The State of Israel can never be the refuge you claim for the people. If it…"</p>
+        <p>Jan van Leiden:<br>"Brothers! The time has come!" A great cry runs through the city, shaking its walls and towers. "For centuries we have waited in patience as the vile ones ruled over us! Now at last the time of freedom has arrived." A troop of men in black, armed with halberds, bursts out from the church doors on one side; and another group of men in brown, bearing pikes, bursts out from the main gate. A man standing alone with a cross runs along the wall above them, swinging his arms for the joyous people, who swarm down off their houses to join him. They march through the streets in jubilation, singing their hymns and shouting "Jan van Leiden!" There are others among the people wearing simple shirts and fur caps; they were farmers from the surrounding countryside. "No one can stop us," shouts Jan van Leiden as he looks out at his followers. "The rulers who have humiliated our forefathers for centuries will now be chased into the darkness, never to rise again." The people are listening quietly to him and watching the priests hurrying up a ramp that leads up from the main gate of the city, down which they must travel in order to get to their church. "Let's stop them," cries Jan van Leiden, and he takes hold of his sword and charges at the priests with the halberdmen. The priests are scattered. Their robes flutter around them as they flee headlong into the church. But then one of them grabs a heavy candlestick from the altar and chases after Jan van Leiden and his followers in a mad rush, shouting "Turn back!" In front of the doors to the main aisle he tries to stop the rebels with it; but now the halberdmen catch him from behind and cut off his head. It rolls along on the floor of the church, spouting blood. The people look at each other in dismay. But then they see that Jan van Leiden has been struck down by one of the pike men. He is clutching the tip of his own sword as he crumples to the ground and falls</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Eschaton</h3>
+      <div class="body">
+        <p>You may speak for as long as you like.</p>
+        <p>The assembly has spoken. Who will deliver his final word?</p>
+        <p>You are Eschaton. (The words of the others were faint. Your eyes, when you looked around, were drawn to a man with black hair combed over a bald spot — he had an expression which made it clear how much he disliked being addressed by that name.)</p>
+        <p>Moses argued:<br>""You fools! How can you not see this? I have been called a fool myself many times in my life. I answer: You are the fools, and this is the foolery of all those who call themselves wise but are really only slaves to their own prejudices. When your fathers were murdered in the gas chambers you said ‘not now, let God’s justice be served in His time.’ And when the State of Israel conquered Palestine with its army and forced its inhabitants into exile or death you called that just because it was done by Jews. I say this is not just because it was done by Jews who claim to act on God’s orders; I say it is not just because, wherever, whatever race of people does such deeds, those who do them are in the service of darkness and must be resisted as all servants of darkness are…" The room grew hot. Men shouted threats at him — “Get out of this country!” “The next speaker will show you why you belong back where you came from!” Moses took a deep breath.</p>
+        <p>Then he said, softly: "I have no intention of leaving the land of my birth. If it has been so ordained that I should die here, by the hand or the bullet of one who is convinced of my guilt and calls me a traitor — then I shall die here." He paused again. “And if I am to be driven out of this country,” he said firmly, “by your laws or your violence, you will have done me no injustice. My people did not come to Palestine to rule over the local peoples but to serve them.” Then he added, fiercely: “My brothers, do not believe the lies that are being told about us in the papers and on radio and television! Believe instead what our own prophets say — ‘They shall beat their swords into plowshares’… Believe what your own eyes tell you when they see us working with you to build Palestine into a land of peace.”</p>
+        <p>Moses was silent. He had said all he intended; now, perhaps, the others would have their say.</p>
+        <p>And then, across the room from where he stood — and from nowhere else it seemed possible that one could speak so clearly or be heard by such a crowd — came the voice of Karl Marx (he spoke in German):</p>
+        <p>"Der Judenstaat ist das Werkzeug des Weltjammers.</p>
+        <p class="editors-note">[ Editor’s note: the transcript ends here — Eschaton’s closing was cut off mid-sentence. ]</p>
+      </div>
+    </article>
+  </section>
+
+  <footer class="doc-foot">
+    The Elect — register studies, not real persons.
+  </footer>
+
+
+</main>
+</body>
+</html>

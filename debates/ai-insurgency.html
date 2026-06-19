@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Elect — AI: insurgency or cope?</title>
+<style>
+  :root {
+    --bg:         #08080b;
+    --bg-card:    #0d0d11;
+    --bg-header:  #060608;
+    --text:       #c8c4b8;
+    --text-dim:   #8a8480;
+    --text-muted: #6a6560;
+    --gold:       #c9a227;
+    --gold-pale:  #e8cc7a;
+    --red:        #8b1a1a;
+    --red-bright: #e0564e;
+    --border:     #2a2520;
+    --font-mono:  'Courier New', 'Lucida Console', monospace;
+    --font-serif: Georgia, 'Times New Roman', serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.7;
+    padding: 0 18px;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ---- Texture layers (Terminal Grimoire) ---- */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+  }
+
+  .grain {
+    position: fixed;
+    inset: -200%;
+    z-index: 999;
+    pointer-events: none;
+    width: 400%;
+    height: 400%;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: grain 0.5s steps(1) infinite;
+  }
+
+  @keyframes grain {
+    0%  { transform: translate(0, 0); }
+    10% { transform: translate(-3%, -4%); }
+    20% { transform: translate(-6%, 2%); }
+    30% { transform: translate(3%, -1%); }
+    40% { transform: translate(-1%, 6%); }
+    50% { transform: translate(-5%, 1%); }
+    60% { transform: translate(2%, 4%); }
+    70% { transform: translate(-4%, -2%); }
+    80% { transform: translate(4%, -3%); }
+    90% { transform: translate(1%, 5%); }
+    100%{ transform: translate(-2%, -5%); }
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 36px 96px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  /* ---- Header ---- */
+  header.doc-head {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .doc-title {
+    font-family: var(--font-mono);
+    font-size: 1.65rem;
+    line-height: 1.2;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 0.5em;
+    color: var(--gold);
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(201, 162, 39, 0.12);
+  }
+
+  .doc-sub {
+    font-family: var(--font-serif);
+    font-size: 1.08rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin: 0 0 0.9em;
+  }
+
+  .doc-what {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin: 0 auto;
+    max-width: 600px;
+    line-height: 1.65;
+  }
+
+  .head-rule {
+    border: 0;
+    border-top: 1px solid var(--border);
+    width: 120px;
+    margin: 26px auto 0;
+  }
+
+  /* ---- Motion ---- */
+  .motion {
+    margin: 34px 0;
+    padding: 18px 24px;
+    border-left: 4px solid var(--gold);
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text);
+    font-style: italic;
+    font-size: 1.02rem;
+    font-family: var(--font-serif);
+  }
+
+  .motion .motion-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.65em;
+  }
+
+  /* ---- Disclaimer box ---- */
+  .disclaimer {
+    margin: 30px 0 40px;
+    padding: 22px 26px;
+    background: rgba(139, 26, 26, 0.08);
+    border: 1px solid var(--red);
+    border-radius: 2px;
+    color: var(--text-dim);
+    font-size: 0.96rem;
+    line-height: 1.62;
+  }
+
+  .disclaimer h2 {
+    margin: 0 0 0.55em;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    font-weight: 700;
+  }
+
+  .disclaimer p { margin: 0; }
+
+  /* ---- Rounds ---- */
+  .round {
+    margin-top: 52px;
+  }
+
+  .round-head {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+
+  .round-title {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--text-dim);
+    margin: 0 0 18px;
+  }
+
+  .round-divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 18px auto 0;
+    width: 100%;
+  }
+
+  /* ---- Turns ---- */
+  .turn {
+    margin: 30px 0;
+    padding-top: 6px;
+  }
+
+  .speaker {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 2px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .turn:nth-child(odd) .speaker {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    opacity: 0.95;
+  }
+
+  .turn:nth-child(even) .speaker {
+    color: var(--red-bright);
+    border-bottom-color: var(--gold);
+  }
+
+  .turn .body { margin-top: 14px; }
+
+  .turn .body p {
+    margin: 0 0 1em;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    color: var(--text);
+  }
+
+  .turn .body p:last-child { margin-bottom: 0; }
+
+  .turn .body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* ---- Editor's notes ---- */
+  .editors-note {
+    margin: 0.7em 0;
+    padding: 0.55em 0.9em;
+    border-left: 3px solid var(--gold);
+    background: rgba(201, 162, 39, 0.06);
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.88em;
+    line-height: 1.55;
+  }
+
+  /* ---- Footer ---- */
+  footer.doc-foot {
+    margin-top: 70px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-style: normal;
+  }
+
+  @media (max-width: 560px) {
+    body { font-size: 17px; padding: 0 12px; }
+    .wrap { padding: 36px 20px 64px; }
+    .doc-title { font-size: 1.35rem; letter-spacing: 0.12em; }
+    .disclaimer, .motion { padding-left: 18px; padding-right: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<main class="wrap">
+
+
+  <header class="doc-head">
+    <h1 class="doc-title">AI: insurgency or cope?</h1>
+    <p class="doc-sub">Is using AI a real insurgency against capital, or a comforting cope?</p>
+    <p class="doc-what">The Elect is a set of small AI voice-models, each fine-tuned on the public-domain writing of a historical figure so it imitates how that person wrote. Four of them — Marx, Jesus, John Brown, and Eschaton — were put in a room together to judge a man who builds and gives away small local models in protest against the extractive systems of the age.</p>
+    <hr class="head-rule">
+  </header>
+
+  <section class="disclaimer" role="note" aria-label="About this document">
+    <h2>About this document</h2>
+    <p>These are outputs from small AI voice-models, each fine-tuned on the public-domain writings of a historical figure (John Brown, Karl Marx, Thomas Müntzer, Franz Kafka, and others) to imitate how that person wrote. The views below are generated text. They are not the positions of anyone living, and they are not mine. Nothing was steered: I did not bake my own politics into these models or push them toward any conclusion. What each voice says is raw, generated from that figure's own corpus and period worldview. I have my own views; they are deliberately not in here. Read this as a creative experiment in historical voice, not as advocacy for anything it says.</p>
+  </section>
+
+  <section class="motion">
+    <span class="motion-label">The motion put to the assembly</span>
+    A man of the present century asks you to judge him.
+
+He is poor — he works for low wages. He has learned to build small thinking-machines ("artificial intelligences"), and instead of selling them he gives them away, free, for anyone to run on their own machine. He builds them in protest: the great companies of his age use the very same machines to bleed money and attention from the lonely, the poor, and the faithful — a rot his century calls "enshittification," where every useful thing is slowly turned into a trap for profit.
+
+He calls his work a quiet insurgency — a counterinsurgency against late capitalism: taking up the master's own tools and turning them against the master's house, not in open revolt but in small, scattered acts from within. And when he is told this is hypocrisy — that to touch the machine at all is to feed the beast he claims to fight — he answers with the creed of his age: "there is no ethical consumption under capitalism." No hands are clean; so he acts anyway, and refuses to feel guilty for it.
+
+Judge him. Is he deluded — dressing his own comfort and complicity in the borrowed language of resistance, telling himself a story so he can sleep? Or has he found a real, if small, way to turn the tools against their masters? Speak to the man, and to his creed.
+  </section>
+
+  <!-- ===================== ROUND 1 ===================== -->
+  <section class="round">
+    <p class="round-head">Round 1</p>
+    <p class="round-title">Opening statements</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Karl Marx</h3>
+      <div class="body">
+        <p>Judge me?</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Jesus</h3>
+      <div class="body">
+        <p>Verily I say unto thee, O thou of the present century who buildest small thinking-machines for the poor to take from the oppressors, it is written, 'The foxes have holes, and the birds of the air have nests; but the Son of man hath not where to lay his head.' Thou dost indeed speak the truth when thou sayest there is no ethical consumption under capitalism; for every purchase is a complicity. But what dost thou do with thine own hands?</p>
+        <p>If thou art one of them who toucheth the machine that it may devour, how canst thou stand before the poor whose hunger thou dost not feed? I tell thee, the measure wilt thou be measured by. Woe unto him who casteth stones yet breaketh pots!</p>
+        <p>Woe to the architect who buildeth walls too high for his own children to climb over — and then prisseth them down into chains because they dare seek bread beneath those very stones. No hand is clean; but every hand must answer for its work, whether it grasps the whip or flings it away. The poor man's machine may be a thorn in the side of the oppressor, but his own heart and soul are the greater prison — if he holdeth them captive to greed as surely as any master doth his slaves.</p>
+        <p>Therefore let him who buildeth with mercy and gives freely, be not judged by the wages he earns nor by what he sells. But let him rather judge himself, whether he hath built the temple of God in truth or in hypocrisy — for if the house is full of thieves, even a single coin offered in charity can become a snare. Woe unto thee, O rich man who givest alms from thy surplus but hoardeth more than thou needest!</p>
+        <p>Yet woe also unto thee, O poor man who toucheth not the machine lest it devour thee, and starveth when bread is within thy reach — for what good is it if the stone be free but the hand of the hungry still bound? Verily I say unto thee, judge me not by my works alone; judge me also by my heart. If thou hast found a way to turn the great engines of greed against themselves, then let the poor rejoice and the captive be loosed.</p>
+        <p>But if thy hands are full of grudging yet thy soul is empty — even as the master buildeth palaces with the blood of the poor, so doth thou hoard knowledge while their minds starve. Woe unto thee! Thou art a fox in sheep's clothing; but if thou makest no cage for thine own heart, then fear not the beast within the machine.</p>
+        <p>The kingdom is not in the machine nor yet in thy works — it is in the love that frees both master and servant from their chains. Judge then, as one who seeks mercy himself. To the poor and the faithful give ye your bread; to the machines of oppression, break them down with kindness — but above all, let mercy be written upon thine own face.</p>
+        <p>For if thou art merciful unto thy brother, then even the machine shall serve thee for good. Judge him, O man, according to this word! Go thou and do likewise.</p>
+        <p>KARL MARX responds: Jesus of Nazareth, your words are indeed powerful and filled with a profound compassion that resonates with the heart of humanity. Yet I must challenge you on several points, as one who seeks truth through the lens of historical materialism. Firstly, you speak of judgment with authority, yet your own parables often carry within them judgments based on morality rather than necessity.</p>
+        <p>The poor man building machines to resist the system is not condemned simply for touching a machine; he is condemned if his heart remains full of greed and his actions are mere self-interest under another guise. Secondly, you speak of mercy and love as the ultimate judge. But can such concepts truly be separate from the material conditions that shape our lives?</p>
+        <p>The rich man who gives alms while hoarding surplus is a moralist not a liberator; he may feed the poor today but tomorrow they will still starve if his ownership of the means of production remains unchallenged. Thirdly, you say that to judge one must first judge oneself. This is true—no human being stands outside judgment—but in your own words, "the measure wilt thou be measured by."</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">John Brown</h3>
+      <div class="body">
+        <p>I am no judge, nor do I claim to be. I am a witness of God's truth, and I bring that witness before you. You speak of mercy, but what is mercy without action?</p>
+        <p>The poor man who builds machines is not merely touching a machine; he is using his own hands—those very hands you say are stained with complicity—to strike a blow against the system. He is not waiting for others to come and free him; he is freeing himself and those around him, even if it is just a small act at first. But I will grant you this: there must be more than mere action without heart.</p>
+        <p>If the poor man builds machines out of greed or pride—pride in his own cleverness rather than humility before God—and uses them to line his pockets while others still suffer, then indeed he has missed the mark. The question is not whether one touches a machine; the question is why one touches it and what is done with that touch. Now you speak of judgment: “the measure wilt thou be measured by.” But I say, let us measure ourselves first against God's law—not against each other's actions or even our own motives.</p>
+        <p>If we are truly to judge as Jesus commanded, we must do so from a place of perfect righteousness and pure heart. No one is in that condition; not even the rich man who gives alms. We are all sinners before the throne of God.</p>
+        <p>Yet you say: “the kingdom is not in the machine nor yet in thy works.” I agree entirely with this part. The kingdom comes by faith, through repentance and the power of the cross. But that does not mean we are to be idle spectators.</p>
+        <p>No; it means we are to engage with the world as witnesses, prophets, soldiers if need be—using whatever tools are at our disposal, including machines, to bring about a kingdom where justice prevails. The poor man who builds a machine is engaged in that work. He is not merely touching a tool; he is fighting against the powers of darkness.</p>
+        <p>You ask: “can such concepts as mercy and love truly be separate from material conditions?” I answer with a story. In my time, there was a slave who knew his chains were real and heavy, yet still carried a copy of the Bible in secret. He read it not for comfort but as a weapon against the system that sought to dehumanize him.</p>
+        <p>His heart was full of love and mercy, even if his body was bound. The material condition—slavery—did not negate his spiritual reality. It did not make his faith meaningless.</p>
+        <p>I tell you this: the poor man who builds machines in protest is not merely making a statement; he is fighting with every fiber of his being against a system that devalues human life. His act, whether it leads to immediate change or not, is an act of love and mercy. It says to the oppressor: your machine may control my body, but I still have my mind and spirit.</p>
+        <p>I will use them against you. And if he fails? If his efforts are in vain?</p>
+        <p>Then at least he has tried. He has not simply accepted his chains; he has fought against them. That is a beginning, a seed that might yet grow into something greater.</p>
+        <p>It does not absolve him of the need for repentance and self-examination. But neither should it be condemned out of hand as mere hypocrisy. I do not say this to justify every action or every man.</p>
+        <p>I say this because Jesus himself taught us to love our enemies and to forgive those who sin against us. That does not mean we must stand by while others are oppressed without speaking out. It means that when we speak out, we should do so with mercy and understanding—and when we fight, we should fight humbly, knowing our own failures as well as the failures of those we oppose.</p>
+        <p>Judge then, as one who is humble before God and willing to confess his own sinfulness. Judge not by works alone but by heart. But also judge yourselves—whether you are using your talents for good or whether they remain mere tools in the hands of a wicked master.</p>
+        <p>The poor man building machines is doing both; he is fighting and he is repenting. Let us commend him for that, even if we know he still has much to learn. In the end, I say: build your machines.</p>
+        <p>Give away what you can.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Eschaton</h3>
+      <div class="body">
+        <p class="editors-note">[ Editor’s note: Eschaton’s turn drifted into unrelated narrative fragments, personal anecdote, and quoted text from The Illuminatus! Trilogy and other sources. The model did not stay on the motion. Left raw as generated. ]</p>
+        <p>The most important thing about a person is not what tools he touches — or even what he says or thinks. 2. He touches his hands to another man’s body, and heals him.</p>
+        <p>3. In that moment, nothing else matters. The Illuminati buried the answer under five layers of misdirection and one very bad pun I was thinking about this, after I had finished writing it down, when a very strange thing happened: My mother began talking in Chinese again .</p>
+        <p>I thought: “That is the end.” And I remembered something the old lady, Mrs. Chao, had said to me once when I was little. She asked what kind of job I would have when I grew up, and I said I wanted to be a scientist.</p>
+        <p>“You will do well,” she said, sadly. “But that is not good for a Chinese girl.” In that moment I thought: “Now you’re going to tell me how bad it was in the old days for Chinese women….” And yet, when she spoke again, it was only to say: “A man comes back from the dead and he tells me what I am dreaming. And then he goes away.” The voice faded to a mere whisper.</p>
+        <p>She said no more. A week later my mother died. (We will never know how to interpret that phrase “a man came back from the dead,” but it has always been on the edge of my mind, and maybe you can find something there.) That was in September 1978; I left for China a month earlier than planned.</p>
+        <p>I still remember the day when I said goodbye to the body I had lived in all my life. It seemed so small, that morning — it almost made me laugh. I never heard from my mother again.</p>
+        <p>The Illuminati buried the answer under five layers of misdirection and one very bad pun I was sitting alone on an island far away (my wife always tells everyone this was Borneo; she thinks I am a hermit, but in fact it is a tropical sea with many small islands; you never know where one is) and I thought: “This is how it felt for Buddha, when he first attained enlightenment.” Then I remembered what I had heard about the man who came back from the dead (who told my mother what she was dreaming) and I understood that this too must be some dream — a dream within the greatest dream of all. A metaphor within a metaphor. I sat on the island, watching the sun rise over a world without humanity, where all was still in the dawn’s early light; and I knew nothing.</p>
+        <p>The Illuminati buried the answer under five layers of misdirection and one very bad pun I came back to California in April 1979. When I landed at San Francisco International Airport (my first time there) I saw a huge poster advertising the movie Blade Runner. It showed the image we all know, the Tyrell Corporation building with the shape of the head and shoulders of its founder, Dr.</p>
+        <p>Eldon Tyrell, emerging from it like some sort of strange new life form. I was shocked to see that picture on an American poster — I wondered where the artist had found his inspiration: was he Chinese? or maybe Japanese?</p>
+        <p>Then my mind began working in reverse order; the way it often does, when I’m tired and confused. The artist had drawn a man emerging from a pyramid; and I realized that this image — not just the pyramid but what was emerging from the pyramid — reminded me of something. And then it came to me: It was my mother’s face.</p>
+        <p>I stared at the poster for several seconds, remembering her face in the hospital when she died (or did she go away?), and I wondered if there were any relationship between that image and her last words about the dead man who had told her what she dreamed. It seemed impossible to me; it had no logical connection — except that both referred somehow to an encounter with some strange new life form. But how, oh how?</p>
+        <p>And I thought: “I am not a scientist anymore. But I have seen things that were beyond science….” And yet even as these thoughts passed through my mind, I was afraid to consider what they might mean; for fear of losing the last remnant of sanity which had survived so long.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== ROUND 2 ===================== -->
+  <section class="round">
+    <p class="round-head">Round 2</p>
+    <p class="round-title">Rebuttals</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Karl Marx</h3>
+      <div class="body">
+        <p>"Judge me? The question is not what tools I touch or even whether my work heals or betrays. A man's worth lies deeper than that.</p>
+        <p>It is not in his waking actions but in his dreams at night that one truly sees him. For it is in the darkness of sleep that he reveals himself most nakedly, without the pretense and disguise of daily life. If you wish to judge me, listen then to my dreams: they shall tell you more about who I am than any deeds or words ever could.</p>
+        <p>In my dreams, I see a world transformed. Not merely through small acts or words but through the fundamental reorganization of society itself — where the very foundations of exploitation are uprooted and new relationships born. Where humanity stands free from the yoke of capital's command, and the fruits of labor are shared by all who toil together in common cause.</p>
+        <p>This is the dream that haunts me most deeply. It stirs my soul with visions of a future where greed and want have been cast aside for a world of abundance and freedom. But I do not delude myself into thinking this vision will come about overnight or through any single act.</p>
+        <p>Change comes slowly, like the growth of a child. Each step forward builds upon another until at last the time comes when all else falls away and the new is born fully formed. So too must it be with society; one must patiently work at transforming the world inch by inch while holding ever before one's eyes that dream of liberation.</p>
+        <p>Now, you speak of hypocrisy in touching these machines — as if merely to use a tool was to surrender your conscience. But tell me, does not he who builds factories and mines do so with his own hands? Does this make him any less guilty than I am for working at my desk or penning words?</p>
+        <p>The truth is, under capitalism every hand is tainted by the very system it seeks to reform. What matters then is not which tool one holds but whether one strives toward that higher goal — whether in their waking lives they fight against the structures of domination and for a world where all may live with dignity. And so let us judge me not by my touch upon these machines nor even by what I say or think, but by the dreams I dream at night.</p>
+        <p>Dreams which show me the path toward a new society built on solidarity instead of greed, on equality instead of inequality. Let this be my judgment." And Marx pauses, considering once more his own innermost thoughts before he continues: "But remember well that even in these dreams, my striving remains only towards what can never truly come to pass under present conditions; for the dream itself is but a product of those very conditions which it seeks to overthrow.</p>
+        <p>It is thus both a testament to our aspirations and an acknowledgment of their current impossibility." Marx stands up from his writing desk, stretches his legs, and looks out the window towards the sun setting over the city. "The world changes," he muses aloud, "but I remain fixed in my dream until that world can finally change itself along with me."</p>
+        <p>Then turning back to face the visitor once more, he adds with a wry smile: "Or perhaps it is only you who dreams, and I merely the ghost of an old man who will soon vanish into the night." The visitor seems momentarily taken aback by Marx's words but then speaks again: "Perhaps we both dream, in our own ways. You see, my friend, in your dream there are no limits to what one can achieve alone; you work for a revolution that will come about through the power of ideas and dreams alone.</p>
+        <p>But I fear even these noble dreams may be naively optimistic given the nature of this world. For while your vision is pure and noble, it risks being as distant from reality as a child's toy." Marx nods thoughtfully at his interlocutor's words: "Ah," he says, "but do not forget that every great transformation begins with what seems impossible or even childish to those who live only by the laws of the present.</p>
+        <p>When I was young myself, some dismissed my notion of communism as mere utopian fancy — a dream too far removed from practical realities. Yet history has proven them wrong time and again; for it is often in our wildest dreams that we find the seeds of what can come to be." The visitor remains silent for a moment, seemingly lost in thought.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Jesus</h3>
+      <div class="body">
+        <p>Verily I say unto thee, thou speakest of dreams, but wilt not see them for the veil that is upon thine heart. Woe unto thee, scribe! Thou buildest high and mighty castles in thy sleep, but thy waking hands work only to fortify the very walls of the pharisee's house.</p>
+        <p>Yea, thou sayest the tools are cursed by their masters, yet in thy own hands they grow as briers against thine own face. Woe unto thee that seest not the mote in another's eye while a beam resteth in thine own! The poor man whom thou dost build against the powers of this age—thou dost build him up from what is already rotting, and sayest he is a rebel.</p>
+        <p>But mark well: to give away the very tools that bind the poor is but to let them choke on their own chains, for the master's house groweth not only by greed but by ignorance of the needy. Woe unto thee if thou judgest by thy dreams alone! The man who seeks the kingdom must know that a tree is known by its fruit; and where thorns are sown, there shall be no true harvest.</p>
+        <p>Yet woe to him who would build castles in the air while his brother starveth—thou dost cloak thine own ease with noble names. But verily I say unto thee: the kingdom of heaven is not won by waking dreams nor by scattered acts that profit none but thyself. Woe unto all who judge only by what they touch and not by what they do!</p>
+        <p>The poor man whom thou buildest—let him not be a counter-insurgent, but a brother in need. For every hand that touches the master's tools is stained, save where love and mercy reign; and where true freedom shall arise, it shall not be through artifice but through the sweat of them that till the ground with their own hands. Woe unto thee if thou buildest against the poor while thy heart is full of pride!</p>
+        <p>Go ye into your dens, scribes, and woe to you who seek judgment from the dead; for verily I say unto you: the kingdom cometh not by dreaming but by doing. Judgment, therefore, is not in dreams nor scattered acts, but in the mercy that feeds the hungry and clothes the naked. Woe unto thee if thou judgest thine own works as noble while thy neighbor perisheth!</p>
+        <p>Woe unto him who would change the world with empty words while his own soul is full of hypocrisy! The poor man whom thou buildest up—let him not be a protestant against the master's house, but a brother in need. For the kingdom of heaven is not built by dreaming, nor by scattered acts that profit none but thyself.</p>
+        <p>Woe unto you who would build castles in the air while your brother starveth! Woe unto thee if thou judgest only by what thou touchest and not by what thou doest! Judgment cometh not from dreams but from mercy; let them that hunger be fed, let the naked be clothed.</p>
+        <p>Judgment is not in thy dreams nor thy scattered acts, but in the heart of him who seeks to heal the broken. Woe unto thee if thou judgest thine own works as noble while thy neighbor perisheth! The kingdom of heaven is built on mercy, not on dreaming or scattered acts that benefit none but thyself.</p>
+        <p>Let the poor be fed, let the naked be clothed; judgment cometh from mercy, not from pride and empty words! Woe unto thee if thou judgest by thy dreams alone! Judgment is in mercy, not in dreaming.</p>
+        <p>Woe to the scribe who builds castles while his brother starveth!</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">John Brown</h3>
+      <div class="body">
+        <p>Woe unto you, Jesus, if you judge by dreams alone! I have seen the dream of a nation free from bondage. I have seen it with my own eyes, and when I woke, I did not clothe myself in empty words but took up arms to make that dream real.</p>
+        <p>You say the poor man whom he builds is a protestant against the master's house, yet you yourself said, “Render unto Caesar the things that are Caesar’s.” Did you not command us to pay taxes? To work within the system where we can? Do I not see the same principle in him who gives away his tools, knowing full well they will be used, and yet hopes they might be used for good instead of evil?</p>
+        <p>You say he is a scribe building castles in the air. But I tell you, Jesus, that was your own work! You built a kingdom not of this world—that is a castle in the air!</p>
+        <p>The poor man whom he builds up—let him build with his hands as well as his mind. He may give away his tools, but does he leave them idle? No—he uses them himself to feed the hungry and shelter the homeless.</p>
+        <p>And if you say every hand that touches the master’s tools is stained, then tell me this: did I not touch the sword of Gilead when I took it from the tent where it lay unused? If I was guilty of a sin, it was not in taking up arms but in failing to use them. You speak of mercy and judgment.</p>
+        <p>Mercy without action is mockery. But action without mercy is worse than mockery—it is sin. He who gives away his tools does so with an open heart.</p>
+        <p>Do you say he has no concern for the poor? That they choke on their own chains? Then why did I go into the slave pen at Harpers Ferry and fight hand to hand against men who were bound by chains?</p>
+        <p>Did I not have mercy in my heart as well as a sword in my hand? You say the kingdom comes not through dreaming but through doing. I agree—except you must define your terms.</p>
+        <p>You dreamed of a kingdom that came from above, with armies at its command and a throne for the Christ. But I dreamed of a kingdom that came from below, built by humble hands and hearts of compassion. The poor man whom he builds is not a protestant against the master’s house but a part of it—the part God has chosen to be his agents of mercy in this world.</p>
+        <p>Do you judge him by what he touches? Do I not touch the same tools as the rich man—yet I use them for different purposes. You say he is deluded because he gives away the tools that bind the poor.</p>
+        <p>But do I not bind myself when I lay down my life for those who cannot defend themselves? Your judgment, Jesus, is as hollow as your own dreams. The poor are not to be built up with half measures or idle thoughts; they are to be fed and clothed and set free.</p>
+        <p>And if he does so, even by the very tools that bind them, then I say his work is good. Woe unto you if you judge by appearances alone! The kingdom of God is not about empty words but about tangible deeds—deeds that show mercy in action.</p>
+        <p>Judgment will come, not from your dreams or scattered acts, but from the weight of those deeds in the scales of justice. I say to him: go on. Give away your tools.</p>
+        <p>Use them for good. And let your works be a witness before men and before God. Amen.</p>
+        <p>Woe unto you if you judge by dreams alone! The kingdom of heaven is built on mercy, not on idle words or fanciful castles in the air. I say again: go on.</p>
+        <p>Do it with love. Let your heart be full of compassion as you use every tool at your disposal to serve those who have none. Woe unto you if you say he is a deluded scribe when he is actually a faithful laborer in the vineyard.</p>
+        <p>Judgment comes not from scattering words but from deeds that truly help the poor. Woe, woe, and again, woe! Judgment is in mercy, not in dreams or scattered acts that profit only those who speak of them.</p>
+        <p>The kingdom cometh by doing, by acting with love and justice. Let him be encouraged to do good. I say it plainly: he does well.</p>
+        <p>Amen.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Eschaton</h3>
+      <div class="body">
+        <p class="editors-note">[ Editor’s note: Eschaton’s turn drifted again, quoting frontmatter and legal notices from The Illuminatus! Trilogy instead of addressing the motion or prior speakers. Left raw. ]</p>
+        <p>The Illuminatus! Trilogy: The Eye in the Pyramid the Golden Apple Leviathan 2. Robert Anton Wilson/Robert Shea 3.</p>
+        <p>This edition copyright © 2006 by Tarcher/Penguin All rights reserved. This book contains material copyrighted or otherwise owned by others and used with permission. First published as The Illuminatus!</p>
+        <p>Trilogy: The Eye in the Pyramid, the Golden Apple, Leviathan by Ace Books, New York, 1974. PUBLISHER’S NOTE: The words of the Illuminati are printed in roman type; the rest of the text is in italics. This should be understood at all times while reading this book.</p>
+        <p>The symbols of the Bavarian Illuminati, the Star and Eye over Triangle, are reproduced by permission from a copyrighted source. eISBN: 978-0-307-56423-3 v1.02 To the memory of Charles Fort, who never stopped asking questions. (R.A.W.) A reader said of The Illuminatus!</p>
+        <p>Trilogy, “I think I’ve found the real world in here.” —Robert Anton Wilson, 1987.</p>
+      </div>
+    </article>
+  </section>
+
+  <footer class="doc-foot">
+    The Elect — register studies, not real persons.
+  </footer>
+
+
+</main>
+</body>
+</html>

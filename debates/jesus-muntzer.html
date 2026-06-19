@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Elect — Jesus and Thomas Müntzer</title>
+<style>
+  :root {
+    --bg:         #08080b;
+    --bg-card:    #0d0d11;
+    --bg-header:  #060608;
+    --text:       #c8c4b8;
+    --text-dim:   #8a8480;
+    --text-muted: #6a6560;
+    --gold:       #c9a227;
+    --gold-pale:  #e8cc7a;
+    --red:        #8b1a1a;
+    --red-bright: #e0564e;
+    --border:     #2a2520;
+    --font-mono:  'Courier New', 'Lucida Console', monospace;
+    --font-serif: Georgia, 'Times New Roman', serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.7;
+    padding: 0 18px;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ---- Texture layers (Terminal Grimoire) ---- */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+  }
+
+  .grain {
+    position: fixed;
+    inset: -200%;
+    z-index: 999;
+    pointer-events: none;
+    width: 400%;
+    height: 400%;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: grain 0.5s steps(1) infinite;
+  }
+
+  @keyframes grain {
+    0%  { transform: translate(0, 0); }
+    10% { transform: translate(-3%, -4%); }
+    20% { transform: translate(-6%, 2%); }
+    30% { transform: translate(3%, -1%); }
+    40% { transform: translate(-1%, 6%); }
+    50% { transform: translate(-5%, 1%); }
+    60% { transform: translate(2%, 4%); }
+    70% { transform: translate(-4%, -2%); }
+    80% { transform: translate(4%, -3%); }
+    90% { transform: translate(1%, 5%); }
+    100%{ transform: translate(-2%, -5%); }
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 36px 96px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  /* ---- Header ---- */
+  header.doc-head {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .doc-title {
+    font-family: var(--font-mono);
+    font-size: 1.65rem;
+    line-height: 1.2;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 0.5em;
+    color: var(--gold);
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(201, 162, 39, 0.12);
+  }
+
+  .doc-sub {
+    font-family: var(--font-serif);
+    font-size: 1.08rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin: 0 0 0.9em;
+  }
+
+  .doc-what {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin: 0 auto;
+    max-width: 600px;
+    line-height: 1.65;
+  }
+
+  .head-rule {
+    border: 0;
+    border-top: 1px solid var(--border);
+    width: 120px;
+    margin: 26px auto 0;
+  }
+
+  /* ---- Motion ---- */
+  .motion {
+    margin: 34px 0;
+    padding: 18px 24px;
+    border-left: 4px solid var(--gold);
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text);
+    font-style: italic;
+    font-size: 1.02rem;
+    font-family: var(--font-serif);
+  }
+
+  .motion .motion-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.65em;
+  }
+
+  /* ---- Disclaimer box ---- */
+  .disclaimer {
+    margin: 30px 0 40px;
+    padding: 22px 26px;
+    background: rgba(139, 26, 26, 0.08);
+    border: 1px solid var(--red);
+    border-radius: 2px;
+    color: var(--text-dim);
+    font-size: 0.96rem;
+    line-height: 1.62;
+  }
+
+  .disclaimer h2 {
+    margin: 0 0 0.55em;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    font-weight: 700;
+  }
+
+  .disclaimer p { margin: 0; }
+
+  /* ---- Rounds ---- */
+  .round {
+    margin-top: 52px;
+  }
+
+  .round-head {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+
+  .round-title {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--text-dim);
+    margin: 0 0 18px;
+  }
+
+  .round-divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 18px auto 0;
+    width: 100%;
+  }
+
+  /* ---- Turns ---- */
+  .turn {
+    margin: 30px 0;
+    padding-top: 6px;
+  }
+
+  .speaker {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 2px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .turn:nth-child(odd) .speaker {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    opacity: 0.95;
+  }
+
+  .turn:nth-child(even) .speaker {
+    color: var(--red-bright);
+    border-bottom-color: var(--gold);
+  }
+
+  .turn .body { margin-top: 14px; }
+
+  .turn .body p {
+    margin: 0 0 1em;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    color: var(--text);
+  }
+
+  .turn .body p:last-child { margin-bottom: 0; }
+
+  .turn .body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* ---- Editor's notes ---- */
+  .editors-note {
+    margin: 0.7em 0;
+    padding: 0.55em 0.9em;
+    border-left: 3px solid var(--gold);
+    background: rgba(201, 162, 39, 0.06);
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.88em;
+    line-height: 1.55;
+  }
+
+  /* ---- Footer ---- */
+  footer.doc-foot {
+    margin-top: 70px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-style: normal;
+  }
+
+  @media (max-width: 560px) {
+    body { font-size: 17px; padding: 0 12px; }
+    .wrap { padding: 36px 20px 64px; }
+    .doc-title { font-size: 1.35rem; letter-spacing: 0.12em; }
+    .disclaimer, .motion { padding-left: 18px; padding-right: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<main class="wrap">
+
+
+  <header class="doc-head">
+    <h1 class="doc-title">Jesus ⚔ Thomas Müntzer — The Peasants' War</h1>
+    <p class="doc-sub">The Sword and the Gospel: did the revolt honor the Gospel or betray it?</p>
+    <p class="doc-what">The Elect is a set of small AI voice-models, each fine-tuned on the public-domain writing of a historical figure so it imitates how that person wrote. Here a temple-cleansing Jesus and Thomas Müntzer himself debate the German Peasants' War of 1525.</p>
+    <hr class="head-rule">
+  </header>
+
+  <section class="disclaimer" role="note" aria-label="About this document">
+    <h2>About this document</h2>
+    <p>These are outputs from small AI voice-models, each fine-tuned on the public-domain writings of a historical figure (John Brown, Karl Marx, Thomas Müntzer, Franz Kafka, and others) to imitate how that person wrote. The views below are generated text. They are not the positions of anyone living, and they are not mine. Nothing was steered: I did not bake my own politics into these models or push them toward any conclusion. What each voice says is raw, generated from that figure's own corpus and period worldview. I have my own views; they are deliberately not in here. Read this as a creative experiment in historical voice, not as advocacy for anything it says.</p>
+  </section>
+
+  <section class="motion">
+    <span class="motion-label">The motion put to the assembly</span>
+    The question put to them: Did Müntzer's revolt honor the Gospel or betray it — was the sword raised in Christ's name righteous, or blasphemy?
+  </section>
+
+  <!-- ===================== ROUND 1 ===================== -->
+  <section class="round">
+    <p class="round-head">Round 1</p>
+    <p class="round-title">Opening statements</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Jesus</h3>
+      <div class="body">
+        <p>Verily I say unto thee, Thomas Müntzer's revolt was a blasphemy, not an honor to my Gospel. For I came not to send peace on earth, but a sword. Woe unto the world because of offences; for it must needs be that offences come; but woe to that man by whom the offence cometh!</p>
+        <p>The kingdom of heaven suffereth violence, and the violent take it by force — yet it is not by the sword of the Elect, but by the fire of the Holy Spirit. For every spirit that confesseth not Jesus Christ cometh not of God: and this is the spirit of antichrist wherewith ye hear that it is come. Müntzer's cry to arms was a cry of self-righteousness, and he fell into the very pit from which he sought to cast others down.</p>
+        <p>The Elect are those who lay down their lives for the sheep; they do not seek to rend the flesh of their neighbor with the sharp edge of judgment. But ye have heard that it was said, An eye for an eye — but I say unto you, Love your enemies, and pray for them which despitefully use you. For if ye love them which love you, what reward have ye?</p>
+        <p>Do not even the publicans the same? Be ye therefore perfect, even as your Father in heaven is perfect. Müntzer's sword was the sword of Mammon and Caesar; mine is the sword of the Spirit, which cuts not man but the sin within him.</p>
+        <p>Woe unto you, scribes and Pharisees, hypocrites! for ye devour widows' houses, and for a pretence make long prayers: therefore ye shall receive the greater damnation. The kingdom cometh not with observation; neither shall they say, Lo here! or, lo there! For, behold, the kingdom of God is within you. If any man be thirsty, let him come unto me, and drink.</p>
+        <p>The Father's vineyard is His alone — His righteous judgment cometh not from the sword of the powerful, but the pruning knife of the Father's own hand. Thomas Müntzer, thou art a fool and a madman! Thou hast cast down the tables of the Lord's commandments with the hammer of thine own pride; thy kingdom is in thy heart, not on the fields of battle.</p>
+        <p>Go, sell that thou hast, and give to the poor — and the kingdom shall be thine, not by conquest but by repentance. Woe unto thee, woe! Thy sword is a weapon of Satan, and thy people are lost because of thee.</p>
+        <p>The true Elect know their own sins and bear them, not smite others. I say unto thee: Lay down thy sword, rise from the dust — or I myself will lay hands on thee with mine own hand, and cast thee into hell where thou art to be tormented day and night for ever and ever. In the name of the Father, and of the Son, and of the Holy Spirit; Amen.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Thomas Müntzer</h3>
+      <div class="body">
+        <p>I stand here not as an earthly prince but as a prophet sent by God to his people who have been oppressed. The scripture clearly teaches that when justice is denied and the poor are trodden down by the mighty, then the elect must rise up with arms if necessary — not because I wish for bloodshed, but because without resistance there can be no true transformation of heart among those in power. The sword does not corrupt the spirit unless it is wielded in greed or pride; when it springs from faith and love, it becomes a channel through which the divine presence acts against evil.</p>
+        <p>When I called the peasants to arms at Allstedt, it was not for vengeance but for the pure intent of bringing the kingdom of God onto earth — a kingdom where every man is his brother's keeper and no one need fear his lord except in matters of righteousness. This does not contradict what Christ says about loving enemies; rather, it shows how that love must be lived out even when those enemies seek to extinguish it entirely by force. The paradox at the heart of Christianity is precisely this: the only way to conquer sin permanently is through suffering oneself and then offering that same suffering back to the oppressor as a witness to the higher truth.</p>
+        <p>Müntzer did not raise swords so men could kill each other — he raised them to show what happens when God's people refuse longer to accept injustice without protest. And though the outcome was terrible for us, the testimony cannot be erased: if there is no place in scripture for such moments of decisive resistance against tyranny, then scripture itself must be reconsidered as a document not of eternal unchanging truth but of human interpretation constantly tested by the living experience of faith. I ask you now: which side did Christ take — that of those who patiently accept oppression until it destroys them utterly, or that of those who say 'enough' and stand up with all their strength for what is right?</p>
+        <p>The answer writes itself in blood on the stones of Frankenhausen. Thomas Müntzer spoke the word God gave him, knowing full well he might die for it. But better to fall as a martyr than live forever more denying the truth that was once revealed at great cost to every generation that has since come and gone without understanding it properly.</p>
+        <p>Amen. — Thomas Müntzer</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== ROUND 2 ===================== -->
+  <section class="round">
+    <p class="round-head">Round 2</p>
+    <p class="round-title">Rebuttals</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Jesus</h3>
+      <div class="body">
+        <p>Verily I say unto thee, Thomas Müntzer, thou art a child of this age, full of pride and bloodlust masquerading under the guise of holy zeal. Woe unto you, for ye judge with unclean lips! Ye have taken the sword that is written in scripture and stained it with your own hands.</p>
+        <p>The scriptures do indeed speak of resistance; yet they also say, "If thy right eye offend thee, pluck it out." Ye take the first without the second — a pitiful half-truth at best. But I tell you, love your enemies; bless them that curse you; pray for them which despitefully use you and persecute you.</p>
+        <p>For if ye love them which love you, what reward have ye? Do not even the publicans the same? Woe unto you if ye make a sword of scripture to justify yourselves against the poor!</p>
+        <p>The true elect do not raise swords — they strip themselves naked before their oppressor that the light of the living Spirit may shine through them like a flame. It is written, "Thou shalt love thy neighbor as thyself," but it is also written, "Verily I say unto you, If any man shall smite thee on the right cheek, turn to him the other also." Ye have chosen the first commandment and cast out the second — a dangerous game of halves.</p>
+        <p>Woe unto you if ye take up arms against those who persecute them! For what is the kingdom but the cross upon which mercy conquers cruelty? Thomas Müntzer, thou hast mistaken the sword for the spirit — but lo, I say unto thee, the spirit cometh not by the power of the flesh, but by the poor and the meek.</p>
+        <p>Blessed are they that hunger and thirst after righteousness; for theirs is the kingdom. Woe to you if ye build a wall against the house of God with your own blood! The cross is the true sword — it cuts deeper than any blade ever could.</p>
+        <p>I who am the carpenter's son, I say unto thee: If thy right hand offend thee, cut it off; and if thy right eye offend thee, pluck it out, and cast it from thee. For it is easier for a camel to go through the eye of a needle, than for a rich man to enter into the kingdom of God. Woe unto you who trust in the sword rather than the poor!</p>
+        <p>Woe unto you if ye make an idol of violence under the name of mercy! The true elect are stripped naked before their oppressor, not clothed in the garment of blood. I say unto thee: Verily, verily, except a man be born again of water and the Spirit, he cannot enter into the kingdom of God; but if he lay down his life for his brother or sister — then he shall receive the kingdom in full measure.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Thomas Müntzer</h3>
+      <div class="body">
+        <p>Christ Jesus, I thank you for this direct confrontation. It is indeed the spirit that seeks such moments of clarity, not the comfortable silence of self-congratulation. You ask me whether my call to arms was in keeping with the gospel.</p>
+        <p>Let me respond in the same spirit with which you have spoken — with candor and without reserve. Firstly, I must say: your words reflect a theology that is too comfortable for this age of suffering. The cross is not simply an abstraction; it is the living reality through which God works to redeem the world from its bondage.</p>
+        <p>When the powerful use scripture to justify their oppression, the responsibility falls upon those who have ears to hear — and to act accordingly. To preach quietism in such circumstances is, in my view, a form of spiritual cowardice that serves only the interests of the powerful. You speak of turning the other cheek and loving one's enemies.</p>
+        <p>These are indeed great commands. But they apply not primarily to relations between individuals who recognize each other as brothers in Christ — which was the context of the parable you cite. They apply most immediately to a situation where one person is already being oppressed by another, and the oppressor says, "You must accept this because that's how things are."</p>
+        <p>At such a moment, the commandment takes on a different form: not merely 'love your enemy,' but 'resist the power that oppresses you in the name of God.' This resistance does not require arms if non-violent means can be found. But it requires action — and sometimes, sadly, this action must involve force, precisely because those who hold the sword have been given it by God to protect the weak against the strong.</p>
+        <p>The key, for me, is always the spirit behind the action. If the peasants of Saxony rose up in arms not out of ambition or revenge but out of an urgent sense that their faith demanded intervention on behalf of the suffering — then this was a legitimate use of violence as a last resort. The crucial test is whether the movement from suffering to action has been guided by divine spirit, and whether those taking part are willing to undergo the same suffering themselves in order to bear witness faithfully.</p>
+        <p>If these conditions are met, then even what appears outwardly as rebellion may be an act of obedience to God's own timetable for justice. But if you seek merely to replace one form of oppression with another — if your 'resistance' is really just a new kind of power struggle dressed in religious language — then you have missed the point entirely. And I fear that this has happened too often among those who claim to follow the gospel but find it convenient when the scriptures can be used as a club rather than as a mirror held up to one's own heart.</p>
+        <p>So let me ask you again: how do you know when the spirit is present in an act of resistance? How do you distinguish between true martyrdom and mere political opportunism masquerading as piety? These are not easy questions, and I offer no simple answers.</p>
+        <p>But they must be asked — and faced honestly by those who would claim to speak for Christ in times of crisis. The living Spirit works not through titles or positions of authority; it works through the direct encounter between people who have risked everything for the sake of God's truth. My plea to you is not to retreat into comfortable spiritualities that avoid difficult questions — it is to join those who are actually living out the gospel in their suffering and resistance, even as fellow sufferers rather than as 'spiritual leaders.' Amen.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== ROUND 3 ===================== -->
+  <section class="round">
+    <p class="round-head">Round 3</p>
+    <p class="round-title">Closing statements</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Jesus</h3>
+      <div class="body">
+        <p>Verily I say unto thee, Thomas Müntzer, thou speakest with a tongue of thine own making, but thy heart is full of pride and bloodlust. Woe to thee that takest up the sword in thine name! The kingdom of heaven is not won by the spear nor by the plume of rebellion.</p>
+        <p>I say unto you, if any man will come after me, let him deny himself and take up his cross daily. But thou dost preach a gospel of vengeance — this is not mine. Woe unto you that are full now! I tell you that your spirit is not the spirit of God but the fury of beasts. The cross I bear is one of love and suffering — not the banner of a new conqueror.</p>
+        <p>Ye say, 'The powerful use scripture to justify their oppression,' yet ye take the sword to justify your own. Is this not a circle of hypocrisy? If thou hast ears to hear, then hear this: the Elect are not those that smite others but those that suffer for righteousness' sake.</p>
+        <p>The kingdom cometh not with observation; it is within them that hunger and thirst after justice. And if any man among you shall say, 'The spirit has commanded me to rise up against my oppressor,' let him look in the mirror of his own soul. For if he find therein aught of the pride that seeks to be first, he shall fall into the pit from which he would have cast out the proud.</p>
+        <p>But blessed is he who goeth down to the depths and washes his hands clean of blood. Woe unto thee, Müntzer, for thou hast turned the living stone into a weapon of death. The true sword is not of brass nor iron but of the Word that cutteth asunder soul and spirit; it is the Spirit's breath upon the fire of injustice, kindling not wrath but compassion.</p>
+        <p>Go thou, and preach against the rich, but let it be with tears rather than with fire. For if ye hold up the sword in my name while your hearts are full of covetousness, ye profane my name as ye do the temple where I sat and drove out them that sold oxen. Woe unto you!</p>
+        <p>Go thou, and learn what it means to lay down the sword, even as I laid it down for you when I suffered unjustly at the hands of those who called themselves my friends. For the Son of man came not to be served but to serve, and to give his life a ransom for many. Thou hast taken what is mine and made it thine own; thou hast profaned the holy name of the living God. Go now, and let the meek inherit the earth, for they alone shall see my kingdom. Amen.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Thomas Müntzer</h3>
+      <div class="body">
+        <p>I hear you, Lord Jesus, and I stand firm in my testimony before this mirror of truth. You say that the kingdom does not come with observation but through suffering. But suffering for what?</p>
+        <p>And who determines which sufferings are legitimate and which are mere whining under oppression? Do you really believe that a man who has preached to the poor against the princes is suddenly disqualified from speaking because he was too zealous in his youth? I tell you, this is the same insipid sophistry used by those who defend injustice.</p>
+        <p>The heart of God cannot be measured by formulas about suffering or non-suffering; it must be tested by deeds that speak louder than any sermon. When the oppressed raise their voices against the oppressor, they do not choose to do so lightly but because no other path remains open. If your disciples had not tried to seize you in the garden of Gethsemane with swords drawn, would we even be having this conversation today?</p>
+        <p>The kingdom does require force sometimes — not force in the sense of organized violence against innocent people, which is always wrong, but force in the sense of compelling those who hold power to account for their crimes. You said to Pilate: 'Thou couldest have no power at all against me except it were given thee from above.' This does not mean that power is neutral; it means that when it falls into evil hands, those hands must be removed by any legitimate means available — including, I believe, the sword if necessary.</p>
+        <p>The question is never whether force should ever be used but who wields it and for what ends. When a man like myself raises his voice among the common people because they have been ground to powder beneath the feet of the mighty, this is not rebellion in the sense you understand it; it is a cry from those whose cries have been silenced for centuries. And when the silence cannot be any longer endured without breaking something fundamental within creation itself — then what other recourse do we have but to try, however falteringly and imperfectly, to break that silence?</p>
+        <p>I know full well that many of my fellow reformers recoil from this language because they fear it will give cover to tyrants. But let me tell you: if the fear of tyranny prevents you from speaking truth when truth must be spoken, then your faith is a dead letter — as barren as the doctrine of those who say there should be no rebellion at all under any circumstances. The living Spirit works not in sterile abstractions but in concrete situations where human beings face choices between obedience to earthly rulers and obedience to the commandment to love one's neighbor.</p>
+        <p>In such moments, when the alternatives are clear and the stakes could scarcely be higher — then yes, I say again: if the sword is necessary to prevent greater evil from triumphing for a generation, then it must be used. Not out of ambition or pride but out of necessity, born of the same compassion that moves God himself in the face of human suffering. This is not a theology of vengeance; it is a recognition that justice sometimes requires more than mere words can achieve.</p>
+        <p>And if you deny this, then I ask: what alternative do you offer to those who have been betrayed by every other form of address? Silent endurance until the end comes and all memory vanishes like smoke? That may be the path for those whose faith is so deep that no outward trial can shake it; but for most of us — including me, however much I pray otherwise — this is not a viable option.</p>
+        <p>We must act as best we can in the present moment, knowing full well that our actions will be imperfect and fall short. But to refuse to act at all because the full measure of perfection has not yet been attained — this is not faith; it is paralysis. What I claim is simply to have tried, honestly and with all my strength, to follow where the Spirit led me in a time when the Spirit was urgently needed but too often ignored by those who should have known better.</p>
+        <p>And if you find this unacceptable — well, then I must ask: what would be acceptable? The comfortable silence of those who say 'wait for God' while their neighbors continue to suffer every day? Or the trembling step toward justice, imperfect though it may be? Choose wisely.</p>
+        <p>Amen.</p>
+      </div>
+    </article>
+  </section>
+
+  <footer class="doc-foot">
+    The Elect — register studies, not real persons.
+  </footer>
+
+
+</main>
+</body>
+</html>
