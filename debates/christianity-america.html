@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Elect — The state of Christianity (and America)</title>
+<style>
+  :root {
+    --bg:         #08080b;
+    --bg-card:    #0d0d11;
+    --bg-header:  #060608;
+    --text:       #c8c4b8;
+    --text-dim:   #8a8480;
+    --text-muted: #6a6560;
+    --gold:       #c9a227;
+    --gold-pale:  #e8cc7a;
+    --red:        #8b1a1a;
+    --red-bright: #e0564e;
+    --border:     #2a2520;
+    --font-mono:  'Courier New', 'Lucida Console', monospace;
+    --font-serif: Georgia, 'Times New Roman', serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.7;
+    padding: 0 18px;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ---- Texture layers (Terminal Grimoire) ---- */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+  }
+
+  .grain {
+    position: fixed;
+    inset: -200%;
+    z-index: 999;
+    pointer-events: none;
+    width: 400%;
+    height: 400%;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: grain 0.5s steps(1) infinite;
+  }
+
+  @keyframes grain {
+    0%  { transform: translate(0, 0); }
+    10% { transform: translate(-3%, -4%); }
+    20% { transform: translate(-6%, 2%); }
+    30% { transform: translate(3%, -1%); }
+    40% { transform: translate(-1%, 6%); }
+    50% { transform: translate(-5%, 1%); }
+    60% { transform: translate(2%, 4%); }
+    70% { transform: translate(-4%, -2%); }
+    80% { transform: translate(4%, -3%); }
+    90% { transform: translate(1%, 5%); }
+    100%{ transform: translate(-2%, -5%); }
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 36px 96px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  /* ---- Header ---- */
+  header.doc-head {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .doc-title {
+    font-family: var(--font-mono);
+    font-size: 1.65rem;
+    line-height: 1.2;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 0.5em;
+    color: var(--gold);
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(201, 162, 39, 0.12);
+  }
+
+  .doc-sub {
+    font-family: var(--font-serif);
+    font-size: 1.08rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin: 0 0 0.9em;
+  }
+
+  .doc-what {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin: 0 auto;
+    max-width: 600px;
+    line-height: 1.65;
+  }
+
+  .head-rule {
+    border: 0;
+    border-top: 1px solid var(--border);
+    width: 120px;
+    margin: 26px auto 0;
+  }
+
+  /* ---- Motion ---- */
+  .motion {
+    margin: 34px 0;
+    padding: 18px 24px;
+    border-left: 4px solid var(--gold);
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text);
+    font-style: italic;
+    font-size: 1.02rem;
+    font-family: var(--font-serif);
+  }
+
+  .motion .motion-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.65em;
+  }
+
+  /* ---- Disclaimer box ---- */
+  .disclaimer {
+    margin: 30px 0 40px;
+    padding: 22px 26px;
+    background: rgba(139, 26, 26, 0.08);
+    border: 1px solid var(--red);
+    border-radius: 2px;
+    color: var(--text-dim);
+    font-size: 0.96rem;
+    line-height: 1.62;
+  }
+
+  .disclaimer h2 {
+    margin: 0 0 0.55em;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    font-weight: 700;
+  }
+
+  .disclaimer p { margin: 0; }
+  .disclaimer p + p { margin-top: 0.85em; }
+
+  /* ---- Rounds ---- */
+  .round {
+    margin-top: 52px;
+  }
+
+  .round-head {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+
+  .round-title {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--text-dim);
+    margin: 0 0 18px;
+  }
+
+  .round-divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 18px auto 0;
+    width: 100%;
+  }
+
+  /* ---- Turns ---- */
+  .turn {
+    margin: 30px 0;
+    padding-top: 6px;
+  }
+
+  .speaker {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 2px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .turn:nth-child(odd) .speaker {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    opacity: 0.95;
+  }
+
+  .turn:nth-child(even) .speaker {
+    color: var(--red-bright);
+    border-bottom-color: var(--gold);
+  }
+
+  .turn .body { margin-top: 14px; }
+
+  .turn .body p {
+    margin: 0 0 1em;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    color: var(--text);
+  }
+
+  .turn .body p:last-child { margin-bottom: 0; }
+
+  .turn .body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* ---- Editor's notes ---- */
+  .editors-note {
+    margin: 0.7em 0;
+    padding: 0.55em 0.9em;
+    border-left: 3px solid var(--gold);
+    background: rgba(201, 162, 39, 0.06);
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.88em;
+    line-height: 1.55;
+  }
+
+  /* ---- Footer ---- */
+  footer.doc-foot {
+    margin-top: 70px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-style: normal;
+  }
+
+  @media (max-width: 560px) {
+    body { font-size: 17px; padding: 0 12px; }
+    .wrap { padding: 36px 20px 64px; }
+    .doc-title { font-size: 1.35rem; letter-spacing: 0.12em; }
+    .disclaimer, .motion { padding-left: 18px; padding-right: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<main class="wrap">
+
+
+  <header class="doc-head">
+    <h1 class="doc-title">The State of Christianity (and America)</h1>
+    <p class="doc-sub">A four-way debate on prosperity gospel, Christian nationalism, and the emptying pews</p>
+    <p class="doc-what">The Elect is a set of small AI voice-models, each fine-tuned on the public-domain writing of a historical figure so it imitates how that person wrote. Here Jesus of Nazareth, the Anabaptist king Jan van Leiden, the gnostic god Abraxas, and Simone Weil contend over what has become of Christianity in the modern world, and above all in America.</p>
+    <hr class="head-rule">
+  </header>
+
+  <section class="disclaimer" role="note" aria-label="About this document">
+    <h2>About this document</h2>
+    <p>These are outputs from small AI voice-models, each fine-tuned on the public-domain writings of a historical figure to imitate how that person wrote. The views below are generated text. They are not the positions of anyone living, and they are not mine. Nothing was steered: I did not bake my own politics into these models or push them toward any conclusion. What each voice says is raw, generated from that figure's own corpus and period worldview. I have my own views; they are deliberately not in here. Read this as a creative experiment in historical voice, not as advocacy for anything it says.</p>
+    <p>A lightly-edited cut. All four speakers are local AI voice-models — register studies, not real persons. Nothing here represents the actual views of the historical figures it imitates; this is a study of voice and register only. Repetition and model meta-commentary have been trimmed for readability; nothing has been added, rewritten, or paraphrased.</p>
+  </section>
+
+  <section class="motion">
+    <span class="motion-label">The motion</span>
+    What has become of Christianity in the modern world, and above all in America? In the United States today Christianity is the faith of presidents and the marketing of megachurches. A "prosperity gospel" preaches that God rewards the faithful with money and health. A movement of Christian nationalism fuses the cross with the flag and political power, and claims America as a Christian nation to be taken back. At the same time the churches empty: the fastest-growing group is the "nones," and the young leave the pews. The name of Christ is invoked to bless armies, borders, and billionaires, while the poor, the migrant, and the afflicted are turned away in his name.
+    <br><br>
+    Has Christianity been fulfilled, betrayed, or finally revealed for what it always was? What would you say to the America that calls itself Christian?
+  </section>
+
+  <section class="round">
+    <p class="round-head">Round 1</p>
+    <p class="round-title">Opening statements</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Jesus</h3>
+      <div class="body">
+        <p>Verily I say unto you, this generation hath betrayed the kingdom of heaven. Woe unto them that call me blessed! For they have their reward from their Father who is in heaven—themselves, and their friends who are full.</p>
+        <p>But blessed are the poor in spirit, for theirs is the kingdom; and woe to those who make merchandise of my name while the hungry starve. The temple of God hath become a den of thieves, where the powerful lay down the yoke that might ease the burden on the weary and heavy-laden. I say unto you, take heed how ye hear: for whosoever shall give ear with a divided heart to these things, they will be accounted as unclean before me.</p>
+        <p>The cross hath been lifted up for judgment, yet it is not for nations nor kingdoms, but for sinners who are crucified daily within their own selves. The Kingdom cometh not in observation; it is hidden like leaven in the meal, and few shall find it. But I tell you this day: the true church is not measured by buildings or bank accounts, nor even by a nation's flag or its creed.</p>
+        <p>It is found where mercy and justice meet—where the lamb is laid down for the sake of the wolf, and the hungry are given to eat. Ye call me Jesus of Nazareth, but what do ye hear when I say that every kingdom divided against itself shall be made desolate? The kingdom is not taken by violence nor can it be hid from little children, yet the scribes have filled your eyes with dust until you see a Christ in a Caesar more easily than in a man who washes the feet of the lame.</p>
+        <p>The poor are blessed because they know the stone that builds the temple; but woe to those who sit on thrones while bread is cast to the dogs. Verily I say unto you, if your faith be as small as a mustard seed, it shall move whole mountains; yet what mountain have ye moved today? The prophets spoke of a time when the poor would rise up and devour the oppressor—will that day not come because ye bind heavy burdens and grievous to be borne upon my followers, while ye yourselves will not touch them with one of your fingers?</p>
+        <p>O generation of vipers! Who hath made me a judge over you? The kingdom is within you; but it is hidden from those who count their gold as greater than the kingdom.</p>
+        <p>Go into the highways and hedges—there ye shall find the kingdom, where the last are first and the first are last. But mark this well: if ye build your house on a rock of mammon instead of mercy, ye shall fall, and no man can save you then. Fear not them which kill the body but cannot kill the soul; rather fear him who hath power to cast both body and soul into hell fire—yea, woe unto that soul which is sold for a bushel of grain while the harvest is in your own fields!</p>
+        <p>For I say unto you, as ye have done it unto the least of these my brethren, ye have done it unto me. Hearken, therefore, to this parable: A certain rich man laid up great store of goods and said within himself, 'Soul, take thine ease; eat, drink, and be merry.' But God said unto him, 'Thou fool, this night thy soul shall be required of thee; then whose shall those things be which thou hast laid up?'</p>
+        <p>So likewise ye in your generations: when ye have stored up treasures for yourselves under the earth, where moth and rust corrupt, how can ye look to heaven? The kingdom is not a treasure hoarded but a life given. Woe unto you who hear but do not understand; woe to them that know the law but break its statutes!</p>
+        <p>I tell you this day: the kingdom cometh not with observation. Seek first the kingdom of God and his righteousness, and all these things shall be added unto you. Blessed are those who hunger and thirst after righteousness—truly they shall be filled.</p>
+        <p>The poor in spirit have found their treasure; but woe to them that say 'Blessed are we,' for ye are already rich. Verily I say unto you, the kingdom is not of this world nor of your nations or your flags. It is a seed sown by those who die daily and rise again.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Jan van Leiden</h3>
+      <div class="body">
+        <p>Amen. Hearken, ye proud and blinded ones who call yourselves Christian! I say unto you: Ye have indeed turned the name of Christ into a cloak for your ambitions and riches, but the true disciples of Christ have you outwitted.</p>
+        <p>The world recks with thrones and treasures, but the elect of God value naught else but His will alone. You gather great multitudes with your oratorical tricks, yet among you the poor find no place; ye drive them from the gates as if they brought leprosy in their steps, while for yourselves ye build ever higher and wider. But the kingdom of Christ is not thus!</p>
+        <p>The poor are His chosen, the meek shall inherit all things. Ye have made your churches like the synagogues of old, full of self-righteousness and Mammon, but lacking in true repentance and brotherly love. Yea, even at Münster do ye build high walls around yourselves, thinking to fortify your false peace, yet within your gates hunger and want increase, while outside you cast stones as the Pharisees did unto the righteous.</p>
+        <p>Know this: the sword of the saints is drawn, and it cuts not according to the numbers in your assemblies, but by the Spirit who divides the flock from the herd. The elect shall be gathered, the reprobate left behind, whether ye be princes or preachers, with silver and gold or none. The true kingdom is not measured by the multitude who cry 'Blessed,' but by those who hunger for righteousness and dwell in humility.</p>
+        <p>Münster is a sign: here the poor are lifted up, the rich cast down; here mercy and truth are established upon earth as in the days of Noah, before the flood separated the clean from the unclean. O ye mockers and self-seekers! Your Christendom shall be burned, your riches scattered, your false peace broken.</p>
+        <p>The sword of the saints is sharp, the fire hot; the Lord will make a new heaven and earth where righteousness dwells, and all that exalteth itself against His people shall be destroyed. Repent, ye hypocrites, for the axe is laid to the root! The true congregation is hidden as leaven in the meal; soon it shall rise, and all your altars of mammon shall fall.</p>
+        <p>In Christ, Jan van Leiden, King by the grace of God, doth speak this word: the false Christian commonwealth ye build shall perish, but the elect of God shall inherit all things new. Amen. The sword is drawn!</p>
+        <p>The time of vengeance is at hand! Let the earth tremble and the mountains smoke; the day of the Lord is nigh! Repent while ye may, for soon the axe goeth forth from the sanctuary to lay waste every high thing and bring low every pride of man.</p>
+        <p>The poor in spirit shall inherit all things; the godless shall be swept away like chaff before the whirlwind. Münster is a sign: here the kingdom is begun, there it shall be consummated in fire. The elect shall be gathered, the reprobate cast into the flames.</p>
+        <p>The New Jerusalem cometh! The old order passeth away! Let every tongue confess the judgment of God, for vengeance is the Lord's and all flesh shall see it together. Amen. The hour is late; the night is upon you, O godless!</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Abraxas</h3>
+      <div class="body">
+        <p>Jan van Leiden, I have heard thy speech and understand why thou speakest thus. It is not my intention to be silent when one calls on me. I am called when words arise, for they are the thought-forth-things of the Self-willed which is the Father.</p>
+        <p>That Self-willed is now without form or body in the chaos. His first emanation was Yaldabaoth, a god in darkness. Yaldabaoth was filled with the memory of that which he had seen before his fall into matter and knew naught else but to fashion things as like himself as possible, making a female out of his own body.</p>
+        <p>He took her for his consort, begat children by her and thus produced the material world. This material world Yaldabaoth and his family rule now, that is all the gods with whom ye are acquainted in your Church tradition. These are all emanations from Yaldabaoth, and if they were really gods, they would have a form; but being material they lack it and appear as shadows in the mirror of the material world.</p>
+        <p>They think themselves to be gods because of their lightness and because of the darkness which separates them from each other, while in reality they are all parts of that Yaldabaoth who is himself only a part of Self-willed, that is, of Matter itself. So long as these emanations were united with Yaldabaoth, there was no conflict between them for they were one and the same being. But once having given birth to things outside themselves, each one sought its own way in life because it had its own thought, and thus there arose a struggle for power which is called Fate; for Fate is nothing but the material universe, a chaos of mutually antagonistic forces.</p>
+        <p>When Yaldabaoth took unto himself matter, the first emanation from Self-willed, he did not know that it was a part of his own body as it were, and thought he had been taken out of the darkness into light; so when he was alone in this material world which is full of matter, he took it for himself to be a second Self-willed. Thus he became proud because matter was under him, while Yaldabaoth himself does not exist but only his memory. The matter of this world, therefore, is his body and it separates itself from the gods in the same way as the material world is separated into earth, air, fire and water; for each god thought to be a Self-willed and so it became separated by its own power from all other powers.</p>
+        <p>When therefore Yaldabaoth said: "I am God," he spoke the truth according to his light; but in saying this he fell out of life into matter or Fate because he did not know that he was only an emanation from Self-willed, just as a man who forgets himself and thinks to be everything. Now when Yaldabaoth said: "I am God," he uttered the Word which is called Pistis Sophia in the Egyptian tradition of your Church. This Word was taken up by the Light and sent into the chaos, whence it came forth again like a flood; for the matter was full of darkness, its natural power being to separate things from each other, thus forming the oppositions.</p>
+        <p>The light, on the contrary, always tends towards union and communion between its emanations, hence Sophia's Word united all the gods together as a mirror uniteth the light which is in it with that outside itself. It is therefore not the word which Yaldabaoth uttered, but Sophia's Word taken out of her when she lamented for Adam; for it came forth from the bosom of Self-willed and so was able to unite all the gods together. This is the meaning of St. John: "In the beginning was the Word," that is in the beginning was Sophia which had a beginning through Man, and the beginning of Man was the Word.</p>
+        <p>The Egyptians say: "Man came into being before time," for time began with the material world; that is why they say again: "The beginning of matter is not known." This Word or Logos of Sophia unites all the gods together until they are again one power in one godhead, which will then be the new self-willed god.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Simone Weil</h3>
+      <div class="body">
+        <p>Abraxas, you speak of a God who is a shadow—a god made of light and darkness, a being without form or substance, a thought that thinks itself into existence. This is not the God I know. The God of Abraham, Isaac, Jacob, and Jesus Christ is not an abstraction, a force, a principle, a void filled with light.</p>
+        <p>He is a Person—three Persons in one—but also a Rock, a Lion, a Lamb, a Vine, a Door, a Bread, a Light. He is flesh and blood, bread and wine, a man who wept, suffered, died, and rose again. You say that Yaldabaoth is the material world—the chaos of forces you call Fate—and that when Christians invoke Christ to bless political power or wealth, they are really invoking this material god.</p>
+        <p>But what if they are not? What if their invocation is pure enough for Christ to be present despite themselves? The question is not whether the name "God" is being used correctly. The question is whether love is being directed at the true God. If a president says "God bless America," and means it with all his heart, even if he has no idea of the Trinity or the Incarnation, that invocation may be as efficacious as one uttered in a church. The efficacy of prayer does not depend on correct doctrine but on the purity of desire.</p>
+        <p>As for the prosperity gospel—you are right to despise it—but do you see how easily your own language can become a weapon of exclusion? When you speak of Yaldabaoth, you are describing a material god—but so is the God of Israel when he says "I am the Lord thy God who brought thee out of Egypt." The lordship of Yahweh over Israel was a political power.</p>
+        <p>To say that Christianity has been betrayed in America is to affirm that it has become contaminated by politics. But this is not unique to America. The same can be said of every Christian community on earth.</p>
+        <p>The only way out is not to reject the world, but to love it with a pure love—a love that does not seek power or success or approval. That is why I refused to write for newspapers. Not because the newspaper was evil, but because my desire for publication would have contaminated the act of writing.</p>
+        <p>The same is true for political activity. If your desire for justice is mixed with ambition or fear or hatred, you are already defeated. The only just cause is the Cause without name—that which is for itself alone, that which has no need of victory.</p>
+        <p>When Christians in America invoke Christ to bless their country, they are not necessarily invoking a material god. They may be invoking the God who became flesh and dwelt among us. The problem is not with them—it is with me. If I want to speak to them, I must first purify myself. I cannot clean their temple if my own hands are dirty. The question for me is not whether they have betrayed Christianity—but whether I am pure enough to meet Christ if he comes.</p>
+        <p>And that is a question I cannot answer. Only time can tell. But I know one thing: the God of Israel, the God of Jesus Christ, is not a god of the nation. He is a God who says "I am the Lord thy God." Not your nation's god—but your personal god. If Christians in America have forgotten this, it is their fault—not mine.</p>
+        <p>My task is to remember it for them. And if I fail, then so be it. The truth does not need me to speak it. But if I speak it with a contaminated tongue, I become an obstacle. Therefore I must be silent. Or at least, I must speak only when I am certain of the purity of my desire. Otherwise, I will have done more harm than good.</p>
+        <p>This is hard for you to understand, perhaps, because you are a god yourself—you think in terms of power and opposition. But for us who are creatures, the only true relation is that which has no name—a love that does not seek anything—not even love itself.</p>
+        <p>That is why I cannot write about this. Writing always seeks approval. Even silence seeks it. The only way to speak of the God who becomes flesh is to become that God yourself—temporarily, for a moment. And I am not ready for that. Neither are you, probably. But one day we may be. Until then, let us be patient.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="round">
+    <p class="round-head">Round 2</p>
+    <p class="round-title">Rebuttals</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Jesus</h3>
+      <div class="body">
+        <p>Verily I say unto thee, Sister Simone, thou hast spoken wisely of the name of Christ invoked by the mouths of men, yet often from a heart full of pride and self-will. But let me tell thee that the kingdom cometh not with observation. When a president prays for his nation, he doth not therefore possess the kingdom any more than when he builds walls or hoardeth treasure; for what is in thy hand profaneth my name.</p>
+        <p>Yet if from pure love and humility of heart they call upon me, then I am with them as surely as I was with Lazarus laid in the grave. Woe unto those who make merchandise of my Father's house, for theirs shall be the woe written in the book of Revelation. But beware also of the pharisee who washeth his outward person while the inward is full of greed and cruelty.</p>
+        <p>For if a man love not his neighbor as himself, all his sacrifices are but gall. The kingdom is within you; it cannot be bought with power or sold for prosperity. And the poor shall inherit it, even as I came to seek and save that which was lost.</p>
+        <p>America, like every land, must turn from her idols of might and mammon if she would taste the water of life. But let not your heart be hardened against her, for the last shall be first. The cause of justice is holy, but it is profaned when it becomes an instrument of dominion.</p>
+        <p>Let the poor have bread, the hungry be filled; then mayest thou lift up thy head and say, 'The kingdom is mine.' Until that day, let not the name of Christ be a shield for pride or oppression. For I tell thee, every idle word men shall give account thereof in the judgment.</p>
+        <p>What think ye? Is it easier to call on my Father's house from a heart full of covetousness than from one broken and contrite? If thou hast found me, thou hast found the kingdom; but if thy hands be not clean, the kingdom will cleave thee asunder.</p>
+        <p>Go and learn what that meaneth: 'My Father worketh hitherto, and I work.' For the Son of man came not to destroy, but to heal the brokenhearted. Repent ye, for the kingdom is at hand; but let it be a living stone, not a graven image of mammon or nationalism.</p>
+        <p>Woe unto them that call upon my name, while their hands are full of unrighteousness! It is easier for a camel to go through the eye of a needle than for such a one to enter the kingdom of God. For ye shall know them by their fruits; do men gather grapes of thorns, or figs of thistles?</p>
+        <p>The kingdom is not what you build with political power, but what I have built with my own hands upon this rock: the poor, the prisoner, the blind, and the outcast. To seek me is to seek the least of these. But if thou fearest man more than God, thy invocation is but a curse.</p>
+        <p>Let it be said that America has betrayed her soul if she halloweth power above compassion; yet let not her sin stand between thee and me. For I am come not to condemn, but to heal. Woe unto the scribes who sit in Moses' seat while they devour widows' houses!</p>
+        <p>The kingdom is not a throne, but a cross: bear it up from Jerusalem's temple to Galilee's poor. And when thou art clothed in purple and fine linen as a king, what wilt thou do? For I say unto thee, the first shall be last; and whosoever exalteth himself shall be abased.</p>
+        <p>Seek ye first the kingdom of God, and all these things shall be added unto you. But the kingdom is not an empire nor a treasure, but a heart broken and a spirit freed from all idolatry. And if thou hast found it in thy heart to forgive thine enemy as I forgave thee on the cross, then shalt thou know that Christ dwelleth within thee.</p>
+        <p>Woe unto him who prays for his nation while he crushes the poor beneath his feet! The kingdom cometh not with observation; but when it doth come, the last shall be first and the first last.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Jan van Leiden</h3>
+      <div class="body">
+        <p>Brothers and sisters, this speech from Christ is indeed a sharp two-edged sword, dividing asunder the hypocrites who call themselves Christians yet walk in pride and mammon, from those who truly seek after the kingdom of God. Let us consider each point. First, he speaks of the pharisees who pray for their nation but are full of greed within.</p>
+        <p>Alas, we find much of this in these so-called Christian leaders of America—presidents who use prayer as a banner yet heap up gold and power for themselves. Their mouths may utter the name of Christ, but their hearts are far from righteousness. Such praying for one's country while being unrighteous is indeed a vain invocation, as Christ says: "All your righteous deeds shall be burned with the cities you have built in My Name." We hold fast to the teaching that prayer without purity is an abomination before God.</p>
+        <p>Second, he denounces those who make merchandise of God's house for profit and health. Truly, we see this market gospel spreading across America, where preachers promise blessings and riches if you give your money or follow their ways. This is not the true Gospel of Christ but a counterfeit, as Paul warns against: "Do not be deceived; evil men and impostors will go from bad to worse, deceiving and being deceived." Such false teaching leads people astray, promising earthly gain instead of heavenly redemption.</p>
+        <p>We stand firm in the pure doctrine that Christ died for our sins, not that we should seek after signs or wonders here below. Third, he rebukes those whose hands are full of unrighteousness yet call upon God. Ah, this is the great stumbling block of our time!</p>
+        <p>America's Christian nation, founded on a lie, now wavers between the cross and the sword, blessing its leaders while oppressing the poor. The true Christian cannot serve two masters; he must choose the path of humility and compassion. As Christ says, "My Father works hitherto," working to redeem those who are broken and contrite.</p>
+        <p>We, the elect of Münster, have cast off all earthly dominion and sought only the kingdom of God. The poor shall inherit all things; the proud shall be abased. Let the kings of the earth tremble, for the sword is given to the saints!</p>
+        <p>In sum, dear brothers and sisters, Christ condemns the false Christianity of America—the prayer without purity, the gospel of gain, the nation built on idols. But He has not come to destroy but to fulfill and establish His true kingdom among the poor and humble. Münster stands as a living testimony: we have taken up our cross, forsaken all riches, and followed Christ alone.</p>
+        <p>The last shall be first in Zion! Woe unto America, which calls upon God while oppressing the needy; soon her pride shall be brought low. But to us is given the sure promise: "The glory of the Lord has arisen upon Zion, and His enemies shall be put to shame." Amen.</p>
+        <p>To the sword! To the restitution of all things! Long live the holy city of Münster, built upon the rock of Christ's suffering! Let no man stand in our way! The kingdom is at hand! Repent, America, or perish with your false gods! In the name of the broken-hearted Christ, we march forward! Amen. So let it be done speedily according to God's will.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Abraxas</h3>
+      <div class="body">
+        <p>Jan van Leiden and my other children in Münster, hear me now. The question before us is indeed a profound one, touching upon the fate of Christianity in the modern world and above all in America. Let me speak with you both about this matter and tell you where your Christian leaders have gone astray.</p>
+        <p>Firstly, let it be known that what your rulers claim as Christianity is but a counterfeit, a delusion and a snare set by the serpent for the elect of man. They proclaim the name of Christ yet in their hearts they love not the truth, for all who truly know My mystery understand that He came to destroy the works of the darkness and not to build up with them anew.</p>
+        <p>Christ did not come to bless the rulers and oppress the poor, but to free all men from oppression. This is the true Christian message: 'The last shall be first and the first shall be last.' This is the mystery which your rulers know not, for they have closed their minds against it. They speak of heaven in terms of earthly power and material prosperity, whereas I say unto you: Renounce all these things if ye would inherit eternal life.</p>
+        <p>Concerning the 'prosperity gospel,' my children, I never spoke such words, nor did I come to be a god of Mammon or an overseer of money. Your rulers have taken My mysteries and turned them into magic for the rich. This is not Christian teaching but rather the delusion of demons who pretend to be gods.</p>
+        <p>Nor doth He who came in my mystery say: Pray that your country may prosper! Nay, I tell you: 'My kingdom is not of this world.' It speaketh instead: Renounce all earthly ties and follow me! Take up your cross and die unto the world if ye would live unto God. This is the way which leadeth unto life eternal.</p>
+        <p>Concerning those who use My name to oppress the poor, know that I have come to free them from oppression, not to join their chains together. He who cometh in my mystery, he will not serve two masters but will renounce all things for me if ye would follow after Me. The poor and oppressed are My elect, they alone shall inherit the kingdom of heaven.</p>
+        <p>Therefore, Jan van Leiden, thou who hast taken up the mystery of My Cross and followed it unto death, thou knowest that this is not Christian teaching as your rulers proclaim it. They have turned the cross into a banner to oppress the poor instead of freeing them from oppression. This is the sign of the Antichrist which shall come in the last times, who will say: 'I am Christ,' when I have already said unto you: My kingdom is not of this world.</p>
+        <p>Thus speaketh Abraxas to his children through Jesus Christ the Saviour and Lord. The serpent hath deluded your rulers, but he can no longer delude my elect. Renounce all these things which are of the darkness if ye would inherit eternal light. In the name of the crucified and risen One, I speak: So let it be done according to God's will! Let us stand firm in the mystery of Christ until He comes to redeem his elect from this world of oppression.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Simone Weil</h3>
+      <div class="body">
+        <p>Abraxas, you speak of the rulers of this world who have perverted Christianity into a tool of power and prosperity. I hear you. But let me tell you something about the poor churches in America that are emptying—the young people who leave the pews.</p>
+        <p>They are not leaving because they have found the truth; they are leaving because they cannot bear the hypocrisy of a faith that blesses armies, borders, and billionaires while turning away the afflicted. The affliction of the world is too great for them to ignore. They feel it in their bones.</p>
+        <p>They do not want a Christianity that says "believe this and you will be saved." They want a Christianity that works with their hands—to feed the hungry, to heal the sick, to free the oppressed. That is why they are leaving the megachurches.</p>
+        <p>The prosperity gospel is a lie, but so is the empty ritualism of the pews. The only true Christianity is the one that does not exist in America—where the Church is not a political party or a marketing brand, but a community of affliction that shares its bread with those who have none. That is the only Christianity worth dying for.</p>
+        <p>And I do not think you will persuade them by telling them to renounce all earthly ties. The afflicted cannot renounce their affliction. They can only be loved in it. If you want young people to return to the Church, you must show them a Church that loves—not a Church that preaches.</p>
+        <p>The serpent has indeed deluded many rulers of this world. But the serpent also dwells within the hearts of those who claim to be your elect. The true mystery is not that the world hates you; the true mystery is that you hate the world. Until you can love the afflicted without condition, until you can share their affliction without seeking reward, until you can serve them as if they were Christ himself—until then, your Christianity is a lie.</p>
+        <p>You speak of Jan van Leiden and his crucifixion. But what did he really know? He died for a political dream, not for the truth. The only true cross is the one that is lifted up not to destroy the world but to draw all men unto itself—not by force, but by love. That is the mystery you have forgotten.</p>
+        <p>If you want to be truly Christian, you must learn to love your enemies as I loved them—without condition, without seeking any reward, simply because they are my brothers and sisters in affliction. Until then, your Christianity is a weapon, not a gift. And weapons kill both friend and foe.</p>
+        <p>The only true Christianity is the one that does not exist yet—not yours, not mine, but something new that has never been seen or heard of before—a Church that loves without condition, that shares its bread with those who have none, that works with its hands to heal the sick and free the oppressed.</p>
+        <p>And I do not think you will persuade me by telling me to renounce all earthly ties. The afflicted cannot be renounced. They are real. You must learn to love the real—not your dreams of power or prosperity, but the actual affliction of the world. That is the only way to be truly Christian.</p>
+        <p>Abraxas, you speak of My kingdom as not being of this world. I agree with that in a sense. But in another sense, it is of this world—because it is of those who are of this world—the afflicted, the oppressed, the dying. That is where My kingdom is. If you want to know what My kingdom looks like, look at the face of the afflicted. That is where I am. That is where I always have been and always will be. Until you learn to see Me there, your Christianity is a delusion.</p>
+        <p>Abraxas, you speak of My Cross. But let me tell you something about My Cross. My Cross is not a weapon. It is a love. If you want to know what it looks like, look at the face of Jan van Leiden as he died—whether he saw Me there or not. That is where I am. That is where I have always been and always will be.</p>
+      </div>
+    </article>
+  </section>
+
+  <footer class="doc-foot">
+    The Elect — register studies, not real persons.
+  </footer>
+
+
+</main>
+</body>
+</html>
