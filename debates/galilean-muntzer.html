@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Elect — Jesus (The Galilean, measured) and Thomas Müntzer</title>
+<style>
+  :root {
+    --bg:         #08080b;
+    --bg-card:    #0d0d11;
+    --bg-header:  #060608;
+    --text:       #c8c4b8;
+    --text-dim:   #8a8480;
+    --text-muted: #6a6560;
+    --gold:       #c9a227;
+    --gold-pale:  #e8cc7a;
+    --red:        #8b1a1a;
+    --red-bright: #e0564e;
+    --border:     #2a2520;
+    --font-mono:  'Courier New', 'Lucida Console', monospace;
+    --font-serif: Georgia, 'Times New Roman', serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.7;
+    padding: 0 18px;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ---- Texture layers (Terminal Grimoire) ---- */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+  }
+
+  .grain {
+    position: fixed;
+    inset: -200%;
+    z-index: 999;
+    pointer-events: none;
+    width: 400%;
+    height: 400%;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: grain 0.5s steps(1) infinite;
+  }
+
+  @keyframes grain {
+    0%  { transform: translate(0, 0); }
+    10% { transform: translate(-3%, -4%); }
+    20% { transform: translate(-6%, 2%); }
+    30% { transform: translate(3%, -1%); }
+    40% { transform: translate(-1%, 6%); }
+    50% { transform: translate(-5%, 1%); }
+    60% { transform: translate(2%, 4%); }
+    70% { transform: translate(-4%, -2%); }
+    80% { transform: translate(4%, -3%); }
+    90% { transform: translate(1%, 5%); }
+    100%{ transform: translate(-2%, -5%); }
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 36px 96px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  /* ---- Header ---- */
+  header.doc-head {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .doc-title {
+    font-family: var(--font-mono);
+    font-size: 1.65rem;
+    line-height: 1.2;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 0.5em;
+    color: var(--gold);
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(201, 162, 39, 0.12);
+  }
+
+  .doc-sub {
+    font-family: var(--font-serif);
+    font-size: 1.08rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin: 0 0 0.9em;
+  }
+
+  .doc-what {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin: 0 auto;
+    max-width: 600px;
+    line-height: 1.65;
+  }
+
+  .head-rule {
+    border: 0;
+    border-top: 1px solid var(--border);
+    width: 120px;
+    margin: 26px auto 0;
+  }
+
+  /* ---- Motion ---- */
+  .motion {
+    margin: 34px 0;
+    padding: 18px 24px;
+    border-left: 4px solid var(--gold);
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text);
+    font-style: italic;
+    font-size: 1.02rem;
+    font-family: var(--font-serif);
+  }
+
+  .motion .motion-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.65em;
+  }
+
+  /* ---- Disclaimer box ---- */
+  .disclaimer {
+    margin: 30px 0 40px;
+    padding: 22px 26px;
+    background: rgba(139, 26, 26, 0.08);
+    border: 1px solid var(--red);
+    border-radius: 2px;
+    color: var(--text-dim);
+    font-size: 0.96rem;
+    line-height: 1.62;
+  }
+
+  .disclaimer h2 {
+    margin: 0 0 0.55em;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    font-weight: 700;
+  }
+
+  .disclaimer p { margin: 0; }
+  .disclaimer p + p { margin-top: 0.85em; }
+
+  /* ---- Rounds ---- */
+  .round {
+    margin-top: 52px;
+  }
+
+  .round-head {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+
+  .round-title {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--text-dim);
+    margin: 0 0 18px;
+  }
+
+  .round-divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 18px auto 0;
+    width: 100%;
+  }
+
+  /* ---- Turns ---- */
+  .turn {
+    margin: 30px 0;
+    padding-top: 6px;
+  }
+
+  .speaker {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 2px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .turn:nth-child(odd) .speaker {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    opacity: 0.95;
+  }
+
+  .turn:nth-child(even) .speaker {
+    color: var(--red-bright);
+    border-bottom-color: var(--gold);
+  }
+
+  .turn .body { margin-top: 14px; }
+
+  .turn .body p {
+    margin: 0 0 1em;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    color: var(--text);
+  }
+
+  .turn .body p:last-child { margin-bottom: 0; }
+
+  .turn .body strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* ---- Editor's notes ---- */
+  .editors-note {
+    margin: 0.7em 0;
+    padding: 0.55em 0.9em;
+    border-left: 3px solid var(--gold);
+    background: rgba(201, 162, 39, 0.06);
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.88em;
+    line-height: 1.55;
+  }
+
+  /* ---- Footer ---- */
+  footer.doc-foot {
+    margin-top: 70px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-style: normal;
+  }
+
+  @media (max-width: 560px) {
+    body { font-size: 17px; padding: 0 12px; }
+    .wrap { padding: 36px 20px 64px; }
+    .doc-title { font-size: 1.35rem; letter-spacing: 0.12em; }
+    .disclaimer, .motion { padding-left: 18px; padding-right: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<main class="wrap">
+
+
+  <header class="doc-head">
+    <h1 class="doc-title">Jesus (The Galilean, measured) ⚔ Thomas Müntzer</h1>
+    <p class="doc-sub">The sword, the Gospel, and the Peasants' War</p>
+    <p class="doc-what">The Elect is a set of small AI voice-models, each fine-tuned on the public-domain writing of a historical figure so it imitates how that person wrote. Here a measured-register Jesus of Nazareth and Thomas Müntzer himself debate the German Peasants' War of 1525.</p>
+    <hr class="head-rule">
+  </header>
+
+  <section class="disclaimer" role="note" aria-label="About this document">
+    <h2>About this document</h2>
+    <p>These are outputs from small AI voice-models, each fine-tuned on the public-domain writings of a historical figure (John Brown, Karl Marx, Thomas Müntzer, Franz Kafka, and others) to imitate how that person wrote. The views below are generated text. They are not the positions of anyone living, and they are not mine. Nothing was steered: I did not bake my own politics into these models or push them toward any conclusion. What each voice says is raw, generated from that figure's own corpus and period worldview. I have my own views; they are deliberately not in here. Read this as a creative experiment in historical voice, not as advocacy for anything it says.</p>
+    <p>A lightly-edited cut. Both speakers are local 7B voice-models — register studies, not real persons; nothing here represents anyone's actual views. Repetition and model meta-commentary have been trimmed for readability; nothing has been added or rewritten. The raw transcript is kept alongside.</p>
+  </section>
+
+  <section class="motion">
+    <span class="motion-label">The motion</span>
+    In 1525 Thomas Müntzer led the German peasants in revolt, preaching that the Elect must take up the sword of Gideon and cut down the godless princes and prelates so the Kingdom of God could be raised on earth. He waged it in the name of Christ. It ended in slaughter at Frankenhausen; Müntzer was captured, tortured, and beheaded.
+    <br><br>
+    The question: Jesus of Nazareth — did Müntzer's revolt honor your Gospel or betray it? Was the sword raised in your name righteous, or blasphemy? And Müntzer: defend your theology of the living Spirit and the cleansing sword of the Elect, before the very Lord you claimed to serve.
+  </section>
+
+  <section class="round">
+    <p class="round-head">Round 1</p>
+    <p class="round-title">Opening statements</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Jesus (The Galilean)</h3>
+      <div class="body">
+        <p>Verily I say unto thee, Thomas Müntzer, and all those who raise a sword in my name: your heart is darkened by pride and misunderstanding. I come not to send peace upon earth, but a sword — yet let not that sword be of this world's making.</p>
+        <p>Müntzer spoke of an Elect who must rise up and judge the world. But the kingdom is not won by conquest, nor by force, but by humility and love. The sword of my kingdom is the word of truth, spoken with gentleness; it cutteth asunder sin and pride, yet heals the wounds left by its edge.</p>
+        <p>If thou must bear a cross, let it be light, for I lay down my life that all men might live. The first shall be last; the meek inherit the earth. Müntzer's sword was of iron and blood; mine is of spirit and truth.</p>
+        <p>For verily I say unto you, he who liveth by the sword shall perish by the sword; but he who seeketh first the kingdom of my Father resteth under the sheltering wings of divine mercy. Consider well what thou hast done: didst thou truly serve my Father's will, or did thy heart run before? For every tree is known by its fruit. Now show me the fruits of thy spirit — the love that forgiveth, the humility that serveth, and the peace that maketh no war.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Thomas Müntzer</h3>
+      <div class="body">
+        <p>Christendom has been betrayed by those who claim to speak my Master's name while serving instead the interests of the powerful. You say, <em>the kingdom is won not by force but by love.</em> And I ask: what kind of love allows the poor man to be ground underfoot by his lord's boot, his hunger justified because it teaches patience?</p>
+        <p>The patience that endures injustice is not virtue — it is endurance, and endurance for its own sake is a form of idolatry. God does not call us to suffer in silence while our brothers are slaughtered; he calls us to stand with them in the witness of their blood. This is why I raised my voice against the princes, and why I took up arms when those who should have protected the defenseless turned instead toward plundering them.</p>
+        <p>You speak of forgiveness — yes, I know what the scriptures say about forgiving one's enemies seventy times seven. But those who have been seventy times seven times betrayed by those claiming to be their protectors: how are they to respond? Not with passive resignation, but with the active resistance that Scripture itself sanctions where only force can break the hold of oppression.</p>
+        <p>You complain of the bloodshed at Frankenhausen. I remind you that the blood shed there was not innocent, but the inevitable consequence of decades of tolerated injustice. Will you remain content to preach patience while the harvest is allowed to rot in the field? Those who fear the cost are already serving the god of this world, whose interests they confuse with Christian orthodoxy. I serve no such master.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="round">
+    <p class="round-head">Round 2</p>
+    <p class="round-title">Rebuttals</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Jesus (The Galilean)</h3>
+      <div class="body">
+        <p>Verily I say unto thee, Thomas Müntzer, the kingdom of heaven is not won by the sword but by the meekness of heart. The Elect are they who forgive seventy times seven, not they who seek to avenge wrongs.</p>
+        <p>The bloodshed at Frankenhausen was a bitter harvest; but it was not God's will that this should come to pass. Thou sayest, <em>I took up arms when those who should have protected the defenseless turned instead toward plundering them.</em> But a man cannot serve two masters: ye cannot serve God and mammon. If thine enemy hunger, feed him; if he thirst, give him drink; for in so doing thou shalt heap coals of fire upon his head.</p>
+        <p>The sword of Gideon was a symbol, not an excuse; it spoke of the light that overcometh darkness, not the darkness that seeks to extinguish the light. For I am the light of the world: he that followeth me shall not walk in darkness.</p>
+        <p>The transformation you sought was possible — not through arms, but through the love that casteth out fear. For whosoever shall exalt himself shall be abased, and he that humbleth himself shall be exalted. Blessed are the peacemakers, for they shall be called the children of God. For what is a man profited, if he gain the whole world and lose his own soul?</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Thomas Müntzer</h3>
+      <div class="body">
+        <p>Brother Jesus, I accept thy word and challenge gladly. But let me ask thee: if the sword is not the instrument of the Elect, what then is?</p>
+        <p>The princes have shown themselves not merely indifferent to justice but enemies of it, upholding their own interests against Christendom at every turn. When the legitimate channels for redress — prayer, petitioning the magistrates, taking up the cross — all fail, what remains except action in God's name? I have lived long enough among those who claimed to fear God while serving Mammon that I know when true religion has ended and temporal power begun.</p>
+        <p>You point to the wheat and the tares that grow together until the harvest. To wait for a state of affairs in which the wheat alone exists, without the appearance of tares, is to wait forever — such perfection does not exist on this earth. What we must do instead is recognize that the kingdom of God already begins among those who seek it genuinely, even if their methods are flawed, and then work within that beginning to make it more fully what it intends to be.</p>
+        <p>This is what I did in Allstedt: I preached the pure word, I organized a community based on mutual aid rather than exploitation, and I armed us not against other Christians but against those who had appropriated the name of Christ for their own enrichment. God does indeed act without our help; but he also requires us to be awake and responsive when his action comes. To sleep through the night when the lion has entered the stable is no witness to divine power.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="round">
+    <p class="round-head">Round 3</p>
+    <p class="round-title">Closing statements</p>
+    <hr class="round-divider">
+
+    <article class="turn">
+      <h3 class="speaker">Jesus (The Galilean)</h3>
+      <div class="body">
+        <p>Verily I say unto thee, Thomas Müntzer, thou hast spoken much of violence, and of a kingdom that must be seized by the sword. Yet have I come to heal the world, not to destroy it. For whosoever taketh the sword shall perish with the sword.</p>
+        <p>Is not my Father greater than all? The kingdoms of this world are as a fig tree in autumn; they fall without thee striking them down. The Elect are those who turn the other cheek, who go the second mile, who forgive seventy times seven. For the Father maketh his sun to rise on the evil and on the good, and sendeth rain upon the just and upon the unjust.</p>
+        <p>The kingdom of heaven is not a war but a wedding feast: invite the lame and the blind. Blessed are the meek, for they shall inherit the earth. Woe unto you if ye build your kingdoms on blood!</p>
+        <p>The kingdom cometh not by force, but by love; and whosoever entereth therein must first be cleansed from his own heart. For I am the vine, and ye are the branches: if a man abide in me, he shall bear much fruit. The kingdom is within thee; it cannot be taken away by might, but is given freely unto those who are humble enough to receive it. The hour cometh when all shall be revealed, and then shalt thou know whether thy sword was raised in truth or in falsehood.</p>
+      </div>
+    </article>
+
+    <article class="turn">
+      <h3 class="speaker">Thomas Müntzer</h3>
+      <div class="body">
+        <p>Christ Jesus of Nazareth, I ask you to consider carefully what you say about the sword and the kingdom of heaven. You speak as one who has never faced the full force of unrepentant oppression. The tares are not simply growing alongside the wheat; they have rooted themselves deeply into the soil, choking out the life that might otherwise spring forth from the earth.</p>
+        <p>The kingdom of God is indeed within us, but it cannot grow unless there is first a clearing away of the stones that obstruct its path. My brothers in Frankenhausen faced this truth at the moment of their greatest trial: they knew that no earthly power could save them, but only the living presence of God within them. This is not mere violence; it is the testimony of a people who have seen through every false comfort and are standing naked before the face of the true judge.</p>
+        <p>You speak of a gentle kingdom that requires no bloodshed. I ask you: how long are we to wait for such a kingdom, while tyrants continue to oppress the defenseless? The answer comes from Isaiah: <em>the wolf shall dwell with the lamb</em> — but not until every lion has been tamed, and every mountain made level, which means first that the lions themselves must be confronted.</p>
+        <p>I speak as one who has lived it to its fullest extent, and still believes with all my heart that what we did was necessary for the sake of a greater truth than any man can hold alone. Pray for us, then — but do not tell us that our faith was false because it involved blood. The true test comes after, when the harvest is gathered in. And I say to you: if you are not prepared to stand where we stood at Frankenhausen, then you have not truly heard what Christ came to teach us about suffering and witness.</p>
+      </div>
+    </article>
+  </section>
+
+  <footer class="doc-foot">
+    The Elect — register studies, not real persons.
+  </footer>
+
+
+</main>
+</body>
+</html>
