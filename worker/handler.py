@@ -333,4 +333,17 @@ def handler(job):
 
 
 if __name__ == "__main__":
+    # Pre-warm: download the primary model (the-galilean) at worker startup,
+    # before entering the job polling loop. This ensures the first job doesn't
+    # time out waiting for a 5.4GB download.
+    # Other models are downloaded on their first request (lazy).
+    primary = "the-galilean"
+    logger.info(f"Worker startup: pre-warming {primary}...")
+    try:
+        ensure_weights(MODEL_CONFIGS[primary])
+        logger.info(f"Pre-warm done: {primary} weights ready.")
+    except Exception as e:
+        # Log but don't crash — the job handler will retry and surface the error.
+        logger.error(f"Pre-warm weight download failed: {e}")
+
     runpod.serverless.start({"handler": handler})
