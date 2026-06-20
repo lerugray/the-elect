@@ -1,3 +1,4 @@
 runpod>=1.7.9
-# llama-cpp-python installed separately in Dockerfile with CUDA flags
-# to ensure proper GPU support (CMAKE_ARGS="-DGGML_CUDA=on")
+huggingface-hub>=0.23.0
+# llama-cpp-python is installed separately in Dockerfile with CUDA build flags:
+#   CMAKE_ARGS="-DGGML_CUDA=on" pip install llama-cpp-python
