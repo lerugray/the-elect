@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    background: #08080b;
+    font-family: 'Courier New', 'Lucida Console', monospace;
+    color: #c8c4b8;
+  }
+
+  /* Scanlines */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.12) 3px,
+      rgba(0,0,0,0.12) 6px
+    );
+  }
+
+  .card {
+    width: 1200px;
+    height: 630px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 70px 90px;
+    border: 3px solid #8b1a1a;
+    overflow: hidden;
+  }
+
+  /* Top gold line */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #c9a227 30%, #c9a227 70%, transparent);
+  }
+
+  /* Corner decorations */
+  .corner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-color: #c9a227;
+    border-style: solid;
+    opacity: 0.6;
+  }
+  .corner.tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
+  .corner.tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
+  .corner.bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
+  .corner.br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+
+  /* ASCII decoration — right side */
+  .ascii-deco {
+    position: absolute;
+    right: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 7.5px;
+    line-height: 1.1;
+    color: #8b1a1a;
+    opacity: 0.35;
+    white-space: pre;
+    pointer-events: none;
+    width: 380px;
+    overflow: hidden;
+  }
+
+  /* Main content */
+  .content {
+    position: relative;
+    z-index: 10;
+    max-width: 620px;
+  }
+
+  .lab-label {
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: #7a6218;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lab-label::after {
+    content: '';
+    display: inline-block;
+    width: 60px;
+    height: 1px;
+    background: #7a6218;
+  }
+
+  .title {
+    font-size: 88px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #c8c4b8;
+    line-height: 1;
+    margin-bottom: 14px;
+    text-shadow: 0 0 60px rgba(201,162,39,0.12);
+  }
+
+  .subtitle {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: #c9a227;
+    line-height: 1;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+
+  .tagline {
+    font-size: 18px;
+    color: #6b6660;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+
+  .roster-line {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .persona-chip {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: #8b1a1a;
+    border: 1px solid #4a0e0e;
+    padding: 4px 8px;
+    text-transform: uppercase;
+    background: rgba(139,26,26,0.08);
+    white-space: nowrap;
+  }
+
+  .persona-chip.gold {
+    color: #c9a227;
+    border-color: #7a6218;
+    background: rgba(201,162,39,0.06);
+  }
+
+  .persona-chip.dim {
+    color: #3d3a36;
+    border-color: #2a2520;
+  }
+
+  /* Bottom URL */
+  .url-line {
+    position: absolute;
+    bottom: 32px;
+    left: 90px;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: #3d3a36;
+    text-transform: uppercase;
+  }
+
+  .url-line span {
+    color: #7a6218;
+  }
+
+  /* Vertical rule between content and ASCII */
+  .vr {
+    position: absolute;
+    left: 660px;
+    top: 60px;
+    bottom: 60px;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, #2a2520 20%, #2a2520 80%, transparent);
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  <div class="vr"></div>
+
+  <div class="ascii-deco">+-++-++####.-.-#+##..#+++####-..
+--#-+++#.##.-##+.##--#-++####..
+#+-+-+--.++#-++..-. .# #+####..
++#--+.--#+++----+----+.+-####..
++--+-####+##++-######+++--+--+-
+-########+####+##++++++##-+##+#
+-#++++++++++++++++++--########-
+--#-+++#--+###++-+++--#######.-
+#+#+#+#+##--+-#++++#-+#+#####-.
+##+##-##.. -.# -##--++++++###-.
+++++###.-#.##.#..+ -+-++++###-#
+#+-## .###+##.#-+ ..++-+####+#
+#--+ ..##########.+++-#+#+#####
+-++++.-#++###++++ .#+--#-####-#
++---- .#++++##### .#+-+#+####--
+++-- -.+-++++#+##...#++######.-
++---. .#++##++###...+-++#####..
++#++++-++++++#+## ..#-+######--
+-----..#+##+#####..#++#######--
++++++..#++++####+..#++#######-+
+-+++..-+++++##-##-###-#######--
+++++..+#+++++-+#+ --#########..
+++#+-.-+++-#+#-+---+#########-+
+   #               --      .##+
+--+........---+--.....     #+.+
++#+++++++++++##++#+++-#++++-+.+
+-#+-+++#++++#+##+#+++#++#++--..
+++++++#++######+##+####+-+.--..
++#++#++#+#++++++#+#+#+#+.+.--..
+++-+#+#+#++++###+#####++-.+--.</div>
+
+  <div class="content">
+    <div class="lab-label">✦ Live Console</div>
+    <div class="title">THE ELECT</div>
+    <div class="subtitle">THE CONSOLE</div>
+    <div class="tagline">Summon a voice.<br>It answers in character. It is fiction.</div>
+    <div class="roster-line">
+      <span class="persona-chip gold">The Galilean</span>
+      <span class="persona-chip">Müntzer</span>
+      <span class="persona-chip">Marx</span>
+      <span class="persona-chip">John Brown</span>
+      <span class="persona-chip">Douglass</span>
+      <span class="persona-chip">Den of Thieves</span>
+    </div>
+  </div>
+
+  <div class="url-line">lerugray.github.io/the-elect<span>/console</span></div>
+</div>
+</body>
+</html>
