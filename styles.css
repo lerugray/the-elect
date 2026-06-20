@@ -280,40 +280,6 @@ body {
   .howto-paths { grid-template-columns: 1fr; gap: 2rem; }
 }
 
-/* ── WEISS SECTION ── */
-.weiss-section {
-  padding: 3rem 0 4rem;
-  border-bottom: 1px solid var(--border-dim);
-}
-
-.weiss-card {
-  max-width: 720px;
-  margin: 0 auto;
-  border: 1px solid var(--gold);
-  border-radius: 4px;
-  padding: 2rem;
-  background: rgba(201, 178, 122, 0.03);
-}
-
-.weiss-name {
-  font-size: 1.3rem;
-  color: var(--gold);
-  margin-bottom: 1rem;
-  letter-spacing: 0.05em;
-}
-
-.weiss-tag {
-  font-size: 0.8rem;
-  color: var(--text-dim);
-  font-weight: normal;
-  letter-spacing: 0.02em;
-}
-
-.weiss-desc {
-  color: var(--text);
-  margin-bottom: 1.5rem;
-}
-
 /* ── ABOUT SECTION ── */
 .about-section {
   padding: 4rem 0 3rem;
