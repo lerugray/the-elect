@@ -30,9 +30,12 @@ export const CONFIG = {
       figure: 'Jesus of Nazareth (radical)',
       hue: '#e0564e',
     },
-    // Thomas Müntzer is added in the worker config + image, but the live RunPod
-    // endpoint is still caching the pre-Müntzer image. Re-add this entry once the
-    // endpoint serves muntzergeist (codename:"muntzergeist", hue:"#d2503a").
+    {
+      codename: 'muntzergeist',
+      display: 'Thomas Müntzer',
+      figure: 'Thomas Müntzer',
+      hue: '#d2503a',
+    },
     {
       codename: 'spectre',
       display: 'Karl Marx',
