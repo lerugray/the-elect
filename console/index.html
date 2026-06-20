@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Elect — Console</title>
+<meta name="description" content="Summon a voice. It answers in character. It is fiction.">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="console-shell">
+
+  <!-- ── MASTHEAD ── -->
+  <header class="masthead">
+    <div class="masthead-inner">
+      <span class="sigil" aria-hidden="true">✦</span>
+      <span class="masthead-title">THE ELECT — CONSOLE</span>
+      <span class="sigil" aria-hidden="true">✦</span>
+    </div>
+    <p class="masthead-tagline">Summon a voice. It answers in character. It is fiction.</p>
+    <a class="masthead-back" href="../index.html">← the roster</a>
+  </header>
+
+  <!-- ── VOICE PICKER ── -->
+  <section class="picker-section" aria-label="Voice picker">
+    <div class="section-heading">
+      <span class="heading-rule" aria-hidden="true"></span>
+      <span>Select Voice</span>
+      <span class="heading-rule" aria-hidden="true"></span>
+    </div>
+    <div class="picker-row" id="picker-row" role="group" aria-label="Available voices"></div>
+  </section>
+
+  <!-- ── DISCLAIMER ── -->
+  <div class="disclaimer-bar" id="disclaimer-text" aria-live="polite"></div>
+
+  <!-- ── TRANSCRIPT ── -->
+  <main class="transcript-section" id="transcript" aria-label="Conversation transcript" aria-live="polite">
+    <!-- Turns are injected here by app.js -->
+  </main>
+
+  <!-- ── CONTROLS ── -->
+  <div class="controls-bar" role="toolbar" aria-label="Conversation controls">
+    <div class="section-heading" style="margin:0; font-size:0.67rem;">
+      <span class="heading-rule" aria-hidden="true" style="min-width:20px;"></span>
+      <span>Actions</span>
+      <span class="heading-rule" aria-hidden="true" style="min-width:20px;"></span>
+    </div>
+    <button type="button" class="ctrl-btn" id="ctrl-copy" title="Copy transcript to clipboard">COPY</button>
+    <span class="ctrl-sep" aria-hidden="true">·</span>
+    <button type="button" class="ctrl-btn" id="ctrl-download" title="Download transcript as markdown">DOWNLOAD .md</button>
+    <span class="ctrl-sep" aria-hidden="true">·</span>
+    <button type="button" class="ctrl-btn" id="ctrl-new" title="Clear conversation and start fresh">NEW</button>
+  </div>
+
+  <!-- ── COMPOSER ── -->
+  <footer class="composer">
+    <div class="composer-inner">
+      <textarea
+        id="composer-input"
+        rows="3"
+        placeholder="ask…"
+        aria-label="Your message"
+        maxlength="2500"
+      ></textarea>
+      <div class="composer-foot">
+        <span class="composer-hint">ENTER TO SEND &middot; SHIFT+ENTER FOR NEW LINE</span>
+        <span class="char-counter" id="char-counter" aria-live="polite">0 / 2000</span>
+        <button type="button" class="send-btn" id="send-btn">SUMMON</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── FOOTER ── -->
+  <div class="console-footer">
+    An experimental voice lab. Every persona is fiction. Do not act on anything any of them says.
+  </div>
+
+</div>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>

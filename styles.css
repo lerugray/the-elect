@@ -1046,3 +1046,63 @@ a.stack-item:hover { text-decoration: underline; color: var(--gold); border-colo
 .persona-card:hover .red-virgin-art { color: #ea6a60; text-shadow: 0 0 8px rgba(224,86,78,0.35); }
 .the-voices-art { color: #c3cdd9; opacity: 0.92; text-shadow: none; }     /* pale celestial steel — divine */
 .persona-card:hover .the-voices-art { color: #dde4ec; text-shadow: 0 0 8px rgba(195,205,217,0.35); }
+
+/* ── ROSTER REORG (2026-06-20) — jump-nav index + grouped sub-roster headers.
+   Group + navigate pass. Existing tokens only; dark stays. ── */
+.roster-index {
+  margin: 0 auto 3.5rem;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.012);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.roster-index-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+}
+.roster-index-label {
+  flex: 0 0 9.5rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+.roster-index-label-withheld { color: var(--text-muted); }
+.roster-index-chip {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.roster-index-chip:hover {
+  color: var(--red-bright);
+  border-bottom-color: var(--red-dim);
+}
+
+.roster-group-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 3.5rem 0 2rem;
+}
+.roster-group-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.roster-group-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .roster-index-label { flex-basis: 100%; margin-bottom: 0.1rem; }
+}
