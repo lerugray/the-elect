@@ -1096,3 +1096,39 @@ a.stack-item:hover { text-decoration: underline; color: var(--gold); border-colo
 @media (max-width: 640px) {
   .roster-index-label { flex-basis: 100%; margin-bottom: 0.1rem; }
 }
+
+/* ── CONSOLE CTA (2026-06-20) — hosted browser console entry in HOW TO RUN ── */
+.console-cta {
+  display: block;
+  text-decoration: none;
+  border: 1px solid var(--gold-dim);
+  background: rgba(201, 162, 39, 0.05);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.5rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.console-cta:hover {
+  border-color: var(--gold);
+  background: rgba(201, 162, 39, 0.09);
+}
+.console-cta-tag {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 0.5rem;
+}
+.console-cta-head {
+  display: block;
+  font-size: 1.15rem;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+.console-cta:hover .console-cta-head { color: var(--gold-pale); }
+.console-cta-sub {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}

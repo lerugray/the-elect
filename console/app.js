@@ -289,34 +289,59 @@ function mockResponse(voice) {
    GATEWAY TRANSPORT
 ──────────────────────────────────────────── */
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Submit the prompt to the gateway, then poll until the reply is ready.
+// The gateway forwards to a scale-to-zero GPU, so the first call after idle
+// is a cold start (tens of seconds; a never-seen voice downloads its weights
+// on first use). The summoning loader stays up in the caller throughout.
 async function callGateway(voice, prompt) {
   if (CONFIG.mock || !CONFIG.gatewayUrl) {
     return mockResponse(voice);
   }
-  const body = {
-    model: voice.codename,
-    prompt,
-    max_tokens: Math.min(CONFIG.defaultMaxTokens, 1024),
-  };
-  let res;
+  const base = CONFIG.gatewayUrl.replace(/\/+$/, '');
+
+  // 1) submit
+  let res, data;
   try {
-    res = await fetch(`${CONFIG.gatewayUrl}/chat`, {
+    res = await fetch(`${base}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(150_000), // 150s timeout — cold starts are slow
+      body: JSON.stringify({
+        model: voice.codename,
+        prompt,
+        max_tokens: Math.min(CONFIG.defaultMaxTokens, 512),
+      }),
+      signal: AbortSignal.timeout(20_000),
     });
+    data = await res.json().catch(() => null);
   } catch (e) {
-    throw new Error(`Network error: ${e.message}`);
+    throw new Error('The lab is unreachable right now — try again shortly.');
   }
-  let data = null;
-  try { data = await res.json(); } catch { /* non-JSON */ }
-  if (!res.ok) {
-    const detail = (data && data.error) ? data.error : `HTTP ${res.status}`;
-    throw new Error(`Gateway error: ${detail}`);
+  if (!res.ok || !data || !data.job_id) {
+    throw new Error((data && data.error) ? data.error : `Could not start the voice (HTTP ${res.status}).`);
   }
-  if (data && data.error) throw new Error(data.error);
-  return data;
+
+  // 2) poll until done (loader held by the caller)
+  const jobId = data.job_id;
+  const deadline = Date.now() + 180_000; // up to ~3 min for a first-ever cold download
+  while (Date.now() < deadline) {
+    await sleep(2500);
+    let pdata;
+    try {
+      const pr = await fetch(`${base}/poll?id=${encodeURIComponent(jobId)}`, { signal: AbortSignal.timeout(20_000) });
+      pdata = await pr.json().catch(() => null);
+    } catch {
+      continue; // transient — keep polling
+    }
+    if (!pdata) continue;
+    if (pdata.done) {
+      if (pdata.error) throw new Error(pdata.error);
+      return pdata; // { text, model, display_name, tokens, elapsed_s }
+    }
+    // still warming / in progress — keep the summoning loader up
+  }
+  throw new Error('The voice is still waking — give it a moment and try again.');
 }
 
 /* ────────────────────────────────────────────

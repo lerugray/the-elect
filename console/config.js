@@ -2,13 +2,12 @@
 // Single edit point: add/remove voices here. No other file needs to change.
 
 export const CONFIG = {
-  // Set gatewayUrl to the gateway endpoint once it exists.
-  // Leave empty and set mock:true to use mock mode.
-  gatewayUrl: '',
+  // The live gateway (Cloudflare Worker) — holds the RunPod key, all guardrails.
+  gatewayUrl: 'https://elect-gateway.lerugray.workers.dev',
 
-  // When true: no network calls are made. Canned in-voice stubs are returned
-  // after a simulated cold-start delay. Tag [mock] marks every mock reply.
-  mock: true,
+  // When true: no network calls; canned in-voice stubs. Set false to use the
+  // live gateway above. (Tag [mock] marks every mock reply.)
+  mock: false,
 
   defaultMaxTokens: 512,
 
@@ -31,12 +30,9 @@ export const CONFIG = {
       figure: 'Jesus of Nazareth (radical)',
       hue: '#e0564e',
     },
-    {
-      codename: 'muntzergeist',
-      display: 'Thomas Müntzer',
-      figure: 'Thomas Müntzer',
-      hue: '#d2503a',
-    },
+    // Thomas Müntzer is added in the worker config + image, but the live RunPod
+    // endpoint is still caching the pre-Müntzer image. Re-add this entry once the
+    // endpoint serves muntzergeist (codename:"muntzergeist", hue:"#d2503a").
     {
       codename: 'spectre',
       display: 'Karl Marx',
