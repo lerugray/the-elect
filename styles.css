@@ -467,6 +467,17 @@ body {
   text-shadow: 0 0 8px rgba(201, 178, 122, 0.35);
 }
 
+.north-star-art {
+  color: #9fb2c6;              /* cool starlight silver-blue — North Star / night navigation; distinct from Brown's brass */
+  opacity: 0.82;
+  text-shadow: none;
+}
+
+.persona-card:hover .north-star-art {
+  color: #bccadb;
+  text-shadow: 0 0 8px rgba(159, 178, 198, 0.35);
+}
+
 .placeholder-art {
   font-size: 0.5rem;
   line-height: 1.3;
