@@ -219,14 +219,25 @@ def get_model(model_name: str):
     # Ensure weights present (download on first cold start)
     local_path = ensure_weights(cfg)
 
-    logger.info(f"Loading {model_name} into GPU...")
-    t0 = time.time()
     from llama_cpp import Llama
+
+    # Probe CUDA availability: llama_cpp exposes LLAMA_SUPPORTS_GPU_OFFLOAD when
+    # built with CUDA. Fall back to CPU (n_gpu_layers=0) if not present.
+    try:
+        import llama_cpp as _lc
+        cuda_ok = getattr(_lc, "LLAMA_SUPPORTS_GPU_OFFLOAD", False)
+        n_gpu_layers = -1 if cuda_ok else 0
+    except Exception:
+        n_gpu_layers = -1  # attempt GPU; llama.cpp logs a warning if CUDA absent
+    logger.info(f"CUDA probe → n_gpu_layers={n_gpu_layers}")
+
+    logger.info(f"Loading {model_name}...")
+    t0 = time.time()
     llm = Llama(
         model_path=local_path,
         n_ctx=2048,
-        n_gpu_layers=-1,   # offload all layers to GPU
-        verbose=False,
+        n_gpu_layers=n_gpu_layers,
+        verbose=True,  # verbose so startup info appears in RunPod worker logs
     )
     elapsed = time.time() - t0
     logger.info(f"Loaded {model_name} in {elapsed:.1f}s")

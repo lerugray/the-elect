@@ -1,6 +1,6 @@
 # The Elect — RunPod Serverless GGUF Worker
 # Base: runpod/base:0.6.1-cuda12.1.0 (official RunPod CUDA base)
-# Runtime: llama-cpp-python (CUDA) + huggingface_hub + runpod SDK
+# Runtime: llama-cpp-python (CUDA, built from source) + huggingface_hub + runpod SDK
 #
 # Weight caching pattern:
 #   - Network volume at /models/ is attached to the RunPod serverless endpoint.
@@ -10,7 +10,7 @@
 
 FROM runpod/base:0.6.1-cuda12.1.0
 
-# System deps for llama-cpp-python CUDA build
+# System deps for llama-cpp-python CUDA build from source
 RUN apt-get update -qq && apt-get install -y --no-install-recommends \
     build-essential cmake git curl ca-certificates wget \
     && rm -rf /var/lib/apt/lists/*
@@ -22,12 +22,12 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# llama-cpp-python with CUDA support (built from source with GPU offload)
+# llama-cpp-python: build from source with CUDA GPU offload enabled.
+# --no-binary forces source build so CMAKE_ARGS is respected.
+# This avoids pip falling back to a CPU manylinux wheel from PyPI.
 ENV CMAKE_ARGS="-DGGML_CUDA=on"
 ENV FORCE_CMAKE=1
-RUN pip install --no-cache-dir \
-    "llama-cpp-python" \
-    --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu121
+RUN pip install --no-cache-dir --no-binary llama-cpp-python llama-cpp-python
 
 # Handler
 COPY handler.py /app/handler.py
