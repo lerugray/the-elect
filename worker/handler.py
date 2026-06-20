@@ -332,18 +332,31 @@ def handler(job):
     }
 
 
-if __name__ == "__main__":
-    # Pre-warm: download the primary model (the-galilean) at worker startup,
-    # before entering the job polling loop. This ensures the first job doesn't
-    # time out waiting for a 5.4GB download.
-    # Other models are downloaded on their first request (lazy).
-    primary = "the-galilean"
-    logger.info(f"Worker startup: pre-warming {primary}...")
-    try:
-        ensure_weights(MODEL_CONFIGS[primary])
-        logger.info(f"Pre-warm done: {primary} weights ready.")
-    except Exception as e:
-        # Log but don't crash — the job handler will retry and surface the error.
-        logger.error(f"Pre-warm weight download failed: {e}")
+def _prewarm_in_background():
+    """
+    Download the primary model weights in a background thread so the RunPod
+    SDK can start immediately (responding to health checks) while the ~5GB
+    download happens concurrently. The first job for the-galilean will block
+    briefly in ensure_weights() until the download completes, then load the
+    model into GPU.
+    """
+    import threading
 
+    def _download():
+        primary = "the-galilean"
+        logger.info(f"Background pre-warm: starting download for {primary}...")
+        try:
+            ensure_weights(MODEL_CONFIGS[primary])
+            logger.info(f"Background pre-warm: {primary} weights ready on volume.")
+        except Exception as e:
+            logger.error(f"Background pre-warm failed (non-fatal): {e}")
+
+    t = threading.Thread(target=_download, daemon=True)
+    t.start()
+    return t
+
+
+if __name__ == "__main__":
+    # Kick off weight download in background; RunPod SDK starts immediately.
+    _prewarm_in_background()
     runpod.serverless.start({"handler": handler})
