@@ -9,7 +9,7 @@ export const CONFIG = {
   // live gateway above. (Tag [mock] marks every mock reply.)
   mock: false,
 
-  defaultMaxTokens: 512,
+  defaultMaxTokens: 768,
 
   // Models array — each entry drives the voice picker, disclaimers, and loader.
   // Adding a 6th entry here is the ONLY change needed to add a voice.

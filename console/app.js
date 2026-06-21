@@ -310,7 +310,7 @@ async function callGateway(voice, prompt) {
       body: JSON.stringify({
         model: voice.codename,
         prompt,
-        max_tokens: Math.min(CONFIG.defaultMaxTokens, 512),
+        max_tokens: Math.min(CONFIG.defaultMaxTokens, 1024),
       }),
       signal: AbortSignal.timeout(20_000),
     });
@@ -342,6 +342,18 @@ async function callGateway(voice, prompt) {
     // still warming / in progress — keep the summoning loader up
   }
   throw new Error('The voice is still waking — give it a moment and try again.');
+}
+
+/* Trim a truncated reply to its last complete sentence so it never ends mid-word.
+   (Responses are capped at max_tokens; a long-winded voice can hit the cap mid-thought.) */
+function tidyResponse(s) {
+  if (!s) return s;
+  const t = s.trimEnd();
+  if (/[.!?…"'’”)\]]$/.test(t)) return t;            // already ends cleanly — leave it
+  let cut = -1;
+  for (const ch of ['.', '!', '?', '…']) cut = Math.max(cut, t.lastIndexOf(ch));
+  if (cut > t.length * 0.4) return t.slice(0, cut + 1).trimEnd() + ' …';  // back to last full sentence
+  return t + ' …';                                   // no clean boundary — just mark it cut
 }
 
 /* ────────────────────────────────────────────
@@ -384,7 +396,7 @@ async function send() {
 
   stopLoader();
 
-  const responseText = (data && data.text) ? data.text : '';
+  const responseText = tidyResponse((data && data.text) ? data.text : '');
   const isMock = !!(data && data._mock);
 
   const modelEntry = {
