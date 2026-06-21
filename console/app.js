@@ -227,15 +227,16 @@ async function attemptPatronUnlock() {
   const token = (patronTokenInput.value || '').trim();
   if (!token) return;
 
-  // TODO: wire to /verify-token endpoint when backend deploys.
-  // The gateway will respond { ok: true, tier: 'patron' } on a valid token.
-  // For now, any non-empty token sets donorUnlocked (optimistic placeholder).
-  // Replace this block with a real fetch call after running the deploy runbook:
-  //   const res = await fetch(`${CONFIG.gatewayUrl}/verify-token?token=${encodeURIComponent(token)}`);
-  //   const data = await res.json();
-  //   if (!data.ok) { show error; return; }
-  const unlocked = token.length > 0; // PLACEHOLDER — always true for any non-empty token
-  // END TODO
+  // Verify the token against the gateway (/verify-token reads the donor KV).
+  let unlocked = false;
+  try {
+    const base = CONFIG.gatewayUrl.replace(/\/+$/, '');
+    const res = await fetch(`${base}/verify-token?token=${encodeURIComponent(token)}`);
+    const data = await res.json().catch(() => ({ ok: false }));
+    unlocked = data.ok === true && data.tier === 'patron';
+  } catch {
+    unlocked = false;
+  }
 
   if (unlocked) {
     donorUnlocked = true;

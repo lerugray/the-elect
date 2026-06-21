@@ -158,12 +158,6 @@ export const CONFIG = {
       hue: '#8090a8',
     },
     {
-      codename: 'hip-priest',
-      display: 'The Hip Priest',
-      figure: 'Mark E. Smith',
-      hue: '#a0a0a0',
-    },
-    {
       codename: 'nyarlathotep',
       display: 'Nyarlathotep',
       figure: 'Nyarlathotep (Lovecraft)',
