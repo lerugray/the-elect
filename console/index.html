@@ -43,10 +43,40 @@
   <section class="picker-section" aria-label="Voice picker">
     <div class="section-heading">
       <span class="heading-rule" aria-hidden="true"></span>
-      <span>Select Voice</span>
+      <span id="picker-heading-text">Select Voice</span>
+      <!-- Patron badge — injected by app.js when ENABLE_DONOR_UNLOCK=true and unlocked -->
+      <span class="patron-badge" id="patron-badge" hidden aria-label="Patron access active">✦ PATRON</span>
       <span class="heading-rule" aria-hidden="true"></span>
     </div>
     <div class="picker-row" id="picker-row" role="group" aria-label="Available voices"></div>
+
+    <!-- ── PATRON UNLOCK ROW (app.js renders this when ENABLE_DONOR_UNLOCK=true) ── -->
+    <div class="patron-row" id="patron-row" hidden aria-label="Patron unlock">
+      <div class="patron-unlock-form" id="patron-unlock-form">
+        <span class="patron-label">PATRON ACCESS</span>
+        <input
+          type="text"
+          class="patron-token-input"
+          id="patron-token-input"
+          placeholder="paste access token…"
+          aria-label="Patron access token"
+          autocomplete="off"
+          spellcheck="false"
+        >
+        <button type="button" class="patron-unlock-btn" id="patron-unlock-btn">UNLOCK</button>
+        <a
+          class="patron-donate-link"
+          id="patron-donate-link"
+          href="https://donate.stripe.com/cNi4gzb8TduS8pia2jes004"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Donate to get a token →</a>
+      </div>
+      <div class="patron-active-row" id="patron-active-row" hidden>
+        <span class="patron-active-label">✦ Patron access active</span>
+        <button type="button" class="patron-lock-btn" id="patron-lock-btn">LOCK</button>
+      </div>
+    </div>
   </section>
 
   <!-- ── DISCLAIMER ── -->
@@ -68,7 +98,30 @@
     <span class="ctrl-sep" aria-hidden="true">·</span>
     <button type="button" class="ctrl-btn" id="ctrl-download" title="Download transcript as markdown">DOWNLOAD .md</button>
     <span class="ctrl-sep" aria-hidden="true">·</span>
+    <button type="button" class="ctrl-btn" id="ctrl-import" title="Import a previously exported .md transcript">IMPORT .md</button>
+    <span class="ctrl-sep" aria-hidden="true">·</span>
+    <button type="button" class="ctrl-btn" id="ctrl-save" title="Save this conversation to the archive">SAVE</button>
+    <span class="ctrl-sep" aria-hidden="true">·</span>
     <button type="button" class="ctrl-btn" id="ctrl-new" title="Clear conversation and start fresh">NEW</button>
+    <!-- Hidden file input for import -->
+    <input type="file" id="import-file-input" accept=".md,text/markdown,text/plain" style="display:none" aria-hidden="true">
+  </div>
+
+  <!-- ── ARCHIVE ── -->
+  <div class="archive-section" id="archive-section" aria-label="Saved conversations">
+    <button type="button" class="archive-toggle" id="archive-toggle" aria-expanded="false" aria-controls="archive-list-wrap">
+      <span class="heading-rule" aria-hidden="true" style="min-width:20px;"></span>
+      <span class="archive-toggle-label">ARCHIVE</span>
+      <span class="archive-count-badge" id="archive-count-badge"></span>
+      <span class="archive-toggle-caret" id="archive-toggle-caret" aria-hidden="true">▸</span>
+      <span class="heading-rule" aria-hidden="true" style="min-width:20px;"></span>
+    </button>
+    <div class="archive-list-wrap" id="archive-list-wrap" hidden>
+      <div class="archive-list" id="archive-list" role="list" aria-label="Saved conversations list">
+        <!-- Entries injected by app.js -->
+      </div>
+      <div class="archive-empty" id="archive-empty" hidden>No saved conversations yet.</div>
+    </div>
   </div>
 
   <!-- ── COMPOSER ── -->

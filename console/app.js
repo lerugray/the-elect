@@ -4,14 +4,16 @@
 // Gateway contract: POST ${CONFIG.gatewayUrl}/chat → { text, model, display_name, tokens, elapsed_s }
 // No external deps. No webfonts. No telemetry.
 
-import { CONFIG } from './config.js';
+import { CONFIG, ENABLE_DONOR_UNLOCK } from './config.js';
 
 /* ────────────────────────────────────────────
    CONSTANTS & STATE
 ──────────────────────────────────────────── */
 
-const LS_KEY        = 'elect-console.conversation';
-const LS_LENGTH_KEY = 'elect-console.reply-length';
+const LS_KEY          = 'elect-console.conversation';
+const LS_LENGTH_KEY   = 'elect-console.reply-length';
+const LS_ARCHIVE_KEY  = 'elect-console.saved-chats';
+const LS_DONOR_KEY    = 'elect-console.donor-unlocked';
 const CHAR_LIMIT = 2000;
 const CHAR_WARN  = 2000;
 
@@ -27,12 +29,14 @@ if (!LENGTH_OPTIONS[activeLength]) activeLength = LENGTH_DEFAULT;
 
 // Conversation is an array of { role:'operator'|'model', who, text, ts, mock? }
 let conversation = [];
-// Active voice entry from CONFIG.models
-let activeVoice = CONFIG.models[0];
+// Active voice entry from CONFIG.models (or CONFIG.modelsPatron when unlocked)
+let activeVoice = null;
 // Whether a request is in flight
 let pending = false;
 // Simulated cold-start (mock: first call is ~2.5s, subsequent ~0.8s)
 let mockCallCount = 0;
+// Donor unlock state (front-end only — optimistic until backend wires /verify-token)
+let donorUnlocked = ENABLE_DONOR_UNLOCK && localStorage.getItem(LS_DONOR_KEY) === '1';
 
 /* ────────────────────────────────────────────
    DOM REFS
@@ -40,16 +44,37 @@ let mockCallCount = 0;
 
 const $ = (sel) => document.querySelector(sel);
 
-const pickerRow     = $('#picker-row');
-const disclaimerEl  = $('#disclaimer-text');
-const transcriptEl  = $('#transcript');
-const composerInput = $('#composer-input');
-const sendBtn       = $('#send-btn');
-const charCounter   = $('#char-counter');
-const ctrlCopy      = $('#ctrl-copy');
-const ctrlDownload  = $('#ctrl-download');
-const ctrlNew       = $('#ctrl-new');
-const lengthHintEl  = $('#length-hint');
+const pickerRow         = $('#picker-row');
+const disclaimerEl      = $('#disclaimer-text');
+const transcriptEl      = $('#transcript');
+const composerInput     = $('#composer-input');
+const sendBtn           = $('#send-btn');
+const charCounter       = $('#char-counter');
+const ctrlCopy          = $('#ctrl-copy');
+const ctrlDownload      = $('#ctrl-download');
+const ctrlImport        = $('#ctrl-import');
+const ctrlSave          = $('#ctrl-save');
+const ctrlNew           = $('#ctrl-new');
+const importFileInput   = $('#import-file-input');
+const lengthHintEl      = $('#length-hint');
+
+// Archive DOM
+const archiveSection    = $('#archive-section');
+const archiveToggle     = $('#archive-toggle');
+const archiveListWrap   = $('#archive-list-wrap');
+const archiveList       = $('#archive-list');
+const archiveEmpty      = $('#archive-empty');
+const archiveCountBadge = $('#archive-count-badge');
+const archiveToggleCaret= $('#archive-toggle-caret');
+
+// Patron DOM
+const patronRow         = $('#patron-row');
+const patronUnlockForm  = $('#patron-unlock-form');
+const patronTokenInput  = $('#patron-token-input');
+const patronUnlockBtn   = $('#patron-unlock-btn');
+const patronActiveRow   = $('#patron-active-row');
+const patronLockBtn     = $('#patron-lock-btn');
+const patronBadge       = $('#patron-badge');
 
 /* ────────────────────────────────────────────
    HELPERS
@@ -86,6 +111,25 @@ function formatTs(iso) {
   } catch { return ''; }
 }
 
+function formatDate(iso) {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch { return ''; }
+}
+
+/* ────────────────────────────────────────────
+   ACTIVE MODEL LIST
+   Returns patron list when unlocked + flag on, free list otherwise.
+──────────────────────────────────────────── */
+
+function activeModels() {
+  if (ENABLE_DONOR_UNLOCK && donorUnlocked && CONFIG.modelsPatron) {
+    return CONFIG.modelsPatron;
+  }
+  return CONFIG.models;
+}
+
 /* ────────────────────────────────────────────
    LENGTH PICKER
 ──────────────────────────────────────────── */
@@ -117,17 +161,22 @@ function reflectActiveLength() {
 ──────────────────────────────────────────── */
 
 function buildPicker() {
+  const models = activeModels();
+  // Preserve active voice codename across rebuilds
+  const prevCodename = activeVoice ? activeVoice.codename : null;
   pickerRow.replaceChildren();
-  for (const voice of CONFIG.models) {
+  for (const voice of models) {
     const chip = el('button', 'voice-chip');
     chip.type = 'button';
     chip.textContent = voice.display;
     chip.dataset.codename = voice.codename;
-    // Pass the voice's hue as a CSS custom property for active border/color
     chip.style.setProperty('--chip-hue', voice.hue);
     chip.addEventListener('click', () => setActiveVoice(voice));
     pickerRow.appendChild(chip);
   }
+  // Restore previous voice if still in list, else default to first
+  const restored = prevCodename ? models.find(m => m.codename === prevCodename) : null;
+  activeVoice = restored || models[0];
   reflectActiveVoice();
 }
 
@@ -144,8 +193,73 @@ function reflectActiveVoice() {
     `A 7B model trained on ${activeVoice.figure}'s register. ` +
     `It confabulates names, dates, and quotes. Read it in character — ` +
     `nothing it says is real advice or doctrine.`;
-  // Update composer placeholder
   composerInput.placeholder = `ask ${activeVoice.display}…`;
+}
+
+/* ────────────────────────────────────────────
+   PATRON UNLOCK (ENABLE_DONOR_UNLOCK gate)
+   All code in this block is a no-op when ENABLE_DONOR_UNLOCK = false.
+──────────────────────────────────────────── */
+
+function initPatronUI() {
+  if (!ENABLE_DONOR_UNLOCK) return; // live console: nothing renders
+
+  patronRow.hidden = false;
+  reflectPatronState();
+
+  // Unlock button handler
+  patronUnlockBtn.addEventListener('click', () => attemptPatronUnlock());
+  patronTokenInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') attemptPatronUnlock();
+  });
+
+  // Lock button
+  patronLockBtn.addEventListener('click', () => {
+    donorUnlocked = false;
+    try { localStorage.removeItem(LS_DONOR_KEY); } catch {}
+    reflectPatronState();
+    buildPicker(); // rebuild picker with free-tier models
+  });
+}
+
+async function attemptPatronUnlock() {
+  if (!ENABLE_DONOR_UNLOCK) return;
+  const token = (patronTokenInput.value || '').trim();
+  if (!token) return;
+
+  // TODO: wire to /verify-token endpoint when backend deploys.
+  // The gateway will respond { ok: true, tier: 'patron' } on a valid token.
+  // For now, any non-empty token sets donorUnlocked (optimistic placeholder).
+  // Replace this block with a real fetch call after running the deploy runbook:
+  //   const res = await fetch(`${CONFIG.gatewayUrl}/verify-token?token=${encodeURIComponent(token)}`);
+  //   const data = await res.json();
+  //   if (!data.ok) { show error; return; }
+  const unlocked = token.length > 0; // PLACEHOLDER — always true for any non-empty token
+  // END TODO
+
+  if (unlocked) {
+    donorUnlocked = true;
+    try { localStorage.setItem(LS_DONOR_KEY, '1'); } catch {}
+    reflectPatronState();
+    buildPicker(); // rebuild picker with full patron model list
+  } else {
+    patronTokenInput.style.borderColor = 'var(--red-bright)';
+    setTimeout(() => { patronTokenInput.style.borderColor = ''; }, 1400);
+  }
+}
+
+function reflectPatronState() {
+  if (!ENABLE_DONOR_UNLOCK) return;
+  if (donorUnlocked) {
+    patronUnlockForm.hidden = true;
+    patronActiveRow.hidden = false;
+    if (patronBadge) patronBadge.hidden = false;
+  } else {
+    patronUnlockForm.hidden = false;
+    patronActiveRow.hidden = true;
+    if (patronBadge) patronBadge.hidden = true;
+    patronTokenInput.value = '';
+  }
 }
 
 /* ────────────────────────────────────────────
@@ -165,6 +279,7 @@ function turnHead(who, hue, meta) {
 }
 
 function appendOpTurn(entry) {
+  hideEmpty();
   const turn = el('div', 'turn turn--op');
   turn.appendChild(turnHead('OPERATOR', null, formatTs(entry.ts)));
   turn.appendChild(el('p', 'op-text', entry.text));
@@ -173,14 +288,16 @@ function appendOpTurn(entry) {
 }
 
 function appendModelTurn(entry) {
-  const voice = CONFIG.models.find(m => m.codename === entry.codename) || activeVoice;
+  hideEmpty();
+  // Look up voice from the union of all models (free + patron) so loaded archives render correctly
+  const allModels = [...CONFIG.models, ...(CONFIG.modelsPatron || [])];
+  const voice = allModels.find(m => m.codename === entry.codename) || activeVoice;
   const hue = voice ? voice.hue : null;
   const turn = el('div', 'turn turn--model');
   if (hue) turn.style.setProperty('--voice-hue', hue);
   const metaParts = [formatTs(entry.ts)];
   if (entry.mock) metaParts.push('[mock]');
   turn.appendChild(turnHead(entry.who, hue, metaParts.join(' · ')));
-  // Render paragraphs
   for (const para of (entry.text || '').split(/\n{2,}/)) {
     const t = para.trim();
     if (t) {
@@ -208,9 +325,6 @@ function appendErrorTurn(who, hue, message) {
    SUMMONING LOADER (ASCII animation)
 ──────────────────────────────────────────── */
 
-// Each frame is a single-line ASCII sigil. The animation cycles through them
-// at ~6fps via requestAnimationFrame, building a breathing / flickering effect.
-// The glow text-shadow is set to the active voice's hue.
 const LOADER_FRAMES = [
   '  ✦  ·  ·  ·  ·  ·  ✦  ',
   '  ✦  ★  ·  ·  ·  ★  ✦  ',
@@ -230,7 +344,6 @@ let loaderFrame = 0;
 
 function startLoader(who, hue, voiceName) {
   stopLoader();
-
   loaderWrap = el('div', 'loader-wrap');
   loaderWrap.id = 'active-loader';
   const whoRow = el('div', 'loader-who');
@@ -241,7 +354,6 @@ function startLoader(who, hue, voiceName) {
     `SUMMONING ${voiceName.toUpperCase()}… the first call wakes the machine — give it 1–3 minutes. Later summons are near-instant.`);
   whoRow.appendChild(hint);
   loaderWrap.appendChild(whoRow);
-
   const ascii = el('div', 'loader-ascii');
   if (hue) {
     ascii.style.color = hue;
@@ -249,14 +361,11 @@ function startLoader(who, hue, voiceName) {
     ascii.style.textShadow = `0 0 10px rgba(${rgb}, 0.6), 0 0 20px rgba(${rgb}, 0.3)`;
   }
   loaderWrap.appendChild(ascii);
-
   transcriptEl.appendChild(loaderWrap);
   scrollEnd();
-
-  const FRAME_MS = 165; // ~6fps
+  const FRAME_MS = 165;
   let last = 0;
   loaderFrame = 0;
-
   function tick(ts) {
     if (!loaderWrap || !loaderWrap.isConnected) return;
     if (ts - last >= FRAME_MS) {
@@ -270,14 +379,8 @@ function startLoader(who, hue, voiceName) {
 }
 
 function stopLoader() {
-  if (loaderAnim) {
-    cancelAnimationFrame(loaderAnim);
-    loaderAnim = null;
-  }
-  if (loaderWrap) {
-    loaderWrap.remove();
-    loaderWrap = null;
-  }
+  if (loaderAnim) { cancelAnimationFrame(loaderAnim); loaderAnim = null; }
+  if (loaderWrap) { loaderWrap.remove(); loaderWrap = null; }
 }
 
 /* ────────────────────────────────────────────
@@ -329,17 +432,11 @@ function mockResponse(voice) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// Submit the prompt to the gateway, then poll until the reply is ready.
-// The gateway forwards to a scale-to-zero GPU, so the first call after idle
-// is a cold start (tens of seconds; a never-seen voice downloads its weights
-// on first use). The summoning loader stays up in the caller throughout.
 async function callGateway(voice, prompt) {
   if (CONFIG.mock || !CONFIG.gatewayUrl) {
     return mockResponse(voice);
   }
   const base = CONFIG.gatewayUrl.replace(/\/+$/, '');
-
-  // 1) submit
   let res, data;
   try {
     res = await fetch(`${base}/chat`, {
@@ -359,39 +456,32 @@ async function callGateway(voice, prompt) {
   if (!res.ok || !data || !data.job_id) {
     throw new Error((data && data.error) ? data.error : `Could not start the voice (HTTP ${res.status}).`);
   }
-
-  // 2) poll until done (loader held by the caller)
   const jobId = data.job_id;
-  const deadline = Date.now() + 180_000; // up to ~3 min for a first-ever cold download
+  const deadline = Date.now() + 180_000;
   while (Date.now() < deadline) {
     await sleep(2500);
     let pdata;
     try {
       const pr = await fetch(`${base}/poll?id=${encodeURIComponent(jobId)}`, { signal: AbortSignal.timeout(20_000) });
       pdata = await pr.json().catch(() => null);
-    } catch {
-      continue; // transient — keep polling
-    }
+    } catch { continue; }
     if (!pdata) continue;
     if (pdata.done) {
       if (pdata.error) throw new Error(pdata.error);
-      return pdata; // { text, model, display_name, tokens, elapsed_s }
+      return pdata;
     }
-    // still warming / in progress — keep the summoning loader up
   }
   throw new Error('The voice is still waking — give it a moment and try again.');
 }
 
-/* Trim a truncated reply to its last complete sentence so it never ends mid-word.
-   (Responses are capped at max_tokens; a long-winded voice can hit the cap mid-thought.) */
 function tidyResponse(s) {
   if (!s) return s;
   const t = s.trimEnd();
-  if (/[.!?…"'’”)\]]$/.test(t)) return t;            // already ends cleanly — leave it
+  if (/[.!?…"''")\]]$/.test(t)) return t;
   let cut = -1;
   for (const ch of ['.', '!', '?', '…']) cut = Math.max(cut, t.lastIndexOf(ch));
-  if (cut > t.length * 0.4) return t.slice(0, cut + 1).trimEnd() + ' …';  // back to last full sentence
-  return t + ' …';                                   // no clean boundary — just mark it cut
+  if (cut > t.length * 0.4) return t.slice(0, cut + 1).trimEnd() + ' …';
+  return t + ' …';
 }
 
 /* ────────────────────────────────────────────
@@ -401,25 +491,18 @@ function tidyResponse(s) {
 async function send() {
   const text = composerInput.value.trim();
   if (!text || pending) return;
-
   pending = true;
   setSendState(true);
   composerInput.value = '';
   updateCharCounter();
-
   const voice = activeVoice;
   const ts = nowTs();
-
-  // Append operator turn
   const opEntry = { role: 'operator', who: 'OPERATOR', text, ts };
   conversation.push(opEntry);
   appendOpTurn(opEntry);
   persist();
-
-  // Start the summoning loader
   startLoader(voice.display.toUpperCase(), voice.hue, voice.display);
   scrollEnd();
-
   let data;
   try {
     data = await callGateway(voice, text);
@@ -431,12 +514,9 @@ async function send() {
     setSendState(false);
     return;
   }
-
   stopLoader();
-
   const responseText = tidyResponse((data && data.text) ? data.text : '');
   const isMock = !!(data && data._mock);
-
   const modelEntry = {
     role: 'model',
     who: voice.display.toUpperCase(),
@@ -449,7 +529,6 @@ async function send() {
   appendModelTurn(modelEntry);
   persist();
   scrollEnd();
-
   pending = false;
   setSendState(false);
 }
@@ -460,7 +539,7 @@ function setSendState(inFlight) {
 }
 
 /* ────────────────────────────────────────────
-   LOCALSTORAGE PERSISTENCE
+   LOCALSTORAGE PERSISTENCE (single current conversation)
 ──────────────────────────────────────────── */
 
 function persist() {
@@ -476,23 +555,199 @@ function loadPersisted() {
     const arr = JSON.parse(raw);
     if (!Array.isArray(arr)) return;
     conversation = arr;
-    // Re-render all turns
     for (const entry of conversation) {
       if (entry.role === 'operator') appendOpTurn(entry);
       else if (entry.role === 'model') appendModelTurn(entry);
     }
-    if (conversation.length) {
-      hideEmpty();
-      scrollEnd();
-    }
+    if (conversation.length) scrollEnd();
   } catch { /* corrupt storage; ignore */ }
 }
 
 function clearConversation() {
   conversation = [];
-  try { localStorage.removeItem(LS_KEY); } catch { /* ignore */ }
+  try { localStorage.removeItem(LS_KEY); } catch {}
   transcriptEl.replaceChildren();
   showEmpty();
+}
+
+/* ────────────────────────────────────────────
+   ARCHIVE (named saved conversations)
+──────────────────────────────────────────── */
+
+function loadArchive() {
+  try {
+    const raw = localStorage.getItem(LS_ARCHIVE_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : [];
+  } catch { return []; }
+}
+
+function saveArchive(entries) {
+  try {
+    localStorage.setItem(LS_ARCHIVE_KEY, JSON.stringify(entries));
+  } catch { /* quota */ }
+}
+
+function saveConversationToArchive() {
+  if (!conversation.length) return;
+  const name = prompt('Save as (give this conversation a name):');
+  if (!name || !name.trim()) return;
+  const voices = [...new Set(conversation.filter(e => e.role === 'model').map(e => e.who))];
+  const entry = {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    name: name.trim(),
+    voices,
+    savedAt: nowTs(),
+    turns: JSON.parse(JSON.stringify(conversation)), // deep copy
+  };
+  const archive = loadArchive();
+  archive.unshift(entry); // newest first
+  saveArchive(archive);
+  renderArchive();
+  // Flash the SAVE button
+  const prev = ctrlSave.textContent;
+  ctrlSave.textContent = 'SAVED';
+  setTimeout(() => { ctrlSave.textContent = prev; }, 1200);
+}
+
+function loadConversationFromArchive(entryId) {
+  const archive = loadArchive();
+  const entry = archive.find(e => e.id === entryId);
+  if (!entry) return;
+  conversation = JSON.parse(JSON.stringify(entry.turns));
+  transcriptEl.replaceChildren();
+  hideEmpty();
+  for (const turn of conversation) {
+    if (turn.role === 'operator') appendOpTurn(turn);
+    else if (turn.role === 'model') appendModelTurn(turn);
+  }
+  persist();
+  scrollEnd();
+}
+
+function deleteFromArchive(entryId) {
+  const archive = loadArchive().filter(e => e.id !== entryId);
+  saveArchive(archive);
+  renderArchive();
+}
+
+function renderArchive() {
+  const archive = loadArchive();
+  // Update count badge
+  if (archiveCountBadge) {
+    archiveCountBadge.textContent = archive.length ? `(${archive.length})` : '';
+  }
+  if (!archiveList) return;
+  archiveList.replaceChildren();
+  if (!archive.length) {
+    if (archiveEmpty) archiveEmpty.hidden = false;
+    return;
+  }
+  if (archiveEmpty) archiveEmpty.hidden = true;
+  for (const entry of archive) {
+    const row = el('div', 'archive-entry');
+    row.setAttribute('role', 'listitem');
+    row.dataset.id = entry.id;
+    const info = el('div', 'archive-entry-info');
+    info.appendChild(el('span', 'archive-entry-name', entry.name));
+    const meta = entry.voices.join(', ') + ' · ' + formatDate(entry.savedAt);
+    info.appendChild(el('span', 'archive-entry-meta', meta));
+    row.appendChild(info);
+    const actions = el('div', 'archive-entry-actions');
+    const loadBtn = el('button', 'archive-btn archive-btn--load', 'LOAD');
+    loadBtn.type = 'button';
+    loadBtn.title = 'Load this conversation into the transcript';
+    loadBtn.addEventListener('click', () => loadConversationFromArchive(entry.id));
+    const delBtn = el('button', 'archive-btn archive-btn--delete', 'DELETE');
+    delBtn.type = 'button';
+    delBtn.title = 'Permanently remove this saved conversation';
+    delBtn.addEventListener('click', () => {
+      if (confirm(`Delete "${entry.name}"?`)) deleteFromArchive(entry.id);
+    });
+    actions.appendChild(loadBtn);
+    actions.appendChild(delBtn);
+    row.appendChild(actions);
+    archiveList.appendChild(row);
+  }
+}
+
+function initArchive() {
+  if (!archiveToggle) return;
+  archiveToggle.addEventListener('click', () => {
+    const open = archiveListWrap && !archiveListWrap.hidden;
+    if (archiveListWrap) archiveListWrap.hidden = open;
+    archiveToggle.setAttribute('aria-expanded', String(!open));
+    if (archiveToggleCaret) archiveToggleCaret.textContent = open ? '▸' : '▾';
+    if (!open) renderArchive(); // refresh on open
+  });
+  renderArchive();
+}
+
+/* ────────────────────────────────────────────
+   IMPORT .md
+   Parses a file produced by buildMarkdown() back into conversation turns.
+   Format: ## WHO  HH:MM\n\ntext\n\n## WHO2…
+──────────────────────────────────────────── */
+
+function importMarkdownFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const text = e.target.result;
+      const parsed = parseMarkdownTranscript(text);
+      if (!parsed.length) {
+        alert('Could not parse this file. Make sure it was exported from The Elect console.');
+        return;
+      }
+      conversation = parsed;
+      transcriptEl.replaceChildren();
+      hideEmpty();
+      for (const turn of conversation) {
+        if (turn.role === 'operator') appendOpTurn(turn);
+        else if (turn.role === 'model') appendModelTurn(turn);
+      }
+      persist();
+      scrollEnd();
+    } catch {
+      alert('Import failed — the file may be corrupt or not an Elect transcript.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function parseMarkdownTranscript(md) {
+  // Split on ## headers: ## WHO  HH:MM
+  const sections = md.split(/^## /m).slice(1); // drop preamble
+  const turns = [];
+  const allModels = [...CONFIG.models, ...(CONFIG.modelsPatron || [])];
+
+  for (const section of sections) {
+    const lines = section.split('\n');
+    const header = lines[0] || '';
+    // Header format: "WHO [mock]  HH:MM" or "WHO  HH:MM"
+    const headerClean = header.replace(/\[mock\]/gi, '').trim();
+    const who = headerClean.replace(/\s+\d{1,2}:\d{2}.*$/, '').trim();
+    const isMock = /\[mock\]/i.test(header);
+    const bodyLines = lines.slice(1).join('\n').trim();
+    if (!who || !bodyLines) continue;
+
+    const isOperator = who.toUpperCase() === 'OPERATOR';
+    // Try to find matching voice entry
+    const voiceEntry = allModels.find(
+      m => m.display.toUpperCase() === who.toUpperCase()
+    );
+
+    turns.push({
+      role: isOperator ? 'operator' : 'model',
+      who: who.toUpperCase(),
+      codename: voiceEntry ? voiceEntry.codename : who.toLowerCase().replace(/\s+/g, '-'),
+      text: bodyLines,
+      ts: nowTs(), // approximate — the .md format doesn't carry full ISO timestamps
+      mock: isMock,
+    });
+  }
+  return turns;
 }
 
 /* ────────────────────────────────────────────
@@ -515,20 +770,6 @@ function hideEmpty() {
     emptyEl.remove();
     emptyEl = null;
   }
-}
-
-// Hide empty when a turn is added
-const origAppendOpTurn = appendOpTurn;
-const origAppendModelTurn = appendModelTurn;
-
-// Wrap to auto-hide empty state
-function wrappedAppendOpTurn(entry) {
-  hideEmpty();
-  return origAppendOpTurn(entry);
-}
-function wrappedAppendModelTurn(entry) {
-  hideEmpty();
-  return origAppendModelTurn(entry);
 }
 
 /* ────────────────────────────────────────────
@@ -559,9 +800,7 @@ ctrlCopy.addEventListener('click', async () => {
     const prev = ctrlCopy.textContent;
     ctrlCopy.textContent = 'COPIED';
     setTimeout(() => { ctrlCopy.textContent = prev; }, 1200);
-  } catch {
-    // Clipboard not available — silently ignore
-  }
+  } catch { /* clipboard not available */ }
 });
 
 ctrlDownload.addEventListener('click', () => {
@@ -576,6 +815,21 @@ ctrlDownload.addEventListener('click', () => {
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+});
+
+ctrlImport.addEventListener('click', () => {
+  importFileInput.value = '';
+  importFileInput.click();
+});
+
+importFileInput.addEventListener('change', (e) => {
+  const file = e.target.files && e.target.files[0];
+  if (file) importMarkdownFile(file);
+});
+
+ctrlSave.addEventListener('click', () => {
+  if (!conversation.length) return;
+  saveConversationToArchive();
 });
 
 ctrlNew.addEventListener('click', () => {
@@ -613,8 +867,10 @@ sendBtn.addEventListener('click', send);
    INIT
 ──────────────────────────────────────────── */
 
+initPatronUI();   // no-op when ENABLE_DONOR_UNLOCK = false
 buildPicker();
 buildLengthPicker();
 showEmpty();
 loadPersisted();
+initArchive();
 updateCharCounter();
