@@ -70,9 +70,8 @@ export const CONFIG = {
     },
   ],
 
-  // Patron-tier voices — full non-withheld roster, unlocked for donors.
+  // Patron-tier voices — full served roster (free + patron), unlocked for donors.
   // NOT active until ENABLE_DONOR_UNLOCK = true AND backend deployed.
-  // Withheld/sword-register personas (eschaton etc.) are NOT here — download-only.
   modelsPatron: [
     // All 7 free voices carry over
     {
@@ -165,6 +164,18 @@ export const CONFIG = {
       display: 'Nyarlathotep',
       figure: 'Nyarlathotep (Lovecraft)',
       hue: '#604060',
+    },
+    {
+      codename: 'the-voices',
+      display: 'The Voices',
+      figure: 'Joan of Arc (trial at Rouen, 1431)',
+      hue: '#ead27a',
+    },
+    {
+      codename: 'eschaton',
+      display: 'Eschaton',
+      figure: 'Illuminatus! (Discordian oracle)',
+      hue: '#7fb069',
     },
   ],
 };
