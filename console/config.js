@@ -5,7 +5,7 @@
 // When false (default): console is IDENTICAL to the live version. No patron UI,
 // no token field, nothing. Flip to true ONLY after the backend is deployed and
 // smoke-tested (see the-elect-private/console/gateway/src/membership.js runbook).
-export const ENABLE_DONOR_UNLOCK = false;
+export const ENABLE_DONOR_UNLOCK = true;
 
 export const CONFIG = {
   // The live gateway (Cloudflare Worker) — holds the RunPod key, all guardrails.
