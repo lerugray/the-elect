@@ -9,7 +9,7 @@
    patron URL here to activate the "Support the lab" CTA.
    Leave empty ('') and the CTA stays invisible — nothing shows.
    ──────────────────────────────────────────────────────────── */
-var SUPPORT_URL = '';
+var SUPPORT_URL = 'https://donate.stripe.com/cNi4gzb8TduS8pia2jes004';
 
 (function() {
 
