@@ -424,6 +424,57 @@ body {
   position: relative;
 }
 
+/* ── LENGTH SELECTOR ── */
+.length-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.length-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-right: 0.2rem;
+  flex-shrink: 0;
+}
+
+.length-chip {
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.length-chip:hover {
+  border-color: var(--gold-dim);
+  color: var(--text);
+}
+
+.length-chip.is-active {
+  border-color: var(--gold-dim);
+  color: var(--gold-pale);
+  background: rgba(201, 162, 39, 0.06);
+}
+
+.length-hint {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  font-style: italic;
+  margin-left: 0.3rem;
+}
+
 textarea#composer-input {
   width: 100%;
   font-family: var(--font-mono);

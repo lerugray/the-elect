@@ -10,9 +10,20 @@ import { CONFIG } from './config.js';
    CONSTANTS & STATE
 ──────────────────────────────────────────── */
 
-const LS_KEY = 'elect-console.conversation';
+const LS_KEY        = 'elect-console.conversation';
+const LS_LENGTH_KEY = 'elect-console.reply-length';
 const CHAR_LIMIT = 2000;
 const CHAR_WARN  = 2000;
+
+// Reply-length options: short / medium / long
+const LENGTH_OPTIONS = {
+  short:  { tokens: 130, hint: 'terse — a few sentences' },
+  medium: { tokens: 350, hint: '' },
+  long:   { tokens: 700, hint: 'long replies may take a moment' },
+};
+const LENGTH_DEFAULT = 'medium';
+let activeLength = localStorage.getItem(LS_LENGTH_KEY) || LENGTH_DEFAULT;
+if (!LENGTH_OPTIONS[activeLength]) activeLength = LENGTH_DEFAULT;
 
 // Conversation is an array of { role:'operator'|'model', who, text, ts, mock? }
 let conversation = [];
@@ -38,6 +49,7 @@ const charCounter   = $('#char-counter');
 const ctrlCopy      = $('#ctrl-copy');
 const ctrlDownload  = $('#ctrl-download');
 const ctrlNew       = $('#ctrl-new');
+const lengthHintEl  = $('#length-hint');
 
 /* ────────────────────────────────────────────
    HELPERS
@@ -72,6 +84,32 @@ function formatTs(iso) {
     const d = new Date(iso);
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   } catch { return ''; }
+}
+
+/* ────────────────────────────────────────────
+   LENGTH PICKER
+──────────────────────────────────────────── */
+
+function buildLengthPicker() {
+  const chips = document.querySelectorAll('.length-chip');
+  for (const chip of chips) {
+    chip.addEventListener('click', () => {
+      activeLength = chip.dataset.length;
+      try { localStorage.setItem(LS_LENGTH_KEY, activeLength); } catch { /* quota */ }
+      reflectActiveLength();
+    });
+  }
+  reflectActiveLength();
+}
+
+function reflectActiveLength() {
+  const chips = document.querySelectorAll('.length-chip');
+  for (const chip of chips) {
+    chip.classList.toggle('is-active', chip.dataset.length === activeLength);
+  }
+  if (lengthHintEl) {
+    lengthHintEl.textContent = LENGTH_OPTIONS[activeLength]?.hint || '';
+  }
 }
 
 /* ────────────────────────────────────────────
@@ -310,7 +348,7 @@ async function callGateway(voice, prompt) {
       body: JSON.stringify({
         model: voice.codename,
         prompt,
-        max_tokens: Math.min(CONFIG.defaultMaxTokens, 1024),
+        max_tokens: LENGTH_OPTIONS[activeLength]?.tokens ?? LENGTH_OPTIONS[LENGTH_DEFAULT].tokens,
       }),
       signal: AbortSignal.timeout(20_000),
     });
@@ -576,6 +614,7 @@ sendBtn.addEventListener('click', send);
 ──────────────────────────────────────────── */
 
 buildPicker();
+buildLengthPicker();
 showEmpty();
 loadPersisted();
 updateCharCounter();

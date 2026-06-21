@@ -74,6 +74,14 @@
   <!-- ── COMPOSER ── -->
   <footer class="composer">
     <div class="composer-inner">
+      <!-- Reply-length selector -->
+      <div class="length-row" role="group" aria-label="Reply length">
+        <span class="length-label">LENGTH</span>
+        <button type="button" class="length-chip" data-length="short"  data-tokens="130">SHORT</button>
+        <button type="button" class="length-chip" data-length="medium" data-tokens="350">MEDIUM</button>
+        <button type="button" class="length-chip" data-length="long"   data-tokens="700">LONG</button>
+        <span class="length-hint" id="length-hint"></span>
+      </div>
       <textarea
         id="composer-input"
         rows="3"
