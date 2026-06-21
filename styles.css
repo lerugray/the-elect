@@ -542,6 +542,17 @@ body {
   text-shadow: 0 0 8px rgba(159, 178, 198, 0.35);
 }
 
+.melian-art {
+  color: #a8946a;              /* aged parchment-bronze — Athenian marble + worn papyrus; distinct from Clausewitz's cool blue */
+  opacity: 0.83;
+  text-shadow: none;
+}
+
+.persona-card:hover .melian-art {
+  color: #bfa97e;
+  text-shadow: 0 0 8px rgba(168, 148, 106, 0.35);
+}
+
 .placeholder-art {
   font-size: 0.5rem;
   line-height: 1.3;

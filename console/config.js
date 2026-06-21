@@ -54,5 +54,11 @@ export const CONFIG = {
       figure: 'Frederick Douglass',
       hue: '#9fb2c6',
     },
+    {
+      codename: 'melian',
+      display: 'Thucydides',
+      figure: 'Thucydides of Athens',
+      hue: '#a8946a',
+    },
   ],
 };
