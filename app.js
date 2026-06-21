@@ -4,6 +4,13 @@
    No external dependencies. Offline-safe.
    ============================================================ */
 
+/* ── CONFIG ──────────────────────────────────────────────────
+   SUPPORT_URL: paste a Stripe Payment Link, Ko-fi URL, or any
+   patron URL here to activate the "Support the lab" CTA.
+   Leave empty ('') and the CTA stays invisible — nothing shows.
+   ──────────────────────────────────────────────────────────── */
+var SUPPORT_URL = '';
+
 (function() {
 
   // Map of element ID -> asset path
@@ -42,6 +49,44 @@
     PORTRAITS.forEach(function(p) {
       loadAscii(p.id, p.path);
     });
+
+    // ── SUPPORT CTA — activate only when SUPPORT_URL is set ──
+    if (SUPPORT_URL) {
+      // About-section card
+      var ctaAbout = document.getElementById('support-cta-about');
+      if (ctaAbout) {
+        ctaAbout.href = SUPPORT_URL;
+        ctaAbout.classList.add('is-visible');
+      }
+      // Footer link
+      var footerLine = document.getElementById('footer-support-line');
+      var footerLink = document.getElementById('footer-support-link');
+      if (footerLine && footerLink) {
+        footerLink.href = SUPPORT_URL;
+        footerLine.style.display = '';
+      }
+    }
+
+    // ── SUGGEST-A-VOICE FORM — mailto on submit ──
+    var suggestForm = document.getElementById('suggest-form');
+    if (suggestForm) {
+      suggestForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var figure = (document.getElementById('suggest-name').value || '').trim();
+        var why    = (document.getElementById('suggest-why').value  || '').trim();
+        if (!figure) {
+          document.getElementById('suggest-name').focus();
+          return;
+        }
+        var subject = encodeURIComponent('Elect voice suggestion: ' + figure);
+        var body    = encodeURIComponent(
+          'Figure: ' + figure + '\n\n' +
+          'Why they belong:\n' + (why || '(no reason given)')
+        );
+        window.location.href =
+          'mailto:rweiss@consimsltd.com?subject=' + subject + '&body=' + body;
+      });
+    }
 
     // Subtle: add a blinking cursor effect to the site title
     var title = document.querySelector('.site-title');
