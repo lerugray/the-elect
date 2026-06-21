@@ -5,7 +5,10 @@
 // When false (default): console is IDENTICAL to the live version. No patron UI,
 // no token field, nothing. Flip to true ONLY after the backend is deployed and
 // smoke-tested (see the-elect-private/console/gateway/src/membership.js runbook).
-export const ENABLE_DONOR_UNLOCK = false;
+// 2026-06-21: backend verified live — /verify-token returns {ok:true,tier:patron}
+// for the real donation token (read from ELECT_TOKENS KV); all 8 patron voices in
+// the gateway ALLOWED_MODELS. The earlier "token not stored" was a misdiagnosis.
+export const ENABLE_DONOR_UNLOCK = true;
 
 export const CONFIG = {
   // The live gateway (Cloudflare Worker) — holds the RunPod key, all guardrails.
