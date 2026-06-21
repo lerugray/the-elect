@@ -200,7 +200,7 @@ function startLoader(who, hue, voiceName) {
   if (hue) label.style.color = hue;
   whoRow.appendChild(label);
   const hint = el('span', 'loader-hint',
-    `SUMMONING ${voiceName.toUpperCase()}… first call wakes the machine, ~30s`);
+    `SUMMONING ${voiceName.toUpperCase()}… the first call wakes the machine — give it 1–3 minutes. Later summons are near-instant.`);
   whoRow.appendChild(hint);
   loaderWrap.appendChild(whoRow);
 
