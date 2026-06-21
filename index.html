@@ -72,6 +72,12 @@
           <p class="about-footnote">
             A one-person operation. Ray Weiss, game designer, voice-trainer.
           </p>
+          <!-- SUPPORT CTA — gated; only rendered by JS when SUPPORT_URL is set in app.js -->
+          <a class="support-cta" id="support-cta-about" href="#" target="_blank" rel="noopener">
+            <span class="support-cta-tag">Patronage</span>
+            <span class="support-cta-head">Support the lab &rarr;</span>
+            <span class="support-cta-sub">This lab costs real GPU money. Patrons keep it running.</span>
+          </a>
         </div>
         <div class="about-stats">
           <div class="stat-item">
@@ -2336,6 +2342,35 @@ XXXXXXXXXXXXXXXXXXXXXXXXXX$$$XXX$X$+::  XXXXX$X$X$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     </div>
   </section>
 
+  <!-- SUGGEST A VOICE -->
+  <section class="suggest-section" aria-label="Suggest a new Elect voice">
+    <div class="container">
+      <h2 class="section-heading">
+        <span class="heading-rule"></span>
+        <span>SUGGEST A VOICE</span>
+        <span class="heading-rule"></span>
+      </h2>
+      <p class="suggest-intro">
+        Know a dead radical who should be running? The roster grows from actual suggestions.
+        Name them and say why in one line. It goes straight to the lab.
+      </p>
+      <form class="suggest-form" id="suggest-form" novalidate>
+        <div class="suggest-field">
+          <label class="suggest-label" for="suggest-name">Figure</label>
+          <input class="suggest-input" id="suggest-name" name="figure" type="text"
+            placeholder="e.g. Rosa Luxemburg" autocomplete="off" required>
+        </div>
+        <div class="suggest-field">
+          <label class="suggest-label" for="suggest-why">Why they belong</label>
+          <textarea class="suggest-textarea" id="suggest-why" name="why"
+            placeholder="One line is enough." rows="3" required></textarea>
+        </div>
+        <button class="suggest-submit" type="submit">Send suggestion</button>
+        <p class="suggest-note">Opens your email client with the fields pre-filled. Nothing is sent automatically.</p>
+      </form>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
@@ -2345,6 +2380,13 @@ XXXXXXXXXXXXXXXXXXXXXXXXXX$$$XXX$X$+::  XXXXX$X$X$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       <p class="footer-note">
         A one-person lab. Ray Weiss. All models run locally — no telemetry, no cloud,
         no API calls home. The corpus stays private. The voices speak freely.
+      </p>
+      <!-- FOOTER SUPPORT LINK — gated; JS adds it only when SUPPORT_URL is set in app.js -->
+      <p class="footer-support" id="footer-support-line" style="display:none;margin-bottom:1rem;">
+        <a id="footer-support-link" href="#" target="_blank" rel="noopener"
+           style="color:var(--red-bright);font-size:0.78rem;letter-spacing:0.05em;text-decoration:none;">
+          Support the lab &rarr;
+        </a>
       </p>
       <div class="footer-links">
         <a href="debates.html" class="footer-link">Debates</a>

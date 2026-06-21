@@ -1143,3 +1143,117 @@ a.stack-item:hover { text-decoration: underline; color: var(--gold); border-colo
   color: var(--text-dim);
   line-height: 1.5;
 }
+
+/* ── SUGGEST-A-VOICE FORM (2026-06-21) ── */
+.suggest-section {
+  border-top: 1px solid var(--border);
+  padding: 3.5rem 0 2.5rem;
+}
+.suggest-section .section-heading {
+  margin-bottom: 0.75rem;
+}
+.suggest-intro {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  max-width: 600px;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+.suggest-form {
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.suggest-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.suggest-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+.suggest-input,
+.suggest-textarea {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  padding: 0.6rem 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.suggest-input:focus,
+.suggest-textarea:focus {
+  border-color: var(--gold-dim);
+}
+.suggest-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+.suggest-submit {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.2rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.suggest-submit:hover {
+  border-color: var(--gold);
+  color: var(--gold-pale);
+}
+.suggest-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* ── SUPPORT-THE-LAB CTA (gated — hidden until SUPPORT_URL is set) ── */
+.support-cta {
+  display: none;           /* JS shows this only when SUPPORT_URL is non-empty */
+  border: 1px solid var(--red);
+  background: rgba(139, 26, 26, 0.06);
+  padding: 1.4rem 1.75rem;
+  margin-top: 2rem;
+  text-decoration: none;
+}
+.support-cta.is-visible {
+  display: block;
+}
+.support-cta:hover {
+  background: rgba(139, 26, 26, 0.12);
+}
+.support-cta-tag {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 0.45rem;
+}
+.support-cta-head {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--red-bright);
+  margin-bottom: 0.35rem;
+  text-decoration: none;
+}
+.support-cta:hover .support-cta-head { color: #f07068; }
+.support-cta-sub {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
