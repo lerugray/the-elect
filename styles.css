@@ -403,6 +403,19 @@ body {
   color: var(--gold-dim);
 }
 
+.plausible-badge {
+  color: var(--gold-dim);
+  border: 1px dotted var(--gold-dim);
+  padding: 0.1rem 0.45rem;
+}
+
+.persona-basis {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
 .card-status {
   font-size: 0.72rem;      /* was 0.6rem */
   letter-spacing: 0.12em;  /* was 0.2em */

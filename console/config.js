@@ -68,6 +68,12 @@ export const CONFIG = {
       figure: 'Thucydides of Athens',
       hue: '#a8946a',
     },
+    {
+      codename: 'chaeronea',
+      display: 'Philip II',
+      figure: 'Philip II of Macedon (plausible)',
+      hue: '#b08d57',
+    },
   ],
 
   // Patron-tier voices — full served roster (free + patron), unlocked for donors.
