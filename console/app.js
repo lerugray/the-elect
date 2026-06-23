@@ -17,6 +17,11 @@ const LS_DONOR_KEY    = 'elect-console.donor-unlocked';
 const CHAR_LIMIT = 2000;
 const CHAR_WARN  = 2000;
 
+// Client speed-bump key sent on /chat + /poll. Public by design — a friction
+// layer against drive-by scripts, not hard DRM (the gateway holds the real
+// RunPod key + spend caps).
+const ELECT_CLIENT_KEY = 'bce5bdfb04fccaa1c3d011586a336e82284271fdc27e3f47fe2c4141c554618c';
+
 // Reply-length options: short / medium / long
 const LENGTH_OPTIONS = {
   short:  { tokens: 130, hint: 'terse — a few sentences' },
@@ -442,7 +447,7 @@ async function callGateway(voice, prompt) {
   try {
     res = await fetch(`${base}/chat`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Elect-Key': ELECT_CLIENT_KEY },
       body: JSON.stringify({
         model: voice.codename,
         prompt,
@@ -463,7 +468,7 @@ async function callGateway(voice, prompt) {
     await sleep(2500);
     let pdata;
     try {
-      const pr = await fetch(`${base}/poll?id=${encodeURIComponent(jobId)}`, { signal: AbortSignal.timeout(20_000) });
+      const pr = await fetch(`${base}/poll?id=${encodeURIComponent(jobId)}`, { headers: { 'X-Elect-Key': ELECT_CLIENT_KEY }, signal: AbortSignal.timeout(20_000) });
       pdata = await pr.json().catch(() => null);
     } catch { continue; }
     if (!pdata) continue;
