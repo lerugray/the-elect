@@ -80,6 +80,12 @@ export const CONFIG = {
       figure: 'Herodotus of Halicarnassus',
       hue: '#5fa896',
     },
+    {
+      codename: 'ipsus',
+      display: 'Antigonus I',
+      figure: 'Antigonus I Monophthalmus (plausible)',
+      hue: '#8a9bb0',
+    },
   ],
 
   // Patron-tier voices — full served roster (free + patron), unlocked for donors.
