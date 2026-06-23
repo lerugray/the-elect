@@ -86,6 +86,12 @@ export const CONFIG = {
       figure: 'Antigonus I Monophthalmus (plausible)',
       hue: '#8a9bb0',
     },
+    {
+      codename: 'ferney',
+      display: 'Voltaire',
+      figure: 'Voltaire (François-Marie Arouet)',
+      hue: '#d8a847',
+    },
   ],
 
   // Patron-tier voices — full served roster (free + patron), unlocked for donors.
@@ -133,6 +139,12 @@ export const CONFIG = {
       display: 'Thucydides',
       figure: 'Thucydides of Athens',
       hue: '#a8946a',
+    },
+    {
+      codename: 'ferney',
+      display: 'Voltaire',
+      figure: 'Voltaire (François-Marie Arouet)',
+      hue: '#d8a847',
     },
     // Patron-only additions — require gateway ALLOWED_MODELS update before deploying
     {
