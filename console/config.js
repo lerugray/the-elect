@@ -74,6 +74,12 @@ export const CONFIG = {
       figure: 'Philip II of Macedon (plausible)',
       hue: '#b08d57',
     },
+    {
+      codename: 'halicarnassus',
+      display: 'Herodotus',
+      figure: 'Herodotus of Halicarnassus',
+      hue: '#5fa896',
+    },
   ],
 
   // Patron-tier voices — full served roster (free + patron), unlocked for donors.
