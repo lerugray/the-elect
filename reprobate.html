@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Reprobate — Voice Lab</title>
+
+<!-- Open Graph -->
+<meta property="og:title" content="The Reprobate">
+<meta property="og:description" content="The counter-canon. Voices of order, authority, and established power — debate adversaries for The Elect's radical fleet. Run locally. No cloud. No API.">
+<meta property="og:image" content="https://lerugray.github.io/the-elect/assets/og-image.png">
+<meta property="og:image:secure_url" content="https://lerugray.github.io/the-elect/assets/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Reprobate — counter-canon voice lab">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lerugray.github.io/the-elect/reprobate.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Reprobate">
+<meta name="twitter:description" content="The counter-canon. Voices of order, authority, and established power — debate adversaries for The Elect's radical fleet. Run locally. No cloud. No API.">
+<meta name="twitter:image" content="https://lerugray.github.io/the-elect/assets/og-image.png">
+
+<link rel="stylesheet" href="./styles.css">
+<!-- Cloudflare Web Analytics (same site-tag as the main Elect page) -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "77161b0ef9e84c23b9083ac3e1bdf8d4"}'></script>
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="sigil" aria-hidden="true">✦</div>
+    <div class="header-text">
+      <span class="lab-label">Voice Lab</span>
+      <h1 class="site-title">THE REPROBATE</h1>
+      <p class="site-tagline">Runnable voices. The established order. Local iron only.</p>
+    </div>
+    <div class="sigil" aria-hidden="true">✦</div>
+  </div>
+  <div class="header-rule">
+    <span class="rule-line"></span>
+    <span class="rule-text">THE COUNTER-CANON &mdash; ORDNUNG, 1525 &mdash; <a href="index.html" style="color:inherit;text-decoration:underline;">THE ELECT</a></span>
+    <span class="rule-line"></span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ABOUT -->
+  <section class="about-section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-body">
+          <p class="lead">
+            The Reprobate makes the same small, local language models as the Elect &mdash; same 7B
+            parameters, same rented GPU, same Ollama delivery &mdash; tuned to the voices that
+            defended order, authority, and established power against the figures on the Elect roster.
+            Built to argue. Built to hold their position under pressure.
+          </p>
+          <p>
+            The name is Calvinist: the reprobate are the un-elect, the damned. Here they are the
+            adversary positions, the strongest case the other side actually had. Luther chose the
+            princes. These models explain why, in his own register.
+          </p>
+          <p>
+            You don&rsquo;t have to be technical to meet them. Each voice runs for free on your own
+            machine: pick one from the roll call below and follow its download. Or read the
+            <a href="debates.html">debates</a> to hear both sides argue, with nothing to install.
+          </p>
+          <p class="about-footnote">
+            A one-person operation. Ray Weiss, game designer, voice-trainer.
+          </p>
+        </div>
+        <div class="about-stats">
+          <div class="stat-item">
+            <span class="stat-num">7B</span>
+            <span class="stat-label">parameters</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true">&mdash;</div>
+          <div class="stat-item">
+            <span class="stat-num">$2</span>
+            <span class="stat-label">max training cost</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true">&mdash;</div>
+          <div class="stat-item">
+            <span class="stat-num">local</span>
+            <span class="stat-label">runs on your machine</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO RUN -->
+  <section class="howto-section">
+    <div class="container">
+      <h2 class="section-heading">
+        <span class="heading-rule"></span>
+        <span>HOW TO RUN ONE</span>
+        <span class="heading-rule"></span>
+      </h2>
+      <p class="section-sub">You do not need to be technical, and you do not need to know what any of this means. The fastest way needs nothing installed at all.</p>
+
+      <a class="console-cta" href="console/">
+        <span class="console-cta-tag">Easiest &mdash; nothing to install</span>
+        <span class="console-cta-head">Try a voice right here in your browser &rarr;</span>
+        <span class="console-cta-sub">The lab&rsquo;s hosted console, live in your browser. Ask a question; it answers in character. The first reply wakes the machine &mdash; about thirty seconds.</span>
+      </a>
+
+      <div class="howto-paths">
+        <div class="howto-path">
+          <div class="howto-label">The floor</div>
+          <h3 class="howto-head">Let a chatbot do it for you</h3>
+          <p>Open any AI chatbot you already use: ChatGPT, Claude, Gemini, Copilot. Pick a voice from the roll call below, copy its <strong>Weights (HF)</strong> link, paste it in, and say:</p>
+          <blockquote class="howto-paste">Walk me through running this on my computer, step by step, like I have never done this before.</blockquote>
+          <p>It reads the page and takes you the rest of the way. That is the whole first step.</p>
+        </div>
+        <div class="howto-path">
+          <div class="howto-label">The app</div>
+          <h3 class="howto-head">Run it yourself in LM Studio</h3>
+          <p>A free app with a normal chat window. No command line.</p>
+          <ol class="howto-steps">
+            <li>Install <a href="https://lmstudio.ai" class="howto-link" target="_blank" rel="noopener">LM Studio</a> (free; Mac and Windows).</li>
+            <li>Search it for the model by name, or paste the model&rsquo;s HuggingFace link, and download the file it offers.</li>
+            <li>Open the model. Paste the voice&rsquo;s <strong>frame</strong> into the system-prompt box; each voice&rsquo;s page gives you the exact text. The frame is what makes it answer in character.</li>
+            <li>Talk to it.</li>
+          </ol>
+        </div>
+      </div>
+
+      <p class="howto-foot">Every voice runs free, on your own machine, with nothing sent to a cloud. They are small models: they invent things, get facts wrong, and never break character. Nothing they say is advice.</p>
+    </div>
+  </section>
+
+  <!-- ROSTER -->
+  <section class="roster-section">
+    <div class="container">
+      <h2 class="section-heading">
+        <span class="heading-rule"></span>
+        <span>THE ROLL CALL</span>
+        <span class="heading-rule"></span>
+      </h2>
+      <p class="section-sub">The Reprobate &mdash; one public voice, so far.</p>
+
+      <nav class="roster-index" aria-label="Roster index">
+        <div class="roster-index-group">
+          <span class="roster-index-label">The Reprobate</span>
+          <a class="roster-index-chip" href="#ordnung">Ordnung</a>
+        </div>
+        <div class="roster-index-group">
+          <span class="roster-index-label">See also</span>
+          <a class="roster-index-chip" href="index.html">The Elect &rarr;</a>
+        </div>
+      </nav>
+
+      <div class="roster-group-header">
+        <span class="roster-group-rule"></span>
+        <span class="roster-group-label">THE REPROBATE</span>
+        <span class="roster-group-rule"></span>
+      </div>
+
+      <article class="persona-card" data-status="public" id="ordnung">
+        <div class="card-header">
+          <div class="card-badge">VOICE MODEL</div>
+          <div class="card-status public">PUBLIC &mdash; CC-BY-NC-4.0</div>
+        </div>
+        <div class="card-body">
+          <div class="ascii-portrait" aria-hidden="true">
+            <pre class="ascii-art ordnung-art">
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█████████████████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████████████████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████████████████████████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▓▓▓▓▓▓▓███████████████████████████████████████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▓▓▓████████████████████████████████████████████████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓██████████████████████████████████████████████████████████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+████████████████████████████████████████████████████████████████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+██████████████████████████████████████████████████████████████████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+███████████████████████████████████████████████▓▓▓██▓▓▓▓▓▓▒▒▓▓█████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓
+████████████████████████████████████████████▓▒▒▒▒▓▒▒▒▒▓▓▒▒▒░░░▒▒▓██████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓
+████████████████████████████████████████▓▒▒░░░░░░░░░░░░░░░░░░░░░▒▓█████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓
+████████████████████████████████████▓▒▒░░░░░░░░░░░░░░░░░░░░░░░░░░▒▓███████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+████████████████████████████████▓▓▒▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▒▓███▓█████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓████████████████████████████▓▓▒▓▒▒▒▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▒█████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▓▓▓▓▓▓█████████████████▓▓▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░░░░░░░░░▒▒▒▒▓██████▓█▓▓▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▓▒▒▒▒▓▓████████████████▓▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░░░░░░▒▓▓▒▒▒▒▒▒▓███████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▒▒▒▒▓█████████████████▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▒░░░░░░░░░░▒▓▓▒▒▒▒▒▒▒░▒██████▓▓▓▓▓▓▒▓▓▓▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▓▓▒▒▓████████████████▓▒▒▒▒▒▒▒▒▒▒░░░▒▒▒▒▒▓▓▓▓▒▒░░░░░░▒▒▒▓▓▓▒▒▒▓▒░░▓████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▓▓▒▒▓███████████████▓▓▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▒▒▒▒▒▒▓▓▒▒░░░░▒▒▒▓▓▓▒▒▒▒░░░░▒███▓▓▓▓▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▓▓▓▒▓▓█████████████▓▓▓▒▒▒░░░░░▒▒▓▓▓▓▓▓▒░░▒▒▒▒▒▒▒▒░░░░▒▒▒▒░░░░░░░░░░▒▓▓▓▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓▓▓▓▓▓▓▒▒▓▓██▓███████▓▓▓▓▓▒▒░░░░░░░░▒▒▒▒▒▒░░░░░▒▒▒▒▒▒▒░░░▒▒▒▒▒░░░░░░░░░▒▓▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▒▒▒▓▓▓▓▒▓▒
+▓▓▓▓▓▓▓▓▒▓█▓▓▓▓█▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░░░░░░░░░░░░░░░░░░░░░▒▒░░░▒░░░░░░░░░░░░▒▓▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▒▒▒▒▓▒▓▒▒▒▒▒
+▓▓▓▓▓▓▓▓▒▓▓▓▓▓▓▓███▓▓▓▓▓▓▓▓▓▒░░░░░░░░░░░░░░░░░░░░░░░░▒▒▒░░░▒░░░░░░░░░░░▒▓▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓▓▓▓▒▓▓▓▓▓████▓▓▓█▓▓▓▓▓▒▒░░░░░░░░░░░░░░░░░░░░░░░▒▒░░░░░▒░░░░░░░░░▒▒▓▒▒▒▒▒▒▒▓▒▒▒▓▓▒▒▒▒▒▒▓▒▓▒▒▒▒▒
+▓▓▓▓▓▓▓▒▒▒▒▓▓▓▓█▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒░░░░░░░░░░░░░░░░░░▒▒▒░▒▒▒░░░░▒▒░░░░░░░░▒▓▒▒▒▒▒▒▒▒▒▒▒▓▒▒▒▒▒▒▒▒▒▒▒▓▒▒▒▓
+▓▓▓▓▓▓▓▓▓▓▓▒▓▓▓▓▓▓▓██▓▓▓▓▓▒▒▓▒▒▒▒░░░░░░░░░░░░░░░░▒▒▒▒▒▓▓▒▒▒▒▒░░░░░░░░░▒▓▓▒▒▒▒▒▒▒▒▒▒▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓▓▓▓▓▒▒▒▒▓▓▓▓▓▓███▓▓▓▒▒▓▓▒▒▒▒░░░░░░░░░░░░░░░▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░▒▓█▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▓▓▓▓████▓▓▓▒▒▓▓▓▒▒▒▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▒▓████▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓▓▓▓▓▓▒▒▓▓▓▓▓██████▓▓▒▒▒▓▓▓▒▒▒▒▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▒▓██████▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█████████▓▓▒▒▓▓▓▒▒▒▒▒▒░░░░░░▒░░░░░░░▒▒▒▒▓▒▒▒▒▒▒▒▒▒░░░▒▒▓████████▓▓▒▒▒▒▒▒▓▒▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓███████████▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒░▒▒░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░▒▒▒▓██████████▓▓▒▒▒▒▒▒▒▒▒▒▓▒▒▒▒▒
+▓▓▓▓▓▓▓▓▓▓▓▓██████████████▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░▒▒▒░░░░░░░░▒▒▒▓▓███████████▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓▓▓▓▓▓████████████████▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░░░░░▒▒▒▒▓██████████████▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓▓▓▓███████████████████▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░░░▒▒▒▒▓████████████████▓▓▒▒▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓▓▓██████████████████████▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░▒▒▒▓▓██████████████████▓▓▒▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓▓█████████████████████████▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░▒▒▓▓██████▓██████████████▓▓▒▒▒▒▒▒▒▒▒▒
+▓▓▓▓▓▓███████████████████████████▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓█████▓▓████████████████▓▓▒▒▒▒▒▒▒▒
+▓▓▓▓▓██████████████████████████████▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▓▓▓▓▓▒▒▒▓▓▓▓▓▓███████▓██████████████████▓▓▒▒▒▒▒▒▒
+▓▓▓▓█████████████████████████████████▓█▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓█████████████████████████████▓▒▒▒▒▒▒▒
+▓▓▓█████████████████████████████████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█████████████████████████████████▓▒▒▒▒▒▒
+▓▓▓███████████████████████████████████████████████████████████████████████████████████████████▓▒▒▒▒▒
+▓▓▓████████████████████████████████████████████▓███▓▓▓█████████████████████████████████████████▓▒▒▒▒
+▓████▓████████████████████████████████████████████▓▓████████████████████▓██████████████████████▓▓▓▓▒
+██████████████████████████████████████████████████▓████████████████████████████████████████████▓▓▓▓▓
+██████████████████████████████████████████████████████████████████████████████████████████████████▓▓
+████████████████████████████████████████████████████████████████████████████████████████████████████
+█████████████████████████████████████████████████▓██████████████████████████████████████████████████
+████████████████████████████████████████████████████████▓▓▓█████████████████████████████████████████</pre>
+          </div>
+          <div class="card-content">
+            <div class="persona-name-row">
+              <h3 class="persona-name">ORDNUNG-7B <span class="codename">(Martin Luther)</span></h3>
+              <span class="persona-register">Reformation order-voice, 1483&ndash;1546</span>
+            </div>
+            <p class="persona-desc">
+              Luther post-1525 is the fleet&rsquo;s sharpest standing adversary: the reformer who
+              watched the peasants rise in the name of his own gospel and chose the princes. His
+              Two-Kingdoms doctrine holds that temporal authority is God&rsquo;s ordained instrument,
+              inner freedom the only freedom that matters, and the rebel who invokes the gospel for
+              earthly liberation has simply misread it. Trained on 19th-century public-domain English
+              translations of his primary works. CC-BY-NC-4.0.
+            </p>
+            <div class="persona-links">
+              <a href="https://huggingface.co/lerugray/ordnung-7b" class="link-btn" target="_blank" rel="noopener">
+                <span class="link-icon">&#9095;</span> Weights (HF)
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <p class="section-sub" style="margin-top:2rem;margin-bottom:1.5rem;">The counter-roster will grow as more adversary voices are scoped and trained.</p>
+
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section class="method-section">
+    <div class="container">
+      <h2 class="section-heading">
+        <span class="heading-rule"></span>
+        <span>HOW THE REPROBATE ARE MADE</span>
+        <span class="heading-rule"></span>
+      </h2>
+
+      <div class="method-grid">
+        <div class="method-step">
+          <div class="step-num">00</div>
+          <h3 class="step-title">THE HUNT</h3>
+          <p>Source texts are hunted and pulled with <a href="https://github.com/lerugray/bookfinder-general" target="_blank" rel="noopener">Bookfinder General</a>, an open MCP tool that finds books, extracts and translates the text, and hands back clean prose. Nothing is written from memory; every voice begins in primary sources.</p>
+        </div>
+        <div class="method-step">
+          <div class="step-num">01</div>
+          <h3 class="step-title">THE CORPUS</h3>
+          <p>A three-tier voice corpus for each figure. T1: the figure&rsquo;s own primary texts. T2: quotation-filtered biography and scholarship &mdash; source material only, never editorial voice. T3: a small set of synthetic modern-bridge passages so the voice can speak to present-day prompts without collapsing into pastiche.</p>
+        </div>
+
+        <div class="method-step">
+          <div class="step-num">02</div>
+          <h3 class="step-title">THE TRAINING</h3>
+          <p>Completion-style causal-LM fine-tuning &mdash; QLoRA at rank 32 &mdash; of Qwen2.5-7B-Instruct. Run on a single rented ~48GB GPU (RTX A6000 class). Roughly 30&ndash;45 minutes of wall-clock time. A couple dollars. That&rsquo;s the whole operation.</p>
+        </div>
+
+        <div class="method-step">
+          <div class="step-num">03</div>
+          <h3 class="step-title">THE FORMAT</h3>
+          <p>Quantized to Q5_K_M GGUF for local serving. Delivered via Ollama with a per-persona Modelfile &mdash; a lead-in frame that fixes the speaker before the conversation starts. Pull the weights, run the Modelfile, the voice answers.</p>
+        </div>
+
+        <div class="method-step">
+          <div class="step-num">04</div>
+          <h3 class="step-title">THE TEST</h3>
+          <p>A deterministic register battery &mdash; fixed prompts with expected voice signatures &mdash; plus the maker&rsquo;s ear. Both have to pass. A model that sounds plausible but misses the register doesn&rsquo;t ship. A model that sounds right but fails the battery doesn&rsquo;t ship either.</p>
+        </div>
+
+        <div class="method-step">
+          <div class="step-num">05</div>
+          <h3 class="step-title">THE IP DISCIPLINE</h3>
+          <p>The training corpus is never published. Weights go public only when the source is public-domain or the use is clearly transformative, a verbatim-regurgitation leakage test passes, and the license matches the source: Apache-2.0 for public-domain sources, CC-BY-NC-4.0 for transformative-but-copyrighted. Voices that fail that bar stay private.</p>
+        </div>
+
+        <div class="method-stack">
+          <div class="stack-label">STACK</div>
+          <div class="stack-items">
+            <a class="stack-item" href="https://github.com/lerugray/bookfinder-general" target="_blank" rel="noopener">Bookfinder General</a>
+            <span class="stack-sep">&rarr;</span>
+            <span class="stack-item">Qwen2.5-7B-Instruct</span>
+            <span class="stack-sep">&rarr;</span>
+            <span class="stack-item">QLoRA r=32</span>
+            <span class="stack-sep">&rarr;</span>
+            <span class="stack-item">Q5_K_M GGUF</span>
+            <span class="stack-sep">&rarr;</span>
+            <span class="stack-item">Ollama</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCURACY DISCLAIMER -->
+  <section class="accuracy-disclaimer" aria-label="Accuracy disclaimer">
+    <div class="container">
+      <span class="accuracy-disclaimer-heading">On accuracy.</span>
+      <p class="accuracy-disclaimer-body">These are small models trained to hold a voice, not to be right. Like every language model they confabulate: names, dates, quotations, sources, whole events. Some do it more freely than others. Read them in character, and verify anything before you repeat it. Nothing any of them says is a citation.</p>
+    </div>
+  </section>
+
+  <!-- SUGGEST A VOICE -->
+  <section class="suggest-section" aria-label="Suggest a new Reprobate voice">
+    <div class="container">
+      <h2 class="section-heading">
+        <span class="heading-rule"></span>
+        <span>SUGGEST A VOICE</span>
+        <span class="heading-rule"></span>
+      </h2>
+      <p class="suggest-intro">
+        Know a dead defender of order who should be running? The counter-roster grows from actual
+        suggestions. Name them and say why in one line. It goes straight to the lab.
+      </p>
+      <form class="suggest-form" id="suggest-form" novalidate>
+        <div class="suggest-field">
+          <label class="suggest-label" for="suggest-name">Figure</label>
+          <input class="suggest-input" id="suggest-name" name="figure" type="text"
+            placeholder="e.g. Edmund Burke" autocomplete="off" required>
+        </div>
+        <div class="suggest-field">
+          <label class="suggest-label" for="suggest-why">Why they belong</label>
+          <textarea class="suggest-textarea" id="suggest-why" name="why"
+            placeholder="One line is enough." rows="3" required></textarea>
+        </div>
+        <button class="suggest-submit" type="submit">Send suggestion</button>
+        <p class="suggest-note">Opens your email client with the fields pre-filled. Nothing is sent automatically.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-sigil" aria-hidden="true">✦ THE REPROBATE ✦</div>
+      <p class="footer-note">
+        A one-person lab. Ray Weiss. All models run locally &mdash; no telemetry, no cloud,
+        no API calls home. The corpus stays private. The voices speak freely.
+      </p>
+      <div class="footer-links">
+        <a href="index.html" class="footer-link">The Elect</a>
+        <span class="footer-sep">&middot;</span>
+        <a href="debates.html" class="footer-link">Debates</a>
+        <span class="footer-sep">&middot;</span>
+        <a href="https://github.com/lerugray" class="footer-link" target="_blank" rel="noopener">GitHub: lerugray</a>
+        <span class="footer-sep">&middot;</span>
+        <a href="https://hammerstein.ai" class="footer-link" target="_blank" rel="noopener">hammerstein.ai</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="./app.js"></script>
+</body>
+</html>
